@@ -11,7 +11,7 @@ defmodule DocGen.Application do
       # Start the Ecto repository
       DocGen.Repo,
       # Start the endpoint when the application starts
-      DocGenWeb.Endpoint,
+      DocGenWeb.Endpoint
       # Starts a worker by calling: DocGen.Worker.start_link(arg)
       # {DocGen.Worker, arg},
     ]
