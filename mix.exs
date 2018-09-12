@@ -10,7 +10,18 @@ defmodule DocGen.MixProject do
       compilers: [:phoenix, :gettext] ++ Mix.compilers,
       start_permanent: Mix.env == :prod,
       aliases: aliases(),
-      deps: deps()
+      deps: deps(),
+      test_coverage: [tool: ExCoveralls],
+      preferred_cli_env: [
+        bless: :test,
+        coveralls: :test,
+        "coveralls.detail": :test,
+        "coveralls.post": :test,
+        "coveralls.html": :test,
+        credo: :test,
+        dialyzer: :test
+      ],
+      dialyzer: [ignore_warnings: ".dialyzer.ignore_warnings"]
     ]
   end
 
@@ -41,7 +52,14 @@ defmodule DocGen.MixProject do
       {:phoenix_live_reload, "~> 1.0", only: :dev},
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.0"},
-      {:cowboy, "~> 1.0"}
+      {:cowboy, "~> 1.0"},
+
+      {:credo, "~> 0.9.1", only: [:dev, :test], runtime: false},
+      {:excoveralls, "~> 0.7", only: :test},
+      {:dialyxir, "~> 1.0.0-rc.3", only: [:dev, :test], runtime: false},
+      {:private, "~> 0.1.1"},
+
+      {:distillery, "~> 2.0", runtime: false}
     ]
   end
 
@@ -55,7 +73,24 @@ defmodule DocGen.MixProject do
     [
       "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
-      test: ["ecto.create --quiet", "ecto.migrate", "test"]
+      test: ["ecto.create --quiet", "ecto.migrate", "test"],
+      bless: [&bless/1]
     ]
+  end
+
+  defp bless(_) do
+    [
+      {"compile", ["--warnings-as-errors", "--force"]},
+      {"coveralls.html", []},
+      {"format", ["--check-formatted"]},
+      {"credo", []},
+      {"dialyzer", []}
+    ]
+    |> Enum.each(fn {task, args} ->
+      IO.ANSI.format([:cyan, "Running #{task} with args #{inspect(args)}"])
+      |> IO.puts()
+
+      Mix.Task.run(task, args)
+    end)
   end
 end
