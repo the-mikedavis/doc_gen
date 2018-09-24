@@ -8,7 +8,7 @@ defmodule DocGenWeb.Endpoint do
 
   # Serve at "/" the static files from "priv/static" directory.
   #
-  # You should set gzip to true if you are running phoenix.digest
+  # You should set gzip to true if you are running phx.digest
   # when deploying your static files in production.
   plug(Plug.Static,
     at: "/",
@@ -43,7 +43,7 @@ defmodule DocGenWeb.Endpoint do
   plug(Plug.Session,
     store: :cookie,
     key: "_doc_gen_key",
-    signing_salt: "N7Iyn+Jp"
+    signing_salt: "3wY/Esv7"
   )
 
   plug(DocGenWeb.Router)
