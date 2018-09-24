@@ -6,9 +6,10 @@ defmodule DocGen.MixProject do
       app: :doc_gen,
       version: "0.1.0",
       elixir: "~> 1.5",
-      elixirc_paths: elixirc_paths(Mix.env()),
-      compilers: [:phoenix, :gettext] ++ Mix.compilers(),
-      start_permanent: Mix.env() == :prod,
+      elixirc_paths: elixirc_paths(Mix.env),
+      compilers: [:phoenix, :gettext] ++ Mix.compilers,
+      start_permanent: Mix.env == :prod,
+      aliases: aliases(),
       deps: deps()
     ]
   end
@@ -25,7 +26,7 @@ defmodule DocGen.MixProject do
 
   # Specifies which paths to compile per environment.
   defp elixirc_paths(:test), do: ["lib", "test/support"]
-  defp elixirc_paths(_), do: ["lib"]
+  defp elixirc_paths(_),     do: ["lib"]
 
   # Specifies your project dependencies.
   #
@@ -34,11 +35,27 @@ defmodule DocGen.MixProject do
     [
       {:phoenix, github: "phoenixframework/phoenix", override: true},
       {:phoenix_pubsub, "~> 1.1"},
+      {:phoenix_ecto, "~> 3.2"},
+      {:postgrex, ">= 0.0.0"},
       {:phoenix_html, "~> 2.11"},
       {:phoenix_live_reload, "~> 1.0", only: :dev},
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.0"},
       {:cowboy, "~> 1.0"}
+    ]
+  end
+
+  # Aliases are shortcuts or tasks specific to the current project.
+  # For example, to create, migrate and run the seeds file at once:
+  #
+  #     $ mix ecto.setup
+  #
+  # See the documentation for `Mix` for more info on aliases.
+  defp aliases do
+    [
+      "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
+      "ecto.reset": ["ecto.drop", "ecto.setup"],
+      test: ["ecto.create --quiet", "ecto.migrate", "test"]
     ]
   end
 end

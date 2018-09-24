@@ -8,3 +8,11 @@ config :doc_gen, DocGenWeb.Endpoint,
 
 # Print only warnings and errors during test
 config :logger, level: :warn
+
+# Configure your database
+config :doc_gen, DocGen.Repo,
+  username: "postgres",
+  password: "postgres",
+  database: "doc_gen_test",
+  hostname: "localhost",
+  pool: Ecto.Adapters.SQL.Sandbox
