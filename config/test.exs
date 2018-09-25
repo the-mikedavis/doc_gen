@@ -5,3 +5,10 @@ config :doc_gen, DocGenWeb.Endpoint,
   server: false
 
 config :logger, level: :warn
+
+config :doc_gen, DocGen.Repo,
+  username: "postgres",
+  password: "postgres",
+  database: "doc_gen_test",
+  hostname: "localhost",
+  pool: Ecto.Adapters.SQL.Sandbox

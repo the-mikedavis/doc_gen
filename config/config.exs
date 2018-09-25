@@ -3,8 +3,6 @@ use Mix.Config
 config :doc_gen,
   ecto_repos: [DocGen.Repo]
 
-config :doc_gen, DocGen.Repo, adapter: EctoMnesia.Adapter
-
 config :doc_gen, DocGenWeb.Endpoint,
   url: [host: "localhost"],
   secret_key_base:
@@ -18,11 +16,5 @@ config :logger, :console,
 
 config :phoenix, :json_library, Jason
 config :ecto, :json_library, Jason
-
-config :mnesia, :dir, 'priv/data/mnesia'
-
-config :ecto_mnesia,
-  host: {:system, :atom, "MNESIA_HOST", Kernel.node()},
-  storage_type: {:system, :atom, "MNESIA_STORAGE_TYPE", :disc_copies}
 
 import_config "#{Mix.env()}.exs"

@@ -1,8 +1,8 @@
-defmodule MoleWeb.Plugs.Auth do
+defmodule DocGenWeb.Plugs.Auth do
   @moduledoc false
   import Plug.Conn
 
-  alias Mole.Accounts
+  alias DocGen.Accounts
 
   def init(opts), do: opts
 

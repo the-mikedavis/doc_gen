@@ -30,3 +30,10 @@ config :logger, :console, format: "[$level] $message\n"
 config :phoenix, :stacktrace_depth, 20
 
 config :phoenix, :plug_init_mode, :runtime
+
+config :doc_gen, DocGen.Repo,
+  username: "postgres",
+  password: "postgres",
+  database: "doc_gen_dev",
+  hostname: "localhost",
+  pool_size: 10

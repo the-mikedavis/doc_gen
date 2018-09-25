@@ -4,9 +4,8 @@ defmodule DocGen.Accounts do
   """
 
   import Ecto.Query, warn: false
-  alias DocGen.Repo
 
-  alias DocGen.Accounts.User
+  alias DocGen.{Accounts.User, Repo}
 
   @doc """
   Returns the list of user.
@@ -24,6 +23,21 @@ defmodule DocGen.Accounts do
   @doc """
   Gets a single user.
 
+  Returns `nil` if the User does not exist.
+
+  ## Examples
+
+      iex> get_user(123)
+      %User{}
+
+      iex> get_user(456)
+      nil
+  """
+  def get_user(id), do: Repo.get(User, id)
+
+  @doc """
+  Gets a single user.
+
   Raises `Ecto.NoResultsError` if the User does not exist.
 
   ## Examples
@@ -33,7 +47,6 @@ defmodule DocGen.Accounts do
 
       iex> get_user!(456)
       ** (Ecto.NoResultsError)
-
   """
   def get_user!(id), do: Repo.get!(User, id)
 
@@ -100,5 +113,25 @@ defmodule DocGen.Accounts do
   """
   def change_user(%User{} = user) do
     User.changeset(user, %{})
+  end
+
+  @doc "Log in a user by username and password."
+  @spec authenticate(String.t(), String.t()) ::
+          {:ok, %User{}} | {:error, atom()}
+  def authenticate(username, given_password) do
+    user = Repo.get_by(User, username: username)
+
+    cond do
+      user && Comeonin.Bcrypt.checkpw(given_password, user.password_hash) ->
+        {:ok, user}
+
+      user ->
+        {:error, :unauthorized}
+
+      true ->
+        Comeonin.Bcrypt.dummy_checkpw()
+
+        {:error, :not_found}
+    end
   end
 end
