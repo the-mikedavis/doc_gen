@@ -7,14 +7,14 @@ defmodule DocGen.AccountsTest do
     alias DocGen.Accounts.User
 
     @valid_attrs %{
-      hashed_password: "some hashed_password",
-      username: "some username"
+      password: "some password",
+      username: "someusername"
     }
     @update_attrs %{
-      hashed_password: "some updated hashed_password",
-      username: "some updated username"
+      hashed_password: "some updated password",
+      username: "updatedusername"
     }
-    @invalid_attrs %{hashed_password: nil, username: nil}
+    @invalid_attrs %{hashed_password: "eo", username: "oesnutahoeu aoesnutuh"}
 
     def user_fixture(attrs \\ %{}) do
       {:ok, user} =
@@ -27,18 +27,20 @@ defmodule DocGen.AccountsTest do
 
     test "list_user/0 returns all user" do
       user = user_fixture()
-      assert Accounts.list_user() == [user]
+
+      for u <- Accounts.list_user() do
+        assert u.id == user.id
+      end
     end
 
     test "get_user!/1 returns the user with given id" do
       user = user_fixture()
-      assert Accounts.get_user!(user.id) == user
+      assert Accounts.get_user!(user.id).id == user.id
     end
 
     test "create_user/1 with valid data creates a user" do
       assert {:ok, %User{} = user} = Accounts.create_user(@valid_attrs)
-      assert user.hashed_password == "some hashed_password"
-      assert user.username == "some username"
+      assert user.username == "someusername"
     end
 
     test "create_user/1 with invalid data returns error changeset" do
@@ -49,8 +51,7 @@ defmodule DocGen.AccountsTest do
       user = user_fixture()
       assert {:ok, %User{} = user} = Accounts.update_user(user, @update_attrs)
 
-      assert user.hashed_password == "some updated hashed_password"
-      assert user.username == "some updated username"
+      assert user.username == "updatedusername"
     end
 
     test "update_user/2 with invalid data returns error changeset" do
@@ -59,7 +60,7 @@ defmodule DocGen.AccountsTest do
       assert {:error, %Ecto.Changeset{}} =
                Accounts.update_user(user, @invalid_attrs)
 
-      assert user == Accounts.get_user!(user.id)
+      assert user.id == Accounts.get_user!(user.id).id
     end
 
     test "delete_user/1 deletes the user" do

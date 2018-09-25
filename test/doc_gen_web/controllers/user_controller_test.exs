@@ -4,14 +4,14 @@ defmodule DocGenWeb.UserControllerTest do
   alias DocGen.Accounts
 
   @create_attrs %{
-    hashed_password: "some hashed_password",
-    username: "some username"
+    password: "some password",
+    username: "someusername"
   }
   @update_attrs %{
-    hashed_password: "some updated hashed_password",
-    username: "some updated username"
+    password: "some updated password",
+    username: "updatedusername"
   }
-  @invalid_attrs %{hashed_password: nil, username: nil}
+  @invalid_attrs %{hashed_password: "oe", username: "eoo$o"}
 
   def fixture(:user) do
     {:ok, user} = Accounts.create_user(@create_attrs)
@@ -21,6 +21,7 @@ defmodule DocGenWeb.UserControllerTest do
   describe "index" do
     test "lists all user", %{conn: conn} do
       conn = get(conn, Routes.user_path(conn, :index))
+
       assert html_response(conn, 200) =~ "Listing User"
     end
   end
@@ -28,6 +29,7 @@ defmodule DocGenWeb.UserControllerTest do
   describe "new user" do
     test "renders form", %{conn: conn} do
       conn = get(conn, Routes.user_path(conn, :new))
+
       assert html_response(conn, 200) =~ "New User"
     end
   end
@@ -68,7 +70,7 @@ defmodule DocGenWeb.UserControllerTest do
       assert redirected_to(conn) == Routes.user_path(conn, :show, user)
 
       conn = get(conn, Routes.user_path(conn, :show, user))
-      assert html_response(conn, 200) =~ "some updated hashed_password"
+      assert html_response(conn, 200) =~ "updatedusername"
     end
 
     test "renders errors when data is invalid", %{conn: conn, user: user} do

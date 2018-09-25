@@ -10,5 +10,4 @@ config :doc_gen, DocGen.Repo,
   username: "postgres",
   password: "postgres",
   database: "doc_gen_test",
-  hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
