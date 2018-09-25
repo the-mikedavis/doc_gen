@@ -21,5 +21,7 @@ defmodule DocGenWeb.Router do
 
   scope "/admin", DocGenWeb do
     pipe_through(:browser)
+
+    resources("/user", UserController)
   end
 end
