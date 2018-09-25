@@ -1,15 +1,11 @@
-# This file is responsible for configuring your application
-# and its dependencies with the aid of the Mix.Config module.
-#
-# This configuration file is loaded before any dependency and
-# is restricted to this project.
 use Mix.Config
 
-# General application configuration
 config :doc_gen,
   ecto_repos: [DocGen.Repo]
 
-# Configures the endpoint
+config :doc_gen, DocGen.Repo,
+  adapter: EctoMnesia.Adapter
+
 config :doc_gen, DocGenWeb.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "Pb0S1nsqJf1VVTKNVlPyIoPzyAnrP/RQk8XnMeAP88x39z2f5l8AGsEQMmsEJS+y",
@@ -17,16 +13,17 @@ config :doc_gen, DocGenWeb.Endpoint,
   pubsub: [name: DocGen.PubSub,
            adapter: Phoenix.PubSub.PG2]
 
-# Configures Elixir's Logger
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",
   metadata: [:request_id]
 
-# Use Jason for JSON parsing in Phoenix and Ecto
 config :phoenix, :json_library, Jason
 config :ecto, :json_library, Jason
 
+config :mnesia, :dir, 'priv/data/mnesia'
 
-# Import environment specific config. This must remain at the bottom
-# of this file so it overrides the configuration defined above.
+config :ecto_mnesia,
+  host: {:system, :atom, "MNESIA_HOST", Kernel.node()},
+  storage_type: {:system, :atom, "MNESIA_STORAGE_TYPE", :disc_copies}
+
 import_config "#{Mix.env}.exs"
