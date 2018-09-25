@@ -3,6 +3,10 @@ defmodule DocGen.Accounts.User do
   use Ecto.Schema
   import Ecto.Changeset
 
+  @moduledoc """
+  The User. All users are admins.
+  """
+
   schema "user" do
     field(:hashed_password, :string)
     field(:password, :string, virtual: true)
@@ -31,7 +35,11 @@ defmodule DocGen.Accounts.User do
     defp put_password_hash(changeset) do
       case changeset do
         %Ecto.Changeset{valid?: true, changes: %{password: pass}} ->
-          put_change(changeset, :password_hash, Comeonin.Bcrypt.hashpwsalt(pass))
+          put_change(
+            changeset,
+            :password_hash,
+            Comeonin.Bcrypt.hashpwsalt(pass)
+          )
 
         _ ->
           changeset

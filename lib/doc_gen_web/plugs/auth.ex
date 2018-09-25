@@ -12,6 +12,7 @@ defmodule DocGenWeb.Plugs.Auth do
     assign(conn, :current_user, user)
   end
 
+  @spec login(
   def login(conn, uname, given_pass) do
     case Accounts.authenticate(uname, given_pass) do
       {:ok, user} ->

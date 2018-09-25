@@ -1,0 +1,7 @@
+###### Dialyzer will suppress any warning with a substring match on any entire line in this file.
+
+:0: Unknown function 'Elixir.ExUnit.Callbacks':'__merge__'/3
+:0: Unknown function 'Elixir.ExUnit.CaseTemplate':'__proxy__'/2
+Function handle_command/2 has no local return
+Function render_success/1 has no local return
+The call 'Elixir.Plug.Conn':put_status(conn@1::atom() | #{'command':=_, _=>_},'created') breaks the contract (t(),status()) -> t()

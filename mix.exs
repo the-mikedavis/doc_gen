@@ -45,6 +45,8 @@ defmodule DocGen.MixProject do
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.0"},
       {:cowboy, "~> 1.0"},
+      # Slim HTML
+      {:phoenix_slime, "~> 0.10"},
       # Auth
       {:comeonin, "~> 4.1"},
       {:bcrypt_elixir, "~> 1.0"},
@@ -53,6 +55,7 @@ defmodule DocGen.MixProject do
       {:excoveralls, "~> 0.9", only: :test},
       {:mox, "~> 0.3"},
       {:private, "~> 0.1.1"},
+      {:dialyxir, "~> 0.5", only: [:dev, :test], runtime: false},
       # deploying
       {:distillery, "~> 2.0"}
     ]
