@@ -2,10 +2,9 @@ defmodule DocGen.Accounts.User do
   use Ecto.Schema
   import Ecto.Changeset
 
-
   schema "user" do
-    field :hashed_password, :string
-    field :username, :string
+    field(:hashed_password, :string)
+    field(:username, :string)
 
     timestamps()
   end

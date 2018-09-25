@@ -6,8 +6,14 @@ defmodule DocGen.AccountsTest do
   describe "user" do
     alias DocGen.Accounts.User
 
-    @valid_attrs %{hashed_password: "some hashed_password", username: "some username"}
-    @update_attrs %{hashed_password: "some updated hashed_password", username: "some updated username"}
+    @valid_attrs %{
+      hashed_password: "some hashed_password",
+      username: "some username"
+    }
+    @update_attrs %{
+      hashed_password: "some updated hashed_password",
+      username: "some updated username"
+    }
     @invalid_attrs %{hashed_password: nil, username: nil}
 
     def user_fixture(attrs \\ %{}) do
@@ -42,14 +48,17 @@ defmodule DocGen.AccountsTest do
     test "update_user/2 with valid data updates the user" do
       user = user_fixture()
       assert {:ok, %User{} = user} = Accounts.update_user(user, @update_attrs)
-      
+
       assert user.hashed_password == "some updated hashed_password"
       assert user.username == "some updated username"
     end
 
     test "update_user/2 with invalid data returns error changeset" do
       user = user_fixture()
-      assert {:error, %Ecto.Changeset{}} = Accounts.update_user(user, @invalid_attrs)
+
+      assert {:error, %Ecto.Changeset{}} =
+               Accounts.update_user(user, @invalid_attrs)
+
       assert user == Accounts.get_user!(user.id)
     end
 

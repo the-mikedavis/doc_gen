@@ -1,8 +1,7 @@
 defmodule DocGenWeb.UserController do
   use DocGenWeb, :controller
 
-  alias DocGen.Accounts
-  alias DocGen.Accounts.User
+  alias DocGen.{Accounts, Accounts.User}
 
   def index(conn, _params) do
     user = Accounts.list_user()
@@ -18,8 +17,11 @@ defmodule DocGenWeb.UserController do
     case Accounts.create_user(user_params) do
       {:ok, user} ->
         conn
+        |> put_session(:user_id, user.id)
+        |> assign(:current_user, user)
         |> put_flash(:info, "User created successfully.")
         |> redirect(to: Routes.user_path(conn, :show, user))
+
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "new.html", changeset: changeset)
     end
@@ -44,6 +46,7 @@ defmodule DocGenWeb.UserController do
         conn
         |> put_flash(:info, "User updated successfully.")
         |> redirect(to: Routes.user_path(conn, :show, user))
+
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "edit.html", user: user, changeset: changeset)
     end

@@ -23,5 +23,6 @@ defmodule DocGenWeb.Router do
     pipe_through(:browser)
 
     resources("/user", UserController)
+    resources("/session", SessionController, only: [:new, :create, :delete])
   end
 end
