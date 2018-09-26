@@ -41,15 +41,20 @@ defmodule DocGen.ContentTest do
 
     test "update_video/2 with valid data updates the video" do
       video = video_fixture()
-      assert {:ok, %Video{} = video} = Content.update_video(video, @update_attrs)
-      
+
+      assert {:ok, %Video{} = video} =
+               Content.update_video(video, @update_attrs)
+
       assert video.slug == "some updated slug"
       assert video.title == "some updated title"
     end
 
     test "update_video/2 with invalid data returns error changeset" do
       video = video_fixture()
-      assert {:error, %Ecto.Changeset{}} = Content.update_video(video, @invalid_attrs)
+
+      assert {:error, %Ecto.Changeset{}} =
+               Content.update_video(video, @invalid_attrs)
+
       assert video == Content.get_video!(video.id)
     end
 
