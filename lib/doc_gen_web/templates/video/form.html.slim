@@ -1,4 +1,4 @@
-= form_for @changeset, @action, fn f ->
+= form_for @changeset, @action, [multipart: true], fn f ->
   = if @changeset.action do
     div.alert.alert-danger
       Oops, something went wrong! Please check the errors below.
@@ -10,7 +10,7 @@
 
   div
     = label f, :video_file
-    = file_input f, :video_file, required: true
+    = file_input f, :video_file, required: true, accept: ".mp4"
     = error_tag f, :video_file
 
   div
