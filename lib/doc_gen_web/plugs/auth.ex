@@ -12,7 +12,8 @@ defmodule DocGenWeb.Plugs.Auth do
     assign(conn, :current_user, user)
   end
 
-  @spec login(
+  @spec login(Plug.Conn.t(), String.t(), String.t()) ::
+          {:ok, Plug.Conn.t()} | {:error, atom(), Plug.Conn.t()}
   def login(conn, uname, given_pass) do
     case Accounts.authenticate(uname, given_pass) do
       {:ok, user} ->
