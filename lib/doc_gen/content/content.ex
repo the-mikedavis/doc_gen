@@ -1,4 +1,6 @@
 defmodule DocGen.Content do
+  use Private
+
   @moduledoc """
   The Content context.
   """
@@ -108,5 +110,43 @@ defmodule DocGen.Content do
   @spec build_video_path(%Video{}) :: Path.t()
   def build_video_path(%Video{path: path}) do
     Path.join(["#{:code.priv_dir(:doc_gen)}", "uploads", path])
+  end
+
+  @doc """
+  Send a video out of a socket.
+  """
+  @spec send_video(Plug.Conn.t(), Keyword.t(), %Video{}) :: Plug.Conn.t()
+  def send_video(conn, headers, video) do
+    video_path = build_video_path(video)
+    offset = get_offset(headers)
+    file_size = get_file_size(video_path)
+
+    conn
+    |> Plug.Conn.put_resp_header("content-type", video.content_type)
+    |> Plug.Conn.put_resp_header("content-range", "bytes #{offset}-#{file_size - 1}/#{file_size}")
+    |> Plug.Conn.send_file(206, video_path, offset, file_size - offset)
+  end
+
+  private do
+    @spec get_offset(Keyword.t()) :: non_neg_integer()
+    defp get_offset(headers) do
+      case Keyword.fetch(headers, "range") do
+        {:ok, "bytes=" <> start_pos} ->
+          start_pos
+          |> String.split("-")
+          |> List.first()
+          |> String.to_integer()
+
+        _ ->
+          0
+      end
+    end
+
+    @spec get_file_size(Path.t()) :: non_neg_integer()
+    defp get_file_size(path) do
+      %{size: size} = File.stat!(path)
+
+      size
+    end
   end
 end

@@ -20,6 +20,7 @@ defmodule DocGenWeb.Router do
     pipe_through(:browser)
 
     get("/", PageController, :index)
+    get("/watch/:id", WatchController, :show)
   end
 
   scope "/admin", DocGenWeb do
