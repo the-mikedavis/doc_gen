@@ -1,8 +1,10 @@
 defmodule DocGenWeb.VideoController do
   use DocGenWeb, :controller
+  use Private
 
-  alias DocGen.Content
-  alias DocGen.Content.Video
+  alias DocGen.{Content, Content.Video}
+
+  plug(:authenticate)
 
   def index(conn, _params) do
     videos = Content.list_videos()
@@ -20,6 +22,7 @@ defmodule DocGenWeb.VideoController do
         conn
         |> put_flash(:info, "Video created successfully.")
         |> redirect(to: Routes.video_path(conn, :show, video))
+
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "new.html", changeset: changeset)
     end
@@ -44,6 +47,7 @@ defmodule DocGenWeb.VideoController do
         conn
         |> put_flash(:info, "Video updated successfully.")
         |> redirect(to: Routes.video_path(conn, :show, video))
+
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "edit.html", video: video, changeset: changeset)
     end
@@ -56,5 +60,20 @@ defmodule DocGenWeb.VideoController do
     conn
     |> put_flash(:info, "Video deleted successfully.")
     |> redirect(to: Routes.video_path(conn, :index))
+  end
+
+  private do
+    # check whether or not the user is logged in
+    @spec authenticate(Plug.Conn.t(), Keyword.t()) :: Plug.Conn.t()
+    defp authenticate(conn, _opts) do
+      if conn.assigns[:current_user] do
+        conn
+      else
+        conn
+        |> put_flash(:error, "You must sign in to access that page.")
+        |> redirect(to: Routes.session_path(conn, :new))
+        |> halt()
+      end
+    end
   end
 end
