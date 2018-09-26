@@ -36,13 +36,13 @@ defmodule DocGenWeb.UserController do
     render(conn, "show.html", user: user)
   end
 
-  def edit(conn, %{"id" => id}) do
+  def edit(conn, _params) do
     user = conn.assigns.user
     changeset = Accounts.change_user(user)
     render(conn, "edit.html", user: user, changeset: changeset)
   end
 
-  def update(conn, %{"id" => id, "user" => user_params}) do
+  def update(conn, %{"user" => user_params}) do
     user = conn.assigns.user
 
     case Accounts.update_user(user, user_params) do
@@ -56,8 +56,8 @@ defmodule DocGenWeb.UserController do
     end
   end
 
-  def delete(conn, %{"id" => id}) do
-    user = Accounts.get_user!(id)
+  def delete(conn, _params) do
+    user = conn.assigns.user
     {:ok, _user} = Accounts.delete_user(user)
 
     conn
@@ -82,7 +82,7 @@ defmodule DocGenWeb.UserController do
     # allow passage if and only if this user is the user they're trying to
     # access.
     @spec is_user(Plug.Conn.t(), Keyword.t()) :: Plug.Conn.t()
-    defp is_user(conn, opts) do
+    defp is_user(conn, _opts) do
       id = conn.params["id"]
       user = Accounts.get_user!(id)
 
