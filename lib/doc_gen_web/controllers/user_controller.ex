@@ -1,7 +1,10 @@
 defmodule DocGenWeb.UserController do
   use DocGenWeb, :controller
+  use Private
 
   alias DocGen.{Accounts, Accounts.User}
+
+  plug(:authenticate)
 
   def index(conn, _params) do
     user = Accounts.list_user()
@@ -59,5 +62,19 @@ defmodule DocGenWeb.UserController do
     conn
     |> put_flash(:info, "User deleted successfully.")
     |> redirect(to: Routes.user_path(conn, :index))
+  end
+
+  private do
+    # check whether or not the user is logged in
+    defp authenticate(conn, _opts) do
+      if conn.assigns[:current_user] do
+        conn
+      else
+        conn
+        |> put_flash(:error, "You must sign in to access that page.")
+        |> redirect(to: Routes.session_path(conn, :new))
+        |> halt()
+      end
+    end
   end
 end
