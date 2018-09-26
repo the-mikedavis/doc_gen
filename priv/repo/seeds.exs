@@ -9,3 +9,9 @@
 #
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
+
+alias DocGen.{Accounts.User, Repo}
+
+%User{}
+|> User.changeset(%{username: "adminimum", password: "pleasechangethis"})
+|> Repo.insert!()
