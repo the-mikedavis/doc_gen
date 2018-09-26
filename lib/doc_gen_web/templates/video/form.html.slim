@@ -1,0 +1,17 @@
+= form_for @changeset, @action, fn f ->
+  = if @changeset.action do
+    div.alert.alert-danger
+      Oops, something went wrong! Please check the errors below.
+
+  div
+    = label f, :title
+    = text_input f, :title, required: true
+    = error_tag f, :title
+
+  div
+    = label f, :video_file
+    = file_input f, :video_file, required: true
+    = error_tag f, :video_file
+
+  div
+    = submit "Save"
