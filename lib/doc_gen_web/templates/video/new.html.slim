@@ -1,0 +1,6 @@
+h1 New Video
+
+= render("form.html", Map.put(assigns, :action, Routes.video_path(@conn, :create)))
+
+span
+  = link("Back", to: Routes.video_path(@conn, :index))

@@ -3,12 +3,13 @@ defmodule DocGen.Repo.Migrations.CreateVideos do
 
   def change do
     create table(:videos) do
-      add :title, :string
-      add :slug, :string
+      add(:title, :string)
+      add(:filename, :string)
+      add(:path, :string)
 
       timestamps()
     end
 
-    create unique_index(:videos, [:slug])
+    create(unique_index(:videos, [:filename]))
   end
 end

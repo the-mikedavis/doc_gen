@@ -19,6 +19,8 @@ defmodule DocGenWeb.VideoController do
   def create(conn, %{"video" => video_params}) do
     case Content.create_video(video_params) do
       {:ok, video} ->
+        persist_file(video, video_params["video_file"])
+
         conn
         |> put_flash(:info, "Video created successfully.")
         |> redirect(to: Routes.video_path(conn, :show, video))
@@ -73,6 +75,19 @@ defmodule DocGenWeb.VideoController do
         |> put_flash(:error, "You must sign in to access that page.")
         |> redirect(to: Routes.session_path(conn, :new))
         |> halt()
+      end
+    end
+
+    # save the file to a path
+    defp persist_file(video, %{path: temp_path}) do
+      video_path = Content.build_video_path(video)
+
+      unless File.exists?(video_path) do
+        video_path
+        |> Path.dirname()
+        |> File.mkdir_p!()
+
+        File.copy!(temp_path, video_path)
       end
     end
   end

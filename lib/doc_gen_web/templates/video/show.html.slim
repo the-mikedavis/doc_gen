@@ -1,0 +1,12 @@
+h1 Show Video
+
+ul
+  li
+    strong Title:
+    = @video.title
+  li
+    strong Filename:
+    = @video.filename
+
+span = link("Edit", to: Routes.video_path(@conn, :edit, @video))
+span = link("Back", to: Routes.video_path(@conn, :index))

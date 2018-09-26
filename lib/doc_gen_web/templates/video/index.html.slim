@@ -1,0 +1,22 @@
+h1 Listing Videos
+
+table
+  thead
+    tr
+      th Title
+      th Filename
+
+      th
+  tbody
+    = for video <- @videos do
+      tr
+        td = video.title
+        td = video.filename
+
+        td
+          = link("Show", to: Routes.video_path(@conn, :show, video))
+          = link("Edit", to: Routes.video_path(@conn, :edit, video))
+          = link("Delete", to: Routes.video_path(@conn, :delete, video), method: :delete, data: [confirm: "Are you sure?"])
+
+span
+  = link("New Video", to: Routes.video_path(@conn, :new))

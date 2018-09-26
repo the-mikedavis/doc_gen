@@ -101,4 +101,12 @@ defmodule DocGen.Content do
   def change_video(%Video{} = video) do
     Video.changeset(video, %{})
   end
+
+  @doc """
+  Provide a path given a video.
+  """
+  @spec build_video_path(%Video{}) :: Path.t()
+  def build_video_path(%Video{path: path}) do
+    Path.join(["#{:code.priv_dir(:doc_gen)}", "uploads", path])
+  end
 end
