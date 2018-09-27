@@ -3,6 +3,8 @@ defmodule DocGen.Content.Video do
   use Private
   import Ecto.Changeset
 
+  alias DocGen.Content.Tag
+
   @moduledoc """
   The Video context.
   """
@@ -13,6 +15,7 @@ defmodule DocGen.Content.Video do
     field(:filename, :string)
     field(:content_type, :string)
     field(:path, :string)
+    has_many(:tag, Tag)
 
     timestamps()
   end
