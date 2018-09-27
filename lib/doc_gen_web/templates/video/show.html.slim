@@ -1,11 +1,11 @@
 h1 = @video.title
 
-video.video-js id='play' controls preload="none" data-setup="{}"
+video.video-js(id='play' preload="none" data-setup="{}" controls)
   source src="#{Routes.video_path(@conn, :show, @video)}" type="#{@video.content_type}"
-  p.vjs-no-js To view this video, please enable JavaScript, and consider
-    upgrading to a web brawser that
-      a href="https://videojs.com/html5-video-support/" target="_blank"
-        supports HTML5 video
+  p.vjs-no-js
+    | To view this video, please enable JavaScript, and consider
+    | upgrading to a web brawser that
+    a href="https://videojs.com/html5-video-support/" target="_blank" supports HTML5 video.
 
 span = link("Edit", to: Routes.video_path(@conn, :edit, @video))
 span = link("Back", to: Routes.video_path(@conn, :index))
