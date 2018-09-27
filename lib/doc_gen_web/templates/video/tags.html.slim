@@ -8,6 +8,6 @@
           = tag.name
 
 h5 Create Some Tags
-= form_for @conn, tag_path(@conn, :new), fn f ->
+//= form_for @conn, tag_path(@conn, :new), fn f ->
   = text_input f, :name
   = submit "Create Tag"

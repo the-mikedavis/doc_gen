@@ -13,6 +13,6 @@ defmodule DocGen.Content.Tag do
     tag
     |> cast(attrs, [:name])
     |> validate_required([:name])
-    |> validate_format(~r/^[\w ]*$/)
+    |> validate_format(:name, ~r/^[\w ]*$/)
   end
 end
