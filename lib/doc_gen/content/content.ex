@@ -104,12 +104,16 @@ defmodule DocGen.Content do
     Video.changeset(video, %{})
   end
 
+  def upload_dir do
+    Path.join("#{:code.priv_dir(:doc_gen)}", "uploads")
+  end
+
   @doc """
   Provide a path given a video.
   """
   @spec build_video_path(%Video{}) :: Path.t()
   def build_video_path(%Video{path: path}) do
-    Path.join(["#{:code.priv_dir(:doc_gen)}", "uploads", path])
+    Path.join(upload_dir(), path)
   end
 
   @doc """
@@ -123,7 +127,10 @@ defmodule DocGen.Content do
 
     conn
     |> Plug.Conn.put_resp_header("content-type", video.content_type)
-    |> Plug.Conn.put_resp_header("content-range", "bytes #{offset}-#{file_size - 1}/#{file_size}")
+    |> Plug.Conn.put_resp_header(
+      "content-range",
+      "bytes #{offset}-#{file_size - 1}/#{file_size}"
+    )
     |> Plug.Conn.send_file(206, video_path, offset, file_size - offset)
   end
 

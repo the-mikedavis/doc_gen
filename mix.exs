@@ -26,6 +26,7 @@ defmodule DocGen.MixProject do
   def application do
     [
       mod: {DocGen.Application, []},
+      start_phases: [create_dirs: []],
       extra_applications: [:logger, :runtime_tools]
     ]
   end

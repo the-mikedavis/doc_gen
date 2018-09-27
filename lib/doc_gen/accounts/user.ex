@@ -37,7 +37,7 @@ defmodule DocGen.Accounts.User do
         %Ecto.Changeset{valid?: true, changes: %{password: pass}} ->
           put_change(
             changeset,
-            :password_hash,
+            :hashed_password,
             Comeonin.Bcrypt.hashpwsalt(pass)
           )
 

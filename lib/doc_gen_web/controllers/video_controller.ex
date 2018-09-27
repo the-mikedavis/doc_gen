@@ -1,6 +1,7 @@
 defmodule DocGenWeb.VideoController do
   use DocGenWeb, :controller
   use Private
+  require Logger
 
   alias DocGen.{Content, Content.Video}
 
@@ -81,6 +82,8 @@ defmodule DocGenWeb.VideoController do
     # save the file to a path
     defp persist_file(video, %{path: temp_path}) do
       video_path = Content.build_video_path(video)
+
+      Logger.debug("Persisting video: #{video_path}")
 
       unless File.exists?(video_path) do
         video_path

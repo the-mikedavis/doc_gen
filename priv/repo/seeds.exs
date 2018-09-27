@@ -14,4 +14,5 @@ alias DocGen.{Accounts.User, Repo}
 
 %User{}
 |> User.changeset(%{username: "adminimum", password: "pleasechangethis"})
+|> IO.inspect()
 |> Repo.insert!()
