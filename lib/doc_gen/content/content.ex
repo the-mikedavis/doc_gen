@@ -137,8 +137,8 @@ defmodule DocGen.Content do
   private do
     @spec get_offset(Keyword.t()) :: non_neg_integer()
     defp get_offset(headers) do
-      case Keyword.fetch(headers, "range") do
-        {:ok, "bytes=" <> start_pos} ->
+      case List.keyfind(headers, "range", 0) do
+        {"range", "bytes=" <> start_pos} ->
           start_pos
           |> String.split("-")
           |> List.first()
