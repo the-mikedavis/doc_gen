@@ -122,7 +122,7 @@ defmodule DocGen.Accounts do
     user = Repo.get_by(User, username: username)
 
     cond do
-      user && Comeonin.Bcrypt.checkpw(given_password, user.password_hash) ->
+      user && Comeonin.Bcrypt.checkpw(given_password, user.hashed_password) ->
         {:ok, user}
 
       user ->

@@ -11,6 +11,7 @@ defmodule DocGen.Content.Video do
     field(:title, :string)
     field(:video_file, :any, virtual: true)
     field(:filename, :string)
+    field(:content_type, :string)
     field(:path, :string)
 
     timestamps()
