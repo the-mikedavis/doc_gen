@@ -1,0 +1,13 @@
+= if [] == @tags do
+  p No tags have been created yet.
+- else
+  = for tag <- @tags do
+    ul
+      li
+        button
+          = tag.name
+
+h5 Create Some Tags
+= form_for @conn, tag_path(@conn, :new), fn f ->
+  = text_input f, :name
+  = submit "Create Tag"
