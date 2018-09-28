@@ -23,7 +23,7 @@ defmodule DocGen.Content.Video do
   @doc false
   def changeset(video, attrs) do
     video
-    |> cast(attrs, [:type_id, :path, :video_file, :filename])
+    |> cast(attrs, [:type_id, :path, :video_file, :filename, :tags])
     |> validate_required([:video_file])
     |> unique_constraint(:filename)
     |> put_video_file()
