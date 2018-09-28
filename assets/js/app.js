@@ -1,6 +1,6 @@
 import css from '../css/app.sass'
 import 'phoenix_html'
-import { Elm } from '../src/Main.elm'
+import { Elm } from '../src/LiveTags.elm'
 
 const live_tags = document.getElementById('live-tags')
 if (live_tags)
