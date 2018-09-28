@@ -14,8 +14,8 @@ html lang="en"
         nav role="navigation"
           ul
             = if assigns[:current_user] do
-              li = link("Dashboard", to: Routes.dashboard_path(@conn, :index))
-              li = link("Upload", to: Routes.video_path(@conn, :index))
+              li = link("Dashboard", to: Routes.video_path(@conn, :index))
+              li = link("Upload", to: Routes.video_path(@conn, :new))
               li = link("Settings", to: Routes.settings_path(@conn, :index))
               li = link("Preview", to: Routes.page_path(@conn, :index))
               li = link("Log out", to: Routes.session_path(@conn, :delete, @current_user), method: "delete")
