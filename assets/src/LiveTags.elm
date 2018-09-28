@@ -1,12 +1,8 @@
 module LiveTags exposing (..)
 
---import Browser
 import Html exposing (..)
 import Html.Events exposing (..)
 import Html.Attributes exposing (..)
---import Phoenix.Socket
---import Phoenix.Channel
---import Phoenix.Push
 
 
 ---- MODEL ----
@@ -14,8 +10,8 @@ import Html.Attributes exposing (..)
 
 type alias Model =
   { 
-    tags : List String --,
-    --sock : Phoenix.Socket.Socket Msg
+    tags : List String,
+    tagInProgress : String
   }
 
 
@@ -24,7 +20,8 @@ init =
   let
     model =
       {
-        tags = [ "Test Tag" ]
+        tags = [ ],
+        tagInProgress = ""
       }
   in
     ( model, Cmd.none )
@@ -35,31 +32,46 @@ init =
 
 
 type Msg
-  = NoOp
+  = StartTag String
+  | SubmitTag
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
-  ( model, Cmd.none )
-
-
+  case msg of
+    StartTag tag ->
+      ( { model | tagInProgress = tag }, Cmd.none )
+    SubmitTag ->
+      ( { model | tags = model.tagInProgress :: model.tags, tagInProgress = "" },
+      Cmd.none)
 
 ---- VIEW ----
 
 drawTag : String -> Html Msg
 drawTag tag =
-  li []
-  [ text tag
+  li [ ]
+  [ input [ attribute "for" tag
+          , attribute "type" "checkbox"] [ ]
+  , text tag
+  , i [ attribute "class" "fas fa-times" ] [ ]
   ]
 
 view : Model -> Html Msg
 view model =
   let
       drawTags tags =
-        tags |> List.map drawTag
+        tags
+        |> List.filter(\t -> String.length t > 0)
+        |> List.sort
+        |> List.map drawTag
   in
-    div []
-    [ ul [] (model.tags |> drawTags)
+    div [ ]
+    [ ul [ ] (model.tagInProgress :: model.tags |> drawTags)
+    , h4 [ ] [ text "Create New Tags" ]
+    , input [ onInput StartTag
+            , value model.tagInProgress ] []
+    , button [ onClick SubmitTag
+             , attribute "type" "button" ] [ text "Create" ]
     ]
 
 
