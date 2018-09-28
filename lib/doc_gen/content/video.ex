@@ -14,6 +14,7 @@ defmodule DocGen.Content.Video do
     field(:filename, :string)
     field(:content_type, :string)
     field(:path, :string)
+    field(:interviewee, :string)
     has_many(:tags, Tag)
     belongs_to(:type, Type)
 
@@ -23,7 +24,7 @@ defmodule DocGen.Content.Video do
   @doc false
   def changeset(video, attrs) do
     video
-    |> cast(attrs, [:type_id, :path, :video_file, :filename, :tags])
+    |> cast(attrs, [:type_id, :path, :video_file, :filename, :tags, :interviewee])
     |> validate_required([:video_file])
     |> unique_constraint(:filename)
     |> put_video_file()
