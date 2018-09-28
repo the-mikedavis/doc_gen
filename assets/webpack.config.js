@@ -38,11 +38,11 @@ module.exports = (env, options) => ({
       // elm
       {
         test: /\.elm$/,
-        exclude: ['/elm-stuff/', '/node_modules/'],
+        exclude: [/elm-stuff/, /node_modules/],
         loader: 'elm-webpack-loader',
         options: {
           debug: true,
-          warn: true,
+          pathToElm: path.resolve(__dirname, 'node_modules', '.bin', 'elm'),
           cwd: path.resolve(__dirname, 'elm')
         }
       }
