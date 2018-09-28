@@ -1,5 +1,3 @@
-h1 = @video.title
-
 video.video-js(id='play' preload="none" data-setup="{}" controls)
   source src="#{Routes.watch_path(@conn, :show, @video)}" type="#{@video.content_type}"
   p.vjs-no-js

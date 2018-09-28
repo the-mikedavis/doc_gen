@@ -3,14 +3,12 @@ h1 Listing Videos
 table
   thead
     tr
-      th Title
       th Filename
 
       th
   tbody
     = for video <- @videos do
       tr
-        td = video.title
         td = video.filename
 
         td

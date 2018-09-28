@@ -10,7 +10,6 @@ defmodule DocGen.Content.Video do
   """
 
   schema "videos" do
-    field(:title, :string)
     field(:video_file, :any, virtual: true)
     field(:filename, :string)
     field(:content_type, :string)
@@ -23,8 +22,8 @@ defmodule DocGen.Content.Video do
   @doc false
   def changeset(video, attrs) do
     video
-    |> cast(attrs, [:title, :path, :video_file, :filename])
-    |> validate_required([:title, :video_file])
+    |> cast(attrs, [:path, :video_file, :filename])
+    |> validate_required([:video_file])
     |> unique_constraint(:filename)
     |> put_video_file()
   end
