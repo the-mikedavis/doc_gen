@@ -3,7 +3,7 @@ defmodule DocGen.Content.Video do
   use Private
   import Ecto.Changeset
 
-  alias DocGen.Content.Tag
+  alias DocGen.Content.{Tag, Type}
 
   @moduledoc """
   The Video context.
@@ -14,7 +14,8 @@ defmodule DocGen.Content.Video do
     field(:filename, :string)
     field(:content_type, :string)
     field(:path, :string)
-    has_many(:tag, Tag)
+    has_many(:tags, Tag)
+    belongs_to(:type, Type)
 
     timestamps()
   end
@@ -22,7 +23,7 @@ defmodule DocGen.Content.Video do
   @doc false
   def changeset(video, attrs) do
     video
-    |> cast(attrs, [:path, :video_file, :filename])
+    |> cast(attrs, [:type_id, :path, :video_file, :filename])
     |> validate_required([:video_file])
     |> unique_constraint(:filename)
     |> put_video_file()

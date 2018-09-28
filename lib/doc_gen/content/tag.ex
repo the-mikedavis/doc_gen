@@ -6,7 +6,7 @@ defmodule DocGen.Content.Tag do
 
   schema "tags" do
     field(:name, :string)
-    belongs_to(:videos, Video)
+    belongs_to(:video, Video)
 
     timestamps()
   end
