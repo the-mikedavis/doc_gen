@@ -22,6 +22,7 @@ module.exports = (env, options) => ({
   },
   module: {
     rules: [
+      // javascript
       {
         test: /\.js$/,
         exclude: /node_modules/,
@@ -29,9 +30,21 @@ module.exports = (env, options) => ({
           loader: 'babel-loader'
         }
       },
+      // css, scss, sass
       {
         test: /\.s?[ac]ss$/,
         use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader']
+      },
+      // elm
+      {
+        test: /\.elm$/,
+        exclude: ['/elm-stuff/', '/node_modules/'],
+        loader: 'elm-webpack-loader',
+        options: {
+          debug: true,
+          warn: true,
+          cwd: path.resolve(__dirname, 'elm')
+        }
       }
     ]
   },
