@@ -10,8 +10,14 @@
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
 
-alias DocGen.{Accounts.User, Repo}
+alias DocGen.{Accounts.User, Content.Type, Repo}
 
-%User{}
-|> User.changeset(%{username: "adminimum", password: "pleasechangethis"})
-|> Repo.insert!()
+unless Repo.get_by(User, username: "adminimum") do
+  %User{}
+  |> User.changeset(%{username: "adminimum", password: "pleasechangethis"})
+  |> Repo.insert!()
+end
+
+for t <- ["Interview", "B-roll"] do
+  Repo.get_by(Type, name: t) || Repo.insert!(%Type{name: t})
+end
