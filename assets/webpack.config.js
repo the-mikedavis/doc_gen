@@ -43,7 +43,7 @@ module.exports = (env, options) => ({
         options: {
           debug: true,
           pathToElm: path.resolve(__dirname, 'node_modules', '.bin', 'elm'),
-          cwd: path.resolve(__dirname, 'elm')
+          cwd: __dirname
         }
       }
     ]
