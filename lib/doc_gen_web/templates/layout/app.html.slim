@@ -13,11 +13,15 @@ html lang="en"
       section.container
         nav role="navigation"
           ul
-            li
-              a href="https://hexdocs.pm/phoenix/overview.html"
-                Get Started
-        a.phx-logo href="http://phoenixframework.org/"
-          img src="#{Routes.static_url(@conn, "/images/phoenix.png")}" alt="Phoenix Framework Logo"
+            = if assigns[:current_user] do
+              li = link("Dashboard", to: Routes.dashboard_path(@conn, :index))
+              li = link("Upload", to: Routes.video_path(@conn, :index))
+              li = link("Settings", to: Routes.settings_path(@conn, :index))
+              li = link("Preview", to: Routes.page_path(@conn, :index))
+              li = link("Log out", to: Routes.session_path(@conn, :delete, @current_user), method: "delete")
+            - else
+              li = link("Watch", to: Routes.page_path(@conn, :index))
+              li = link("Log in", to: Routes.session_path(@conn, :new))
 
     main.container role="main"
       p.alert.alert-info role="alert"
