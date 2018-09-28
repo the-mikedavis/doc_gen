@@ -1,9 +1,12 @@
-module Main exposing (..)
+module LiveTags exposing (..)
 
-import Browser
+--import Browser
 import Html exposing (..)
 import Html.Events exposing (..)
 import Html.Attributes exposing (..)
+--import Phoenix.Socket
+--import Phoenix.Channel
+--import Phoenix.Push
 
 
 ---- MODEL ----
@@ -11,7 +14,8 @@ import Html.Attributes exposing (..)
 
 type alias Model =
   { 
-    tags : List String
+    tags : List String --,
+    --sock : Phoenix.Socket.Socket Msg
   }
 
 
@@ -63,11 +67,11 @@ view model =
 ---- PROGRAM ----
 
 
-main : Program () Model Msg
+main : Program Never Model Msg
 main =
-  Browser.element
-  { view = view
-  , init = \_ -> init
-  , update = update
-  , subscriptions = always Sub.none
-  }
+  Html.program
+    { view = view
+    , init = init
+    , update = update
+    , subscriptions = always Sub.none
+    }
