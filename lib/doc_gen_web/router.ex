@@ -29,5 +29,7 @@ defmodule DocGenWeb.Router do
     resources("/user", UserController)
     resources("/session", SessionController, only: [:new, :create, :delete])
     resources("/videos", VideoController)
+    get("/dashboard", DashboardController, :index)
+    get("/settings", SettingsController, :index)
   end
 end
