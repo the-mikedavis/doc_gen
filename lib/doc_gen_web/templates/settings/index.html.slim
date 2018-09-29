@@ -9,7 +9,8 @@ h2 Settings
     h3 Movie length (seconds)
     = number_input(f, :length, value: @settings.length, min: 5, max: 8000, step: 5)
 
-  div
-    = submit("Update")
+  // TODO show the tags here
 
-// TODO show the tags here
+  div
+    = link("Reset", to: Routes.settings_path(@conn, :index))
+    = submit("Save")
