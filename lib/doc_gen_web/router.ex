@@ -9,25 +9,30 @@ defmodule DocGenWeb.Router do
     plug(:fetch_flash)
     plug(:protect_from_forgery)
     plug(:put_secure_browser_headers)
-    plug(Plugs.Auth)
+    plug(Plugs.User)
   end
 
   pipeline :api do
     plug(:accepts, ["json"])
   end
 
+  pipeline :authenticate do
+    plug(Plugs.Auth)
+  end
+
   scope "/", DocGenWeb do
     pipe_through(:browser)
 
     get("/", PageController, :index)
+    # TODO: change to resources for index + show
     get("/watch/:id", WatchController, :show)
+    resources("/session", SessionController, only: [:new, :create, :delete])
   end
 
   scope "/admin", DocGenWeb do
-    pipe_through(:browser)
+    pipe_through([:browser, :authenticate])
 
     resources("/user", UserController)
-    resources("/session", SessionController, only: [:new, :create, :delete])
     resources("/videos", VideoController)
     get("/dashboard", DashboardController, :index)
     resources("/settings", SettingsController, only: [:index, :update])

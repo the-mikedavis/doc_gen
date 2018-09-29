@@ -1,15 +1,22 @@
 defmodule DocGenWeb.Plugs.Auth do
   @moduledoc false
   import Plug.Conn
+  use DocGenWeb, :controller
 
   alias DocGen.Accounts
 
   def init(opts), do: opts
 
+  # only let the conn in if they're a user
   def call(conn, _opts) do
-    user_id = get_session(conn, :user_id)
-    user = user_id && Accounts.get_user(user_id)
-    assign(conn, :current_user, user)
+    if conn.assigns[:current_user] do
+      conn
+    else
+      conn
+      |> put_flash(:error, "You must sign in to access that page.")
+      |> redirect(to: Routes.session_path(conn, :new))
+      |> halt()
+    end
   end
 
   @spec login(Plug.Conn.t(), String.t(), String.t()) ::

@@ -4,7 +4,6 @@ defmodule DocGenWeb.UserController do
 
   alias DocGen.{Accounts, Accounts.User}
 
-  plug(:authenticate)
   plug(:is_user when action in [:edit, :update, :delete])
 
   def index(conn, _params) do
@@ -66,20 +65,6 @@ defmodule DocGenWeb.UserController do
   end
 
   private do
-    # check whether or not the user is logged in
-    @spec authenticate(Plug.Conn.t(), Keyword.t()) :: Plug.Conn.t()
-    defp authenticate(conn, _opts) do
-      # IO.inspect(conn, label: "authentication plug")
-      if conn.assigns[:current_user] do
-        conn
-      else
-        conn
-        |> put_flash(:error, "You must sign in to access that page.")
-        |> redirect(to: Routes.session_path(conn, :new))
-        |> halt()
-      end
-    end
-
     # allow passage if and only if this user is the user they're trying to
     # access.
     @spec is_user(Plug.Conn.t(), Keyword.t()) :: Plug.Conn.t()
@@ -87,7 +72,7 @@ defmodule DocGenWeb.UserController do
       id = String.to_integer(conn.params["id"])
       user = Accounts.get_user!(id)
 
-      # we can use the dot notation because this is run after the authenticate
+      # we can use the dot notation because this is run after the authentication
       # plug
       if id && conn.assigns.current_user.id == id do
         assign(conn, :user, user)
