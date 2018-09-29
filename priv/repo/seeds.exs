@@ -10,7 +10,9 @@
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
 
-alias DocGen.{Accounts.User, Content.Type, Repo}
+alias DocGen.{Accounts.User, Accounts.Setting, Content.Type, Repo}
+
+# seed the administrator
 
 unless Repo.get_by(User, username: "adminimum") do
   %User{}
@@ -18,6 +20,15 @@ unless Repo.get_by(User, username: "adminimum") do
   |> Repo.insert!()
 end
 
+# seed the video types
+
 for t <- ["Interview", "B-roll"] do
   Repo.get_by(Type, name: t) || Repo.insert!(%Type{name: t})
+end
+
+# seed the settings
+
+unless Repo.one(Setting) do
+  %Setting{name: "My Documentary", length: 360}
+  |> Repo.insert!()
 end
