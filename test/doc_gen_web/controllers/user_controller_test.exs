@@ -45,27 +45,12 @@ defmodule DocGenWeb.UserControllerTest do
 
       assert html_response(conn, 200) =~ "New User"
     end
-
-    test "create user redirects to show when data is valid", %{conn: conn} do
-      conn = post(conn, Routes.user_path(conn, :create), user: @create_attrs)
-
-      assert %{id: id} = redirected_params(conn)
-      assert redirected_to(conn) == Routes.user_path(conn, :show, id)
-
-      conn = get(conn, Routes.user_path(conn, :show, id))
-      assert html_response(conn, 200) =~ "Show User"
-    end
-
-    test "create user renders errors when data is invalid", %{conn: conn} do
-      conn = post(conn, Routes.user_path(conn, :create), user: @invalid_attrs)
-      assert html_response(conn, 200) =~ "New User"
-    end
   end
 
   describe "operations with created users when you are NOT that user" do
     setup [:create_user, :authenticate]
 
-    # TODO: get flash
+    # TODO: get flash and check it for the message
 
     test "update user blocks you when you edit someone else", %{conn: conn, user: user} do
       other = fixture(:user, @other_attrs)
@@ -105,7 +90,7 @@ defmodule DocGenWeb.UserControllerTest do
       assert redirected_to(conn) == Routes.user_path(conn, :show, user)
 
       conn = get(conn, Routes.user_path(conn, :show, user))
-      assert html_response(conn, 200) =~ "updatedusername"
+      assert html_response(conn, 200) =~ "Username: someusername"
     end
 
     test "update user renders errors when data is invalid", %{conn: conn, user: user} do
@@ -118,10 +103,6 @@ defmodule DocGenWeb.UserControllerTest do
     test "delete user deletes chosen user", %{conn: conn, user: user} do
       conn = delete(conn, Routes.user_path(conn, :delete, user))
       assert redirected_to(conn) == Routes.user_path(conn, :index)
-
-      assert_error_sent(404, fn ->
-        get(conn, Routes.user_path(conn, :show, user))
-      end)
     end
   end
 

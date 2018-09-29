@@ -84,7 +84,7 @@ defmodule DocGenWeb.UserController do
     # access.
     @spec is_user(Plug.Conn.t(), Keyword.t()) :: Plug.Conn.t()
     defp is_user(conn, _opts) do
-      id = conn.params["id"]
+      id = String.to_integer(conn.params["id"])
       user = Accounts.get_user!(id)
 
       # we can use the dot notation because this is run after the authenticate
@@ -92,6 +92,7 @@ defmodule DocGenWeb.UserController do
       if id && conn.assigns.current_user.id == id do
         assign(conn, :user, user)
       else
+
         conn
         |> put_flash(:error, "You cannot modify a different user.")
         |> redirect(to: Routes.user_path(conn, :index))
