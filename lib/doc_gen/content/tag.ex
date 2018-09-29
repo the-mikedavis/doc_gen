@@ -6,6 +6,7 @@ defmodule DocGen.Content.Tag do
 
   schema "tags" do
     field(:name, :string)
+    field(:weight, :integer, default: 1)
     belongs_to(:video, Video)
 
     timestamps()
@@ -14,8 +15,9 @@ defmodule DocGen.Content.Tag do
   @doc false
   def changeset(tag, attrs) do
     tag
-    |> cast(attrs, [:name])
+    |> cast(attrs, [:name, :weight])
     |> validate_required([:name])
     |> validate_format(:name, ~r/^[\w ]*$/)
+    |> validate_number(:weight, greater_than: 0)
   end
 end
