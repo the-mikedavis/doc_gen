@@ -5,7 +5,7 @@ defmodule DocGenWeb.UserController do
   alias DocGen.{Accounts, Accounts.User}
 
   plug(:authenticate)
-  plug(:is_user when action in [:edit, :change, :delete])
+  plug(:is_user when action in [:edit, :update, :delete])
 
   def index(conn, _params) do
     user = Accounts.list_user()
@@ -69,6 +69,7 @@ defmodule DocGenWeb.UserController do
     # check whether or not the user is logged in
     @spec authenticate(Plug.Conn.t(), Keyword.t()) :: Plug.Conn.t()
     defp authenticate(conn, _opts) do
+      # IO.inspect(conn, label: "authentication plug")
       if conn.assigns[:current_user] do
         conn
       else

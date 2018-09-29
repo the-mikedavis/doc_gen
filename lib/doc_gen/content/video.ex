@@ -25,13 +25,13 @@ defmodule DocGen.Content.Video do
   def changeset(video, attrs) do
     video
     |> cast(attrs, [
-      :type_id,
       :path,
       :video_file,
       :filename,
-      :tags,
       :interviewee
     ])
+    |> foreign_key_constraint(:type_id)
+    |> foreign_key_constraint(:tags)
     |> validate_required([:video_file])
     |> unique_constraint(:filename)
     |> put_video_file()
