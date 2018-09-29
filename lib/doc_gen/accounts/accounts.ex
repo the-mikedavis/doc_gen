@@ -5,7 +5,7 @@ defmodule DocGen.Accounts do
 
   import Ecto.Query, warn: false
 
-  alias DocGen.{Accounts.User, Repo}
+  alias DocGen.{Accounts.User, Accounts.Setting, Repo}
 
   @doc """
   Returns the list of user.
@@ -133,5 +133,33 @@ defmodule DocGen.Accounts do
 
         {:error, :not_found}
     end
+  end
+
+  ## Settings things
+
+  @doc "Get the current settings struct."
+  @spec get_settings() :: %Setting{}
+  def get_settings do
+    Repo.one(Setting)
+  end
+
+  @doc "Get the current settings struct."
+  @spec get_setting!(integer) :: %Setting{}
+  def get_setting!(id) do
+    Repo.get!(Setting, id)
+  end
+
+  @doc "Update the settings"
+  @spec update_setting(%Setting{}, %{}) :: {:ok, %User{}} | {:error, Ecto.Changeset.t()}
+  def update_setting(setting, attrs) do
+    setting
+    |> Setting.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc "Do the hokey pokey and turn a setting struct into a changeset."
+  @spec change_settings(%Setting{}) :: Ecto.Changeset.t()
+  def change_settings(%Setting{} = setting) do
+    Setting.changeset(setting, %{})
   end
 end

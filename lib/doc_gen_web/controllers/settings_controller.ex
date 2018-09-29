@@ -1,8 +1,37 @@
 defmodule DocGenWeb.SettingsController do
   use DocGenWeb, :controller
+  use Private
+
+  alias DocGen.Accounts
 
   def index(conn, _params) do
-    # TODO: do some magin here with settings
-    render(conn, "index.html")
+    settings = Accounts.get_settings()
+    changeset = Accounts.change_settings(settings)
+
+    render(conn, "index.html", changeset: changeset, settings: settings)
+  end
+
+  def update(conn, %{"id" => id, "setting" => setting_params}) do
+    case update_setting(id, setting_params) do
+      {:ok, _setting} ->
+        conn
+        |> put_flash(:info, "Settings have been saved.")
+        |> redirect(to: Routes.settings_path(conn, :index))
+
+      {:error, %Ecto.Changeset{} = changeset} ->
+        settings = Accounts.get_settings()
+        render(conn, "index.html", changeset: changeset, settings: settings)
+    end
+  end
+
+  private do
+    # do the database stuff of updating the settings
+    @spec update_setting(binary(), %{}) :: {:ok, %Accounts.Setting{}} | {:error, Ecto.Changeset.t()}
+    defp update_setting(id, attrs) do
+      id
+      |> String.to_integer()
+      |> Accounts.get_setting!()
+      |> Accounts.update_setting(attrs)
+    end
   end
 end

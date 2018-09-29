@@ -30,6 +30,6 @@ defmodule DocGenWeb.Router do
     resources("/session", SessionController, only: [:new, :create, :delete])
     resources("/videos", VideoController)
     get("/dashboard", DashboardController, :index)
-    get("/settings", SettingsController, :index)
+    resources("/settings", SettingsController, only: [:index, :update])
   end
 end

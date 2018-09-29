@@ -1,0 +1,15 @@
+h2 Settings
+
+= form_for @changeset, Routes.settings_path(@conn, :update, @settings), fn f ->
+  div
+    h3 Movie Name
+    = text_input(f, :name, placeholder: "My Documentary", value: @settings.name)
+
+  div
+    h3 Movie length (seconds)
+    = number_input(f, :length, value: @settings.length)
+
+  div
+    = submit("Update")
+
+// TODO show the tags here
