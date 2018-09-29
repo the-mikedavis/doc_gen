@@ -10,7 +10,7 @@ defmodule DocGenWeb.SessionController do
       {:ok, conn} ->
         conn
         |> put_flash(:info, "Welcome back!")
-        |> redirect(to: Routes.page_path(conn, :index))
+        |> redirect(to: Routes.dashboard_path(conn, :index))
 
       {:error, _reason, conn} ->
         conn
@@ -22,6 +22,6 @@ defmodule DocGenWeb.SessionController do
   def delete(conn, _) do
     conn
     |> Auth.logout()
-    |> redirect(to: Routes.page_path(conn, :index))
+    |> redirect(to: Routes.watch_path(conn, :index))
   end
 end

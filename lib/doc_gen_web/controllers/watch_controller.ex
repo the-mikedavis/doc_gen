@@ -8,7 +8,7 @@ defmodule DocGenWeb.WatchController do
     render(conn, "index.html")
   end
 
-  def show(conn, %{"id" => id}) do
+  def show(conn, %{"id" => _id}) do
     # TODO show a video
     render(conn, "show.html")
   end
