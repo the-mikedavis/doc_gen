@@ -2,7 +2,7 @@ defmodule DocGenWeb.UserControllerTest do
   use DocGenWeb.ConnCase
   import Plug.Test
 
-  alias DocGen.{Accounts, Accounts.User}
+  alias DocGen.Accounts
   alias DocGenWeb.Plugs.Auth
 
   @create_attrs %{
@@ -52,14 +52,14 @@ defmodule DocGenWeb.UserControllerTest do
 
     # TODO: get flash and check it for the message
 
-    test "update user blocks you when you edit someone else", %{conn: conn, user: user} do
+    test "update user blocks you when you edit someone else", %{conn: conn} do
       other = fixture(:user, @other_attrs)
       conn = get(conn, Routes.user_path(conn, :edit, other))
 
       assert redirected_to(conn) == Routes.user_path(conn, :index)
     end
 
-    test "update user blocks you when you update someone else", %{conn: conn, user: user} do
+    test "update user blocks you when you update someone else", %{conn: conn} do
       other = fixture(:user, @other_attrs)
       conn =
         put(conn, Routes.user_path(conn, :update, other), user: @update_attrs)
@@ -67,7 +67,7 @@ defmodule DocGenWeb.UserControllerTest do
       assert redirected_to(conn) == Routes.user_path(conn, :index)
     end
 
-    test "delete user blocks you when you delete someone else", %{conn: conn, user: user} do
+    test "delete user blocks you when you delete someone else", %{conn: conn} do
       other = fixture(:user, @other_attrs)
       conn = delete(conn, Routes.user_path(conn, :update, other))
 
