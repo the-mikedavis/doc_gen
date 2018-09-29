@@ -8,7 +8,12 @@ defmodule DocGenWeb.WatchController do
     render(conn, "index.html")
   end
 
-  def show(%{req_headers: headers} = conn, %{"id" => id}) do
+  def show(conn, %{"id" => id}) do
+    # TODO show a video
+    render(conn, "show.html")
+  end
+
+  def stream(%{req_headers: headers} = conn, %{"id" => id}) do
     video = Content.get_video!(id)
 
     Content.send_video(conn, headers, video)

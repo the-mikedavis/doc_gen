@@ -25,6 +25,7 @@ defmodule DocGenWeb.Router do
 
     get("/", WatchController, :index)
     get("/watch/:id", WatchController, :show)
+    get("/stream/:id", WatchController, :stream)
     resources("/session", SessionController, only: [:new, :create, :delete])
   end
 
