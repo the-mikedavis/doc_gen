@@ -23,8 +23,7 @@ defmodule DocGenWeb.Router do
   scope "/", DocGenWeb do
     pipe_through(:browser)
 
-    get("/", PageController, :index)
-    # TODO: change to resources for index + show
+    get("/", WatchController, :index)
     get("/watch/:id", WatchController, :show)
     resources("/session", SessionController, only: [:new, :create, :delete])
   end

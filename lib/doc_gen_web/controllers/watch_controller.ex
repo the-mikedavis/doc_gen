@@ -3,6 +3,11 @@ defmodule DocGenWeb.WatchController do
 
   alias DocGen.Content
 
+  def index(conn, _params) do
+    # TODO: assign the cover copy, tags, and videos
+    render(conn, "index.html")
+  end
+
   def show(%{req_headers: headers} = conn, %{"id" => id}) do
     video = Content.get_video!(id)
 
