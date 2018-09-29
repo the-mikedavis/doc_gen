@@ -14,5 +14,7 @@ defmodule DocGen.Accounts.Setting do
     setting
     |> cast(attrs, [:name, :length])
     |> validate_required([:name, :length])
+    |> validate_length(:name, min: 3, max: 100)
+    |> validate_inclusion(:length, 5..8_000)
   end
 end

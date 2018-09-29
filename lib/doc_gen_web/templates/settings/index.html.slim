@@ -7,7 +7,7 @@ h2 Settings
 
   div
     h3 Movie length (seconds)
-    = number_input(f, :length, value: @settings.length)
+    = number_input(f, :length, value: @settings.length, min: 5, max: 8000, step: 5)
 
   div
     = submit("Update")
