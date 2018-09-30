@@ -61,6 +61,7 @@ defmodule DocGenWeb.UserControllerTest do
 
     test "update user blocks you when you update someone else", %{conn: conn} do
       other = fixture(:user, @other_attrs)
+
       conn =
         put(conn, Routes.user_path(conn, :update, other), user: @update_attrs)
 
@@ -78,7 +79,10 @@ defmodule DocGenWeb.UserControllerTest do
   describe "operations with created users when you are that user" do
     setup [:create_user, :authenticate]
 
-    test "edit user renders form for editing chosen user", %{conn: conn, user: user} do
+    test "edit user renders form for editing chosen user", %{
+      conn: conn,
+      user: user
+    } do
       conn = get(conn, Routes.user_path(conn, :edit, user))
       assert html_response(conn, 200) =~ "Edit User"
     end
@@ -93,7 +97,10 @@ defmodule DocGenWeb.UserControllerTest do
       assert html_response(conn, 200) =~ "Username: someusername"
     end
 
-    test "update user renders errors when data is invalid", %{conn: conn, user: user} do
+    test "update user renders errors when data is invalid", %{
+      conn: conn,
+      user: user
+    } do
       conn =
         put(conn, Routes.user_path(conn, :update, user), user: @invalid_attrs)
 
@@ -113,6 +120,7 @@ defmodule DocGenWeb.UserControllerTest do
 
   defp authenticate(%{conn: conn} = opts) do
     %{username: username, password: password} = @create_attrs
+
     {:ok, conn} =
       conn
       |> init_test_session(%{})

@@ -150,7 +150,8 @@ defmodule DocGen.Accounts do
   end
 
   @doc "Update the settings"
-  @spec update_setting(%Setting{}, %{}) :: {:ok, %User{}} | {:error, Ecto.Changeset.t()}
+  @spec update_setting(%Setting{}, %{}) ::
+          {:ok, %User{}} | {:error, Ecto.Changeset.t()}
   def update_setting(setting, attrs) do
     setting
     |> Setting.changeset(attrs)

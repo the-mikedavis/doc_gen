@@ -77,7 +77,6 @@ defmodule DocGenWeb.UserController do
       if id && conn.assigns.current_user.id == id do
         assign(conn, :user, user)
       else
-
         conn
         |> put_flash(:error, "You cannot modify a different user.")
         |> redirect(to: Routes.user_path(conn, :index))

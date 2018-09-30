@@ -26,7 +26,8 @@ defmodule DocGenWeb.SettingsController do
 
   private do
     # do the database stuff of updating the settings
-    @spec update_setting(binary(), %{}) :: {:ok, %Accounts.Setting{}} | {:error, Ecto.Changeset.t()}
+    @spec update_setting(binary(), %{}) ::
+            {:ok, %Accounts.Setting{}} | {:error, Ecto.Changeset.t()}
     defp update_setting(id, attrs) do
       id
       |> String.to_integer()
