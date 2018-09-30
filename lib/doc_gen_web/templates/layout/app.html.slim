@@ -12,6 +12,7 @@ html lang="en"
     header
       section.container
         nav role="navigation"
+          h1 = @view_module.title(@view_template, @conn.assigns)
           ul
             = if assigns[:current_user] do
               li = link("Dashboard", to: Routes.video_path(@conn, :index))
