@@ -3,7 +3,7 @@ html lang="en"
     meta charset="utf-8"
     meta http-equiv="X-UA-Compatible" content="IE=edge"
     meta name="viewport" content="width=device-width, initial-scale=1.0"
-    title = @view_module.title(@view_template, @assigns)
+    title = @view_module.title(@view_template, @conn.assigns)
     link rel="stylesheet" href="https://vjs.zencdn.net/5.8.7/video-js.css"
     link rel="stylesheet" href="#{Routes.static_url(@conn, "/css/app.css")}"
     link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous"
