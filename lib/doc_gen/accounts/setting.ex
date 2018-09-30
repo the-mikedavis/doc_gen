@@ -3,8 +3,9 @@ defmodule DocGen.Accounts.Setting do
   import Ecto.Changeset
 
   schema "settings" do
+    field(:title, :string)
     field(:length, :integer)
-    field(:name, :string)
+    field(:copy, :string)
 
     timestamps()
   end

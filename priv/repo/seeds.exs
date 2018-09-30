@@ -28,7 +28,10 @@ end
 
 # seed the settings
 
+starting_copy =
+  "Welcome to Doc-Gen. Please edit your copy and other settings by logging in."
+
 unless Repo.one(Setting) do
-  %Setting{name: "My Documentary", length: 360}
+  %Setting{title: "My Documentary", length: 360, copy: starting_copy}
   |> Repo.insert!()
 end

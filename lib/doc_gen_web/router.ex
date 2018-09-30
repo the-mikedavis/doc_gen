@@ -10,6 +10,7 @@ defmodule DocGenWeb.Router do
     plug(:protect_from_forgery)
     plug(:put_secure_browser_headers)
     plug(Plugs.User)
+    plug(Plugs.Title)
   end
 
   pipeline :api do

@@ -3,8 +3,9 @@ defmodule DocGen.Repo.Migrations.CreateSettings do
 
   def change do
     create table(:settings) do
-      add :name, :string
+      add :title, :string
       add :length, :integer
+      add :copy, :text
 
       timestamps()
     end

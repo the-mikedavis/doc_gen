@@ -8,7 +8,8 @@ defmodule DocGen.Application do
   def start(_type, _args) do
     children = [
       DocGen.Repo,
-      DocGenWeb.Endpoint
+      DocGenWeb.Endpoint,
+      {DocGen.Content.Copy, []}
     ]
 
     opts = [strategy: :one_for_one, name: DocGen.Supervisor]
