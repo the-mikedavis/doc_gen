@@ -161,11 +161,11 @@ defmodule DocGen.Content do
   ## Examples
 
       iex> list_tags()
-      [%Video{}, ...]
+      [%Tag{}, ...]
 
   """
   def list_tags do
-    Repo.all(Video)
+    Repo.all(Tag)
   end
 
   @doc """
