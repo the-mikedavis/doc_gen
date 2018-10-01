@@ -54,6 +54,7 @@ type Msg
   | PopulateTags Encode.Value
   | HandleSendError Encode.Value
   | JoinChannel
+  | DeleteTag
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -122,6 +123,8 @@ update msg model =
               )
             Err error ->
               ( model, Cmd.none )
+    DeleteTag ->
+      ( model, Cmd.none )
 
 
 subscriptions : Model -> Sub Msg

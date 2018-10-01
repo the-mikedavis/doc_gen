@@ -7,8 +7,6 @@ defmodule DocGenWeb.TagChannel do
     if authorized?(payload) do
       tags = Enum.map(Content.list_tags(), fn %{name: name} -> name end)
 
-      IO.inspect(tags)
-
       {:ok, %{tags: tags}, socket}
     else
       {:error, %{reason: "unauthorized"}}
@@ -16,6 +14,7 @@ defmodule DocGenWeb.TagChannel do
   end
 
   def handle_in("new_tag", payload, socket) do
+    # TODO ?
     # broadcast(socket, "new_tag", payload)
     case Content.create_tag(payload) do
       {:ok, _} ->
@@ -27,6 +26,7 @@ defmodule DocGenWeb.TagChannel do
 
   def handle_in("delete_tag", payload, socket) do
     IO.inspect(payload, label: "delete_tag")
+    # TODO
     # broadcast(socket, "delete_tag", payload)
     {:reply, {:ok, payload}, socket}
   end
