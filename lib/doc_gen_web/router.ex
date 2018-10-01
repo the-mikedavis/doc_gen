@@ -13,10 +13,6 @@ defmodule DocGenWeb.Router do
     plug(Plugs.Title)
   end
 
-  # pipeline :api do
-  # plug(:accepts, ["json"])
-  # end
-
   pipeline :authenticate do
     plug(Plugs.Auth)
   end
@@ -25,7 +21,7 @@ defmodule DocGenWeb.Router do
     pipe_through(:browser)
 
     get("/", WatchController, :index)
-    get("/watch/:id", WatchController, :show)
+    post("/watch", WatchController, :show)
     get("/stream/:id", WatchController, :stream)
     resources("/session", SessionController, only: [:new, :create, :delete])
   end

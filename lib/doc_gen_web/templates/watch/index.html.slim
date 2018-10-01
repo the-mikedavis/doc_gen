@@ -1,6 +1,13 @@
 p = @copy
 
-// TODO: do the tag thing
+hr
 
 p Select the topics that interest you to generate a #{@length} minute documentary
   on those subjects.
+
+= form_tag("/watch", method: :post)
+  = for tag <- @tags do
+    = tag(:input, type: "checkbox", name: tag.name)
+      = tag.name
+  hr
+  = submit("Generate Movie")
