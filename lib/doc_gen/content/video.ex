@@ -45,6 +45,8 @@ defmodule DocGen.Content.Video do
       put_assoc(changeset, :tags, tags)
     end
 
+    defp put_tags(changeset, _), do: changeset
+
     defp put_video_file(changeset) do
       case changeset do
         %Ecto.Changeset{valid?: true, changes: %{video_file: video_file}} ->
