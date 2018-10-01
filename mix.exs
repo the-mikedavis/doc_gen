@@ -51,6 +51,8 @@ defmodule DocGen.MixProject do
       # Auth
       {:comeonin, "~> 4.1"},
       {:bcrypt_elixir, "~> 1.0"},
+      # Videos
+      {:ffmpex, "~> 0.5"},
       # testing, cleanliness, etc.
       {:credo, "~> 0.9", only: [:dev, :test], runtime: false},
       {:excoveralls, "~> 0.9", only: :test},
