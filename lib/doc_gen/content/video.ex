@@ -16,6 +16,7 @@ defmodule DocGen.Content.Video do
     field(:path, :string)
     field(:interviewee, :string)
     field(:weight, :integer, default: 1)
+    field(:title, :string)
     many_to_many(:tags, Tag, join_through: "videos_tags", on_replace: :delete)
     belongs_to(:type, Type)
 
@@ -30,13 +31,14 @@ defmodule DocGen.Content.Video do
       :video_file,
       :filename,
       :interviewee,
-      :weight
+      :weight,
+      :title
     ])
     |> put_tags(attrs)
     |> foreign_key_constraint(:type_id)
     |> validate_required([:video_file])
     |> validate_number(:weight, greater_than: 0)
-    |> unique_constraint(:filename)
+    |> unique_constraint(:title)
     |> put_video_file()
   end
 
@@ -47,7 +49,6 @@ defmodule DocGen.Content.Video do
     defp put_tags(changeset, %{tags: [_|_] = tags}) do
       put_assoc(changeset, :tags, tags)
     end
-
     defp put_tags(changeset, _), do: changeset
 
     defp put_video_file(changeset) do

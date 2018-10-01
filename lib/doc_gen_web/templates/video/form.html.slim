@@ -4,6 +4,11 @@
       Oops, something went wrong! Please check the errors below.
 
   div
+    = label f, :title
+    = text_input f, :title, required: true
+    = error_tag f, :title
+
+  div
     = label f, :video_file
     = file_input f, :video_file, required: true, accept: ".mp4,.mov,.webm"
     = error_tag f, :video_file

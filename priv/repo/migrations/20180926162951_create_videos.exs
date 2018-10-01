@@ -8,10 +8,11 @@ defmodule DocGen.Repo.Migrations.CreateVideos do
       add(:path, :string)
       add(:interviewee, :string)
       add(:weight, :integer)
+      add(:title, :string)
 
       timestamps()
     end
 
-    create(unique_index(:videos, [:filename]))
+    create(unique_index(:videos, [:title]))
   end
 end
