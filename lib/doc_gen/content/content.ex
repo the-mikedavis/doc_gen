@@ -250,4 +250,11 @@ defmodule DocGen.Content do
   def change_tag(%Tag{} = tag) do
     Tag.changeset(tag, %{})
   end
+
+  ## Combined stuff, tags and videos
+  def list_tags_with_videos do
+    Tag
+    |> Repo.all()
+    |> Enum.map(&Repo.preload(&1, :videos))
+  end
 end
