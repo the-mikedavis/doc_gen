@@ -50,7 +50,8 @@ update msg model =
 drawTag : String -> Html Msg
 drawTag tag =
   li [ ]
-  [ input [ attribute "for" tag
+  [ input [ attribute "id" tag
+          , attribute "name" ("video[" ++ (toString tag) ++ "]")
           , attribute "type" "checkbox"] [ ]
   , text tag
   , i [ attribute "class" "fas fa-times" ] [ ]
