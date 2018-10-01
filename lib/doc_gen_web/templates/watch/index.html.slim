@@ -6,8 +6,10 @@ p Select the topics that interest you to generate a #{@length} minute documentar
   on those subjects.
 
 = form_tag("/watch", method: :post)
+  ul
   = for tag <- @tags do
-    = tag(:input, type: "checkbox", name: tag.name)
-      = tag.name
+    li
+      = tag(:input, type: "checkbox", name: tag.name)
+        = tag.name
   hr
   = submit("Generate Movie")
