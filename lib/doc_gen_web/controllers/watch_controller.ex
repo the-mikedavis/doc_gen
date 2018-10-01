@@ -2,18 +2,22 @@ defmodule DocGenWeb.WatchController do
   use DocGenWeb, :controller
   use Private
 
-  alias DocGen.{Content, Content.Copy}
+  alias DocGen.{Content, Content.Copy, Content.Random}
 
   plug(:copy when action == :index)
+  # TODO: a plug that loads all the videos so they can be put in the top
+  # right corner
 
   def index(conn, _params) do
-    # TODO: assign the cover copy, tags, and videos
-    render(conn, "index.html")
+    tags = Content.list_tags()
+
+    render(conn, "index.html", tags: tags)
   end
 
-  def show(conn, %{"id" => _id}) do
-    # TODO show a video
-    render(conn, "show.html")
+  def show(conn, params) do
+    tags = parse_tags(params)
+
+    render(conn, "show.html", tags: tags)
   end
 
   def stream(%{req_headers: headers} = conn, %{"id" => id}) do
@@ -29,6 +33,14 @@ defmodule DocGenWeb.WatchController do
       conn
       |> assign(:copy, copy)
       |> assign(:length, Integer.floor_div(length, 60))
+    end
+
+    @spec parse_tags(%{}) :: [String.t()]
+    defp parse_tags(params) do
+      params
+      |> Enum.reject(fn {k, _v} -> String.starts_with?(k, "_") end)
+      |> Enum.filter(fn {_tag_name, on?} -> on? == "on" end)
+      |> Enum.map(fn {tag_name, _on?} -> tag_name end)
     end
   end
 end
