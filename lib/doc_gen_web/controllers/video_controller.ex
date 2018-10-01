@@ -16,7 +16,7 @@ defmodule DocGenWeb.VideoController do
   end
 
   def create(conn, %{"video" => video_params}) do
-    IO.inspect(video_params)
+    _video_names = put_tags(video_params)
 
     case Content.create_video(video_params) do
       {:ok, video} ->
@@ -79,6 +79,13 @@ defmodule DocGenWeb.VideoController do
 
         File.copy!(temp_path, video_path)
       end
+    end
+
+    defp tag_names(video) do
+      video
+      |> Map.delete("video_file")
+      |> Enum.reject(fn {_k, v} -> v == "off" end)
+      |> Enum.map(fn {k, _v} -> k end)
     end
   end
 end
