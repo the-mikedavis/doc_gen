@@ -22,6 +22,7 @@ defmodule DocGenWeb.Router do
 
     get("/", WatchController, :index)
     post("/watch", WatchController, :show)
+    post("/watch/:video", WatchController, :choose)
     get("/stream/:id", WatchController, :stream)
     resources("/session", SessionController, only: [:new, :create, :delete])
   end

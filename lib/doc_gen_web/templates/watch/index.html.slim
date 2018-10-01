@@ -1,3 +1,9 @@
+p Watch full interviews
+
+ul
+  = for video <- @videos do
+    li = link(video.filename, to: Routes.watch_path(@conn, :choose, video))
+
 p = @copy
 
 hr

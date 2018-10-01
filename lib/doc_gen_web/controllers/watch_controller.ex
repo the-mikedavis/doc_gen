@@ -5,6 +5,7 @@ defmodule DocGenWeb.WatchController do
   alias DocGen.{Content, Content.Copy, Content.Random}
 
   plug(:copy when action == :index)
+  plug(:load_videos when action in [:index, :show])
   # TODO: a plug that loads all the videos so they can be put in the top
   # right corner
 
@@ -20,6 +21,12 @@ defmodule DocGenWeb.WatchController do
     render(conn, "show.html", tags: tags)
   end
 
+  def choose(conn, %{"video" => %{"id" => id}}) do
+    video = Content.get_video!(id)
+
+    render(conn, "choose.html", video: video)
+  end
+
   def stream(%{req_headers: headers} = conn, %{"id" => id}) do
     video = Content.get_video!(id)
 
@@ -33,6 +40,10 @@ defmodule DocGenWeb.WatchController do
       conn
       |> assign(:copy, copy)
       |> assign(:length, Integer.floor_div(length, 60))
+    end
+
+    defp load_videos(conn, _opts) do
+      assign(conn, :videos, Content.list_videos())
     end
 
     @spec parse_tags(%{}) :: [String.t()]

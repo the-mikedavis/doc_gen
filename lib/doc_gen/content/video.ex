@@ -41,6 +41,9 @@ defmodule DocGen.Content.Video do
   end
 
   private do
+    defp put_tags(changeset, %{"tags" => [_|_] = tags}) do
+      put_assoc(changeset, :tags, tags)
+    end
     defp put_tags(changeset, %{tags: [_|_] = tags}) do
       put_assoc(changeset, :tags, tags)
     end
