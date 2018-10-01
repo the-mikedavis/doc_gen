@@ -15,7 +15,8 @@ defmodule DocGen.Content.Video do
     field(:content_type, :string)
     field(:path, :string)
     field(:interviewee, :string)
-    has_many(:tags, Tag)
+    field(:weight, :integer, default: 1)
+    many_to_many(:tags, Tag, join_through: "videos_tags", on_replace: :delete)
     belongs_to(:type, Type)
 
     timestamps()
@@ -28,16 +29,22 @@ defmodule DocGen.Content.Video do
       :path,
       :video_file,
       :filename,
-      :interviewee
+      :interviewee,
+      :weight
     ])
+    |> put_tags(attrs)
     |> foreign_key_constraint(:type_id)
-    |> foreign_key_constraint(:tags)
     |> validate_required([:video_file])
+    |> validate_number(:weight, greater_than: 0)
     |> unique_constraint(:filename)
     |> put_video_file()
   end
 
   private do
+    defp put_tags(changeset, %{tags: [_|_] = tags}) do
+      put_assoc(changeset, :tags, tags)
+    end
+
     defp put_video_file(changeset) do
       case changeset do
         %Ecto.Changeset{valid?: true, changes: %{video_file: video_file}} ->

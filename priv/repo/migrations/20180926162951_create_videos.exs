@@ -3,10 +3,11 @@ defmodule DocGen.Repo.Migrations.CreateVideos do
 
   def change do
     create table(:videos) do
-      add(:title, :string)
       add(:filename, :string)
       add(:content_type, :string)
       add(:path, :string)
+      add(:interviewee, :string)
+      add(:weight, :integer)
 
       timestamps()
     end

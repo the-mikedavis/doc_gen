@@ -3,7 +3,7 @@ defmodule DocGen.Repo.Migrations.CreateTypes do
 
   def change do
     create table(:types) do
-      add :name, :string, null: false
+      add(:name, :string, null: false)
 
       timestamps()
     end

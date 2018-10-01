@@ -3,7 +3,7 @@ defmodule DocGen.Repo.Migrations.AddTypesToVideos do
 
   def change do
     alter table(:videos) do
-      add(:type_id, references(:videos))
+      add(:type_id, references(:types))
     end
   end
 end

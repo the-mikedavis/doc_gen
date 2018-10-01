@@ -7,7 +7,8 @@ defmodule DocGen.Content.Tag do
   schema "tags" do
     field(:name, :string)
     field(:weight, :integer, default: 1)
-    belongs_to(:video, Video)
+
+    many_to_many(:videos, Video, join_through: "videos_tags", on_replace: :delete)
 
     timestamps()
   end
@@ -16,6 +17,7 @@ defmodule DocGen.Content.Tag do
   def changeset(tag, attrs) do
     tag
     |> cast(attrs, [:name, :weight])
+    |> unique_constraint(:name)
     |> validate_required([:name])
     |> validate_format(:name, ~r/^[\w ]*$/)
     |> validate_number(:weight, greater_than: 0)
