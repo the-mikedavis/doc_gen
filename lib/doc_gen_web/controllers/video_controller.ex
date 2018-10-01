@@ -5,8 +5,6 @@ defmodule DocGenWeb.VideoController do
 
   alias DocGen.{Content, Content.Video}
 
-  plug(:authenticate)
-
   def index(conn, _params) do
     videos = Content.list_videos()
     render(conn, "index.html", videos: videos)
@@ -66,19 +64,6 @@ defmodule DocGenWeb.VideoController do
   end
 
   private do
-    # check whether or not the user is logged in
-    @spec authenticate(Plug.Conn.t(), Keyword.t()) :: Plug.Conn.t()
-    defp authenticate(conn, _opts) do
-      if conn.assigns[:current_user] do
-        conn
-      else
-        conn
-        |> put_flash(:error, "You must sign in to access that page.")
-        |> redirect(to: Routes.session_path(conn, :new))
-        |> halt()
-      end
-    end
-
     # save the file to a path
     defp persist_file(video, %{path: temp_path}) do
       video_path = Content.build_video_path(video)
