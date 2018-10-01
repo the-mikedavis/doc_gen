@@ -9,6 +9,7 @@ defmodule DocGen.Content.Random do
 
   def give(_tags, _length) do
     Content.list_videos()
+    |> Enum.map(fn %{id: id} -> id end)
   end
 
   # def give(tags, length) do

@@ -18,7 +18,11 @@ defmodule DocGenWeb.WatchController do
   def show(conn, params) do
     tags = parse_tags(params)
 
-    render(conn, "show.html", tags: tags)
+    [first | video_ids] =
+      tags
+      |> Random.give(nil)
+
+    render(conn, "show.html", tags: tags, video_ids: video_ids, first: first)
   end
 
   def choose(conn, %{"video" => %{"id" => id}}) do

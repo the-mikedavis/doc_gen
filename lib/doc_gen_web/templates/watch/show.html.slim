@@ -1,3 +1,11 @@
-// TODO: show the video
+javascript:
+  window.video_ids = [#{Enum.join(@video_ids, ",")}];
+
+video.video-js(id='play' preload="none" data-setup="{}" controls)
+  source#video-source src="/stream/#{@first}" type="video/mp4"
+  p.vjs-no-js
+    | To view this video, please enable JavaScript, and consider
+    | upgrading to a web brawser that
+    a href="https://videojs.com/html5-video-support/" target="_blank" supports HTML5 video.
 
 p = tag_text(@tags)

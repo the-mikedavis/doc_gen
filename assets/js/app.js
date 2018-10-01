@@ -5,3 +5,12 @@ import {LiveTags} from '../src/LiveTags.elm'
 const live_tags = document.getElementById('live-tags')
 if (live_tags)
   LiveTags.embed(live_tags)
+
+const video_source = document.getElementById('video-source')
+if (video_source) {
+  var video = videojs('play').ready(function() {
+    this.on('ended', function() {
+      video_source.src = '/stream/' + window.video_ids.shift()
+    })
+  })
+}

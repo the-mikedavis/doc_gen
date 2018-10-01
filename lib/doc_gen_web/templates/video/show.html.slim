@@ -1,5 +1,5 @@
 video.video-js(id='play' preload="none" data-setup="{}" controls)
-  source src="#{Routes.watch_path(@conn, :stream, @video)}" type="#{@video.content_type}"
+  source#video-source src="#{Routes.watch_path(@conn, :stream, @video)}" type="#{@video.content_type}"
   p.vjs-no-js
     | To view this video, please enable JavaScript, and consider
     | upgrading to a web brawser that
