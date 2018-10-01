@@ -13,9 +13,9 @@ defmodule DocGenWeb.Router do
     plug(Plugs.Title)
   end
 
-  pipeline :api do
-    plug(:accepts, ["json"])
-  end
+  # pipeline :api do
+  # plug(:accepts, ["json"])
+  # end
 
   pipeline :authenticate do
     plug(Plugs.Auth)
