@@ -22,7 +22,7 @@ config :doc_gen, DocGenWeb.Endpoint,
       ~r{priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$},
       ~r{priv/gettext/.*(po)$},
       ~r{lib/doc_gen_web/views/.*(ex)$},
-      ~r{lib/doc_gen_web/templates/.*(eex)$}
+      ~r{lib/doc_gen_web/templates/.*(eex|slim)$}
     ]
   ]
 

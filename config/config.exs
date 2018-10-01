@@ -1,7 +1,8 @@
 use Mix.Config
 
 config :doc_gen,
-  ecto_repos: [DocGen.Repo]
+  ecto_repos: [DocGen.Repo],
+  user_chosen_keyword_multiplier: 5
 
 config :doc_gen, DocGenWeb.Endpoint,
   secret_key_base:
