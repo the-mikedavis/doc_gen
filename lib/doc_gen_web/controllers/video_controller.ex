@@ -16,11 +16,14 @@ defmodule DocGenWeb.VideoController do
   end
 
   def create(conn, %{"video" => video_params}) do
+    IO.inspect(video_params)
     video_params = put_tags(video_params)
 
     case Content.create_video(video_params) do
       {:ok, video} ->
-        persist_file(video, video_params["video_file"])
+        video
+        |> persist_file(video_params["video_file"])
+        |> update_duration(video)
 
         conn
         |> put_flash(:info, "Video created successfully.")
@@ -79,6 +82,8 @@ defmodule DocGenWeb.VideoController do
 
         File.copy!(temp_path, video_path)
       end
+
+      video_path
     end
 
     @spec put_tags(%{}) :: %{}
@@ -87,9 +92,23 @@ defmodule DocGenWeb.VideoController do
         video_params
         |> Map.delete("video_file")
         |> Enum.filter(fn {_tag_name, on?} -> on? == "on" end)
-        |> Enum.map(fn {tag_name, _on?} -> tag_name end)
+        |> Enum.map(fn {tag_name, _on?} ->
+          tag_name
+          # TODO figure out why this is necessary
+          |> String.replace("%22", "")
+          |> Content.get_tag_by_name!()
+        end)
 
       %{"video_file" => video_params["video_file"], "tags" => tags}
+    end
+
+    defp update_duration(video_path, video) do
+      duration =
+        video_path
+        |> FFprobe.duration()
+        |> round()
+
+      Content.update_video(video, %{duration: duration})
     end
   end
 end

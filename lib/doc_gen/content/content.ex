@@ -184,6 +184,8 @@ defmodule DocGen.Content do
   """
   def get_tag!(id), do: Repo.get!(Tag, id)
 
+  def get_tag_by_name!(name), do: Repo.get_by!(Tag, name: name)
+
   @doc """
   Creates a tag.
 

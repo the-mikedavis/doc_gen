@@ -9,6 +9,7 @@ defmodule DocGen.Repo.Migrations.CreateVideos do
       add(:interviewee, :string)
       add(:weight, :integer)
       add(:title, :string)
+      add(:duration, :integer)
 
       timestamps()
     end

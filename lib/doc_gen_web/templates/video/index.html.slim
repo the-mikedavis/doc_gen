@@ -3,13 +3,13 @@ h1 Listing Videos
 table
   thead
     tr
-      th Filename
+      th Title
 
       th
   tbody
     = for video <- @videos do
       tr
-        td = video.filename
+        td = video.title
 
         td
           = link("Show", to: Routes.video_path(@conn, :show, video))

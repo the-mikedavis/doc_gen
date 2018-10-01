@@ -17,6 +17,7 @@ defmodule DocGen.Content.Video do
     field(:interviewee, :string)
     field(:weight, :integer, default: 1)
     field(:title, :string)
+    field(:duration, :integer, default: 0)
     many_to_many(:tags, Tag, join_through: "videos_tags", on_replace: :delete)
     belongs_to(:type, Type)
 
@@ -32,7 +33,8 @@ defmodule DocGen.Content.Video do
       :filename,
       :interviewee,
       :weight,
-      :title
+      :title,
+      :duration
     ])
     |> put_tags(attrs)
     |> foreign_key_constraint(:type_id)
