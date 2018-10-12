@@ -44,7 +44,7 @@ defmodule DocGen.Content.Video do
     |> foreign_key_constraint(:type_id)
     |> foreign_key_constraint(:interviewee_id)
     |> validate_required([:video_file])
-    |> validate_number(:weight, greater_than: 0)
+    |> validate_number(:weight, greater_than: -1)
     |> unique_constraint(:title)
     |> put_interviewee()
     |> put_video_file()
