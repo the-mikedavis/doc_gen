@@ -4,12 +4,16 @@ table
   thead
     tr
       th Title
+      th Length (minutes)
+      th Weight
 
       th
   tbody
     = for video <- @videos do
       tr
         td = video.title
+        td = duration(video.duration)
+        td = video.weight
 
         td
           = link("Show", to: Routes.video_path(@conn, :show, video))
