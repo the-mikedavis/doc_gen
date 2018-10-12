@@ -10,7 +10,7 @@ defmodule DocGenWeb.SessionController do
       {:ok, conn} ->
         conn
         |> put_flash(:info, "Welcome back!")
-        |> redirect(to: Routes.dashboard_path(conn, :index))
+        |> redirect(to: Routes.video_path(conn, :index))
 
       {:error, _reason, conn} ->
         conn

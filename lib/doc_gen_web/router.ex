@@ -32,7 +32,6 @@ defmodule DocGenWeb.Router do
 
     resources("/user", UserController)
     resources("/videos", VideoController)
-    get("/dashboard", DashboardController, :index)
     resources("/settings", SettingsController, only: [:index, :update])
   end
 end
