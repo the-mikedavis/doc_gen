@@ -31,7 +31,6 @@ defmodule DocGen.Content.Video do
       :path,
       :video_file,
       :filename,
-      :interviewee,
       :weight,
       :title,
       :duration
