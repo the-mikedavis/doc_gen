@@ -12,7 +12,8 @@ defmodule DocGenWeb.VideoController do
 
   def new(conn, _params) do
     changeset = Content.change_video(%Video{})
-    render(conn, "new.html", changeset: changeset)
+    ints = Content.list_interviewees()
+    render(conn, "new.html", changeset: changeset, interviewees: ints)
   end
 
   def create(conn, %{"video" => video_params}) do
@@ -30,7 +31,8 @@ defmodule DocGenWeb.VideoController do
         |> redirect(to: Routes.video_path(conn, :show, video))
 
       {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "new.html", changeset: changeset)
+        ints = Content.list_interviewees()
+        render(conn, "new.html", changeset: changeset, interviewees: ints)
     end
   end
 
@@ -42,7 +44,8 @@ defmodule DocGenWeb.VideoController do
   def edit(conn, %{"id" => id}) do
     video = Content.get_video!(id)
     changeset = Content.change_video(video)
-    render(conn, "edit.html", video: video, changeset: changeset)
+    ints = Content.list_interviewees()
+    render(conn, "edit.html", video: video, changeset: changeset, interviewees: ints)
   end
 
   def update(conn, %{"id" => id, "video" => video_params}) do
@@ -55,7 +58,8 @@ defmodule DocGenWeb.VideoController do
         |> redirect(to: Routes.video_path(conn, :show, video))
 
       {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "edit.html", video: video, changeset: changeset)
+        ints = Content.list_interviewees()
+        render(conn, "edit.html", video: video, changeset: changeset, interviewees: ints)
     end
   end
 

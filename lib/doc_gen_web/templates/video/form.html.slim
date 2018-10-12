@@ -10,7 +10,11 @@
 
   div
     = label f, :interviewee_id
-    = text_input f, :interviewee_id, required: true
+    = text_input f, :interviewee_id, required: true, list: "interviewees"
+    // Show the available interviewees
+    datalist#interviewees
+      = for interviewee <- @interviewees do
+        option value="#{interviewee.name}"
     = error_tag f, :interviewee_id
 
   div
