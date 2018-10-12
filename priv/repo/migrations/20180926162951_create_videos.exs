@@ -6,7 +6,6 @@ defmodule DocGen.Repo.Migrations.CreateVideos do
       add(:filename, :string)
       add(:content_type, :string)
       add(:path, :string)
-      add(:interviewee, :string)
       add(:weight, :integer)
       add(:title, :string)
       add(:duration, :integer)

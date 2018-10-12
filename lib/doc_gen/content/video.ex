@@ -3,7 +3,7 @@ defmodule DocGen.Content.Video do
   use Private
   import Ecto.Changeset
 
-  alias DocGen.Content.{Tag, Type}
+  alias DocGen.Content.{Interviewee, Tag, Type}
 
   @moduledoc """
   The Video context.
@@ -14,12 +14,12 @@ defmodule DocGen.Content.Video do
     field(:filename, :string)
     field(:content_type, :string)
     field(:path, :string)
-    field(:interviewee, :string)
     field(:weight, :integer, default: 1)
     field(:title, :string)
     field(:duration, :integer, default: 0)
     many_to_many(:tags, Tag, join_through: "videos_tags", on_replace: :delete)
     belongs_to(:type, Type)
+    belongs_to(:interviewee, Interviewee)
 
     timestamps()
   end
@@ -38,6 +38,7 @@ defmodule DocGen.Content.Video do
     ])
     |> put_tags(attrs)
     |> foreign_key_constraint(:type_id)
+    |> foreign_key_constraint(:interviewee_id)
     |> validate_required([:video_file])
     |> validate_number(:weight, greater_than: 0)
     |> unique_constraint(:title)

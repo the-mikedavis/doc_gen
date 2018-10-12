@@ -1,7 +1,7 @@
 defmodule DocGen.Content do
   use Private
   import Ecto.Query, warn: false
-  alias DocGen.{Content.Tag, Content.Video, Repo}
+  alias DocGen.{Content.Interviewee, Content.Tag, Content.Video, Repo}
 
   @moduledoc """
   The Content context.
@@ -256,5 +256,18 @@ defmodule DocGen.Content do
     Tag
     |> Repo.all()
     |> Enum.map(&Repo.preload(&1, :videos))
+  end
+
+  @doc """
+  Returns the list of interviewees.
+
+  ## Examples
+
+      iex> list_interviewees()
+      [%Interviewee{}, ...]
+
+  """
+  def list_interviewees do
+    Repo.all(Interviewee)
   end
 end
