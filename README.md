@@ -1,20 +1,15 @@
 # DocGen
 
-To start your Phoenix server:
+A reduced-bias way to create documentaries.
 
-  * Install dependencies with `mix deps.get`
-  * Create and migrate your database with `mix ecto.create && mix ecto.migrate`
-  * Install Node.js dependencies with `cd assets && npm install`
-  * Start Phoenix endpoint with `mix phx.server`
+## Technologies
 
-Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
+This project uses some cool new tech:
 
-Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).
-
-## Learn more
-
-  * Official website: http://www.phoenixframework.org/
-  * Guides: https://hexdocs.pm/phoenix/overview.html
-  * Docs: https://hexdocs.pm/phoenix
-  * Mailing list: http://groups.google.com/group/phoenix-talk
-  * Source: https://github.com/phoenixframework/phoenix
+* [Elixir](https://elixir-lang.org/): a dynamically typed functional language with great concurrency support and low latency. I use Elixir for all back-end logic.
+* [Phoenix Framework](https://phoenixframework.org/): Rails is to Ruby as Phoenix is to Elixir. Phoenix makes it easy to write a web-app backend in Elixir.
+* [PostgreSQL](https://www.postgresql.org/): An open-source and easy to use database. Postgres manages all long-term state like information on videos and accounts.
+* [Slime](https://slime-lang.com/): Slim HTML with support for templating in Elixir. All pages are rendered using compiled Slime.
+* [Elm](https://elm-lang.org/): a statically typed functional language that transpiles to JavaScript. I use Elm on the front-end the same way you might use React or Angular: for dynamically modifying the DOM and doing socket operations.
+* [Sass](http://sass-lang.com/documentation/file.INDENTED_SYNTAX.html): a suped-up CSS with minimal syntax. Sass handles all stylization.
+* [Webpack](https://webpack.js.org/): A build tool for front-end assets. Webpack automatically organizes and transpiles all front-end assets.
