@@ -3,6 +3,7 @@ defmodule DocGen.Content.Video do
   use Private
   import Ecto.Changeset
 
+  alias DocGen.Content
   alias DocGen.Content.{Interviewee, Tag, Type}
 
   @moduledoc """
@@ -20,12 +21,15 @@ defmodule DocGen.Content.Video do
     many_to_many(:tags, Tag, join_through: "videos_tags", on_replace: :delete)
     belongs_to(:type, Type)
     belongs_to(:interviewee, Interviewee)
+    field(:interviewee_name, :string, virtual: true)
 
     timestamps()
   end
 
   @doc false
   def changeset(video, attrs) do
+    IO.inspect(attrs, label: "attrs")
+
     video
     |> cast(attrs, [
       :path,
@@ -33,7 +37,8 @@ defmodule DocGen.Content.Video do
       :filename,
       :weight,
       :title,
-      :duration
+      :duration,
+      :interviewee_name
     ])
     |> put_tags(attrs)
     |> foreign_key_constraint(:type_id)
@@ -41,6 +46,7 @@ defmodule DocGen.Content.Video do
     |> validate_required([:video_file])
     |> validate_number(:weight, greater_than: 0)
     |> unique_constraint(:title)
+    |> put_interviewee()
     |> put_video_file()
   end
 
@@ -52,6 +58,17 @@ defmodule DocGen.Content.Video do
       put_assoc(changeset, :tags, tags)
     end
     defp put_tags(changeset, _), do: changeset
+
+    defp put_interviewee(changeset) do
+      case changeset do
+        %Ecto.Changeset{valid?: true, changes: %{interviewee_name: iv_name}} ->
+          interviewee = Content.get_or_create_interviewee(iv_name)
+          put_change(changeset, :interviewee_id, interviewee.id)
+
+        _ ->
+          changeset
+      end
+    end
 
     defp put_video_file(changeset) do
       case changeset do

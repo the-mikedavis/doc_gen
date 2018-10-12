@@ -103,7 +103,7 @@ defmodule DocGenWeb.VideoController do
           |> Content.get_tag_by_name!()
         end)
 
-      %{"video_file" => video_params["video_file"], "tags" => tags}
+      Map.put(video_params, "tags", tags)
     end
 
     defp update_duration(video_path, video) do

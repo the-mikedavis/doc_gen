@@ -192,7 +192,7 @@ defmodule DocGen.Content do
   ## Examples
 
       iex> create_tag(%{field: value})
-      {:ok, %Video{}}
+      {:ok, %Tag{}}
 
       iex> create_tag(%{field: bad_value})
       {:error, %Ecto.Changeset{}}
@@ -269,5 +269,26 @@ defmodule DocGen.Content do
   """
   def list_interviewees do
     Repo.all(Interviewee)
+  end
+
+  @doc "Creates a interviewee."
+  def create_interviewee!(attrs \\ %{}) do
+    %Interviewee{}
+    |> Interviewee.changeset(attrs)
+    |> Repo.insert!()
+  end
+
+  @doc """
+  Tries to get an interviewee by name. If not available, creates that
+  interviewee.
+  """
+  def get_or_create_interviewee(name) do
+    case Repo.get_by(Interviewee, name: name) do
+      %Interviewee{} = interviewee ->
+        interviewee
+
+      nil ->
+        create_interviewee!(%{name: name})
+    end
   end
 end
