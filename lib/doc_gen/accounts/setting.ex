@@ -3,8 +3,11 @@ defmodule DocGen.Accounts.Setting do
   import Ecto.Changeset
 
   schema "settings" do
+    # title of the movie
     field(:title, :string)
+    # length of the movie in number of clips
     field(:length, :integer)
+    # intro copy visible from the main page
     field(:copy, :string)
 
     timestamps()
@@ -16,6 +19,6 @@ defmodule DocGen.Accounts.Setting do
     |> cast(attrs, [:title, :length, :copy])
     |> validate_required([:title, :length])
     |> validate_length(:title, min: 3, max: 100)
-    |> validate_inclusion(:length, 5..8_000)
+    |> validate_inclusion(:length, 1..100)
   end
 end

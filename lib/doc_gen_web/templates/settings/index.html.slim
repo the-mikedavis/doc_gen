@@ -6,8 +6,8 @@ h2 Settings
     = text_input(f, :title, placeholder: "My Documentary", value: @settings.title)
 
   div
-    h3 Movie length (seconds)
-    = number_input(f, :length, value: @settings.length, min: 5, max: 8000, step: 5)
+    h3 Movie length (clips)
+    = number_input(f, :length, value: @settings.length, min: 1, max: 100)
 
   div
     h3 Front Page copy

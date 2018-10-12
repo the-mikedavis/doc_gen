@@ -7,6 +7,7 @@ defmodule DocGen.Content.Random do
 
   @chosen_multiplier Application.get_env(:doc_gen, :user_chosen_keyword_multiplier)
 
+  # length is in number of clips
   def give(_tags, _length) do
     Content.list_videos()
     |> Enum.map(fn %{id: id} -> id end)
