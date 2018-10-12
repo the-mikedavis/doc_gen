@@ -20,6 +20,12 @@ defmodule DocGen.Content do
     Repo.all(Video)
   end
 
+  def list_videos_with_interviewees do
+    Video
+    |> Repo.all()
+    |> Enum.map(&Repo.preload(&1, :interviewee))
+  end
+
   @doc """
   Gets a single video.
 

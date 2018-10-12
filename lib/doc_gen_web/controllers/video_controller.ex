@@ -6,7 +6,7 @@ defmodule DocGenWeb.VideoController do
   alias DocGen.{Content, Content.Video}
 
   def index(conn, _params) do
-    videos = Content.list_videos()
+    videos = Content.list_videos_with_interviewees()
     render(conn, "index.html", videos: videos)
   end
 

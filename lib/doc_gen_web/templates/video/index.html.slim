@@ -4,6 +4,7 @@ table
   thead
     tr
       th Title
+      th Interviewee
       th Length (minutes)
       th Weight
 
@@ -12,6 +13,7 @@ table
     = for video <- @videos do
       tr
         td = video.title
+        td = video.interviewee.name
         td = duration(video.duration)
         td = video.weight
 
