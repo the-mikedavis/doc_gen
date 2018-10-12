@@ -52,8 +52,8 @@ module.exports = (env, options) => ({
     new MiniCssExtractPlugin({ filename: '../css/app.sass' }),
     new CopyWebpackPlugin([{ from: 'static/', to: '../' }]),
     new webpack.ProvidePlugin({
-      'videojs': 'video.js',
-      'window.videojs': 'video.js'
+      //'videojs': 'video.js',
+      //'window.videojs': 'video.js'
     })
   ]
 });

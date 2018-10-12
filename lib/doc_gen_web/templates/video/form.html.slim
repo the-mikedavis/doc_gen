@@ -9,6 +9,11 @@
     = error_tag f, :title
 
   div
+    = label f, :interviewee_id
+    = text_input f, :interviewee_id, required: true
+    = error_tag f, :interviewee_id
+
+  div
     = label f, :weight
     = number_input f, :weight, required: true, value: 1
     = error_tag f, :weight

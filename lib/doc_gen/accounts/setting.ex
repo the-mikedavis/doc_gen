@@ -13,9 +13,9 @@ defmodule DocGen.Accounts.Setting do
   @doc false
   def changeset(setting, attrs) do
     setting
-    |> cast(attrs, [:name, :length])
-    |> validate_required([:name, :length])
-    |> validate_length(:name, min: 3, max: 100)
+    |> cast(attrs, [:title, :length, :copy])
+    |> validate_required([:title, :length])
+    |> validate_length(:title, min: 3, max: 100)
     |> validate_inclusion(:length, 5..8_000)
   end
 end
