@@ -54,7 +54,8 @@ type Msg
   | PopulateTags Encode.Value
   | HandleSendError Encode.Value
   | JoinChannel
-  | DeleteTag
+  | DeleteTag String
+  | RemoveTag Encode.Value
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -117,14 +118,38 @@ update msg model =
       in
           case msg of
             Ok message ->
-              (
-                { model | tags = message },
-                Cmd.none
+              ( { model | tags = message }, Cmd.none )
+            Err error ->
+              ( model, Cmd.none )
+    DeleteTag tag ->
+      let
+          a = Debug.log("About to delete a tag")
+          payload =
+            Encode.object
+              [
+                ( "name", Encode.string tag )
+              ]
+          phxPush =
+            Phoenix.Push.init "delete_tag" "tag:lobby"
+              |> Phoenix.Push.withPayload payload
+              |> Phoenix.Push.onOk RemoveTag
+              |> Phoenix.Push.onError HandleSendError
+
+          ( phxSocket, phxCmd ) = Phoenix.Socket.push phxPush model.phxSocket
+      in
+          ( { model | phxSocket = phxSocket }
+          , Cmd.map PhoenixMsg phxCmd )
+    RemoveTag raw ->
+      let
+          msg = Decode.decodeValue (Decode.field "name" Decode.string) raw
+      in
+          case msg of
+            Ok tag ->
+              ( { model | tags = List.filter (\t -> t /= tag) model.tags }
+              , Cmd.none
               )
             Err error ->
               ( model, Cmd.none )
-    DeleteTag ->
-      ( model, Cmd.none )
 
 
 subscriptions : Model -> Sub Msg
@@ -145,7 +170,8 @@ drawTag tag =
           , attribute "name" ("video[" ++ (toString tag) ++ "]")
           , attribute "type" "checkbox"] [ ]
   , text tag
-  , i [ attribute "class" "fas fa-times" ] [ ]
+  , i [ attribute "class" "fas fa-times"
+      , onClick (DeleteTag tag) ] [ ]
   ]
 
 view : Model -> Html Msg

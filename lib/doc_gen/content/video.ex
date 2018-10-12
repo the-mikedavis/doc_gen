@@ -18,7 +18,7 @@ defmodule DocGen.Content.Video do
     field(:weight, :integer, default: 1)
     field(:title, :string)
     field(:duration, :integer, default: 0)
-    many_to_many(:tags, Tag, join_through: "videos_tags", on_replace: :delete)
+    many_to_many(:tags, Tag, join_through: "videos_tags", on_replace: :delete, on_delete: :delete_all)
     belongs_to(:type, Type)
     belongs_to(:interviewee, Interviewee)
     field(:interviewee_name, :string, virtual: true)

@@ -24,10 +24,13 @@ defmodule DocGenWeb.TagChannel do
     end
   end
 
-  def handle_in("delete_tag", payload, socket) do
-    IO.inspect(payload, label: "delete_tag")
+  def handle_in("delete_tag", %{"name" => name} = payload, socket) do
     # TODO
     # broadcast(socket, "delete_tag", payload)
+    name
+    |> Content.get_tag_by_name!()
+    |> Content.delete_tag()
+
     {:reply, {:ok, payload}, socket}
   end
 
