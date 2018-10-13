@@ -1,5 +1,6 @@
 module LiveTags exposing (..)
 
+import Platform.Cmd exposing (..)
 import Html exposing (..)
 import Html.Events exposing (..)
 import Html.Attributes exposing (..)
@@ -21,16 +22,16 @@ type alias Model =
     }
 
 
-init : ( Model, Cmd Msg )
-init =
+init : String -> ( Model, Cmd Msg )
+init token =
     let
         channel =
             Phoenix.Channel.init "tag:lobby"
 
         initSocket =
-            Phoenix.Socket.init "ws://galactica.relaytms.com:4000/socket/websocket"
+            Phoenix.Socket.init ("ws://galactica.relaytms.com:4000/socket/websocket?token=" ++ token)
                 |> Phoenix.Socket.withDebug
-                |> Phoenix.Socket.on "tag_created" "tag:lobby" AddTag
+                |> Phoenix.Socket.on "new_tag" "tag:lobby" AddTag
 
         model =
             { tags = []
@@ -241,9 +242,9 @@ view model =
 ---- PROGRAM ----
 
 
-main : Program Never Model Msg
+main : Program String Model Msg
 main =
-    Html.program
+    programWithFlags
         { view = view
         , init = init
         , update = update

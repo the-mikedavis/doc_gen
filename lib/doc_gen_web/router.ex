@@ -11,6 +11,7 @@ defmodule DocGenWeb.Router do
     plug(:put_secure_browser_headers)
     plug(Plugs.User)
     plug(Plugs.Title)
+    plug(:put_user_token)
   end
 
   pipeline :authenticate do
@@ -34,4 +35,16 @@ defmodule DocGenWeb.Router do
     resources("/videos", VideoController)
     resources("/settings", SettingsController, only: [:index, :update])
   end
+
+  defp put_user_token(conn, _) do
+    if current_user = conn.assigns[:current_user] do
+      token = Phoenix.Token.sign(conn, socket_token_key(), current_user.id)
+
+      assign(conn, :user_token, token)
+    else
+      conn
+    end
+  end
+
+  defp socket_token_key, do: Application.get_env(:doc_gen, :socket_token_key)
 end

@@ -26,6 +26,9 @@ config :doc_gen, DocGenWeb.Endpoint,
     ]
   ]
 
+config :doc_gen,
+  socket_token_key: "Wi5M0udtBDHSHa2B6S4jt0j7WhkJw7PELa+w6V1W09odfIWrSOKBCye0FnFKzB/Z"
+
 config :logger, :console, format: "[$level] $message\n"
 
 config :phoenix, :stacktrace_depth, 20
