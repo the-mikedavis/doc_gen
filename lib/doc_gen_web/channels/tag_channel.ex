@@ -15,7 +15,7 @@ defmodule DocGenWeb.TagChannel do
 
   def handle_in("new_tag", payload, socket) do
     case Content.create_tag(payload) do
-      {:ok, _} ->
+      {:ok, _tag} ->
         {:reply, {:ok, payload}, socket}
       {:error, reason} ->
         {:reply, {:error, reason}, socket}

@@ -17,7 +17,6 @@ defmodule DocGenWeb.VideoController do
   end
 
   def create(conn, %{"video" => video_params}) do
-    IO.inspect(video_params)
     video_params = put_tags(video_params)
 
     case Content.create_video(video_params) do

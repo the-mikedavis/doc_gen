@@ -28,8 +28,6 @@ defmodule DocGen.Content.Video do
 
   @doc false
   def changeset(video, attrs) do
-    IO.inspect(attrs, label: "attrs")
-
     video
     |> cast(attrs, [
       :path,
