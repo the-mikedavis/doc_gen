@@ -14,8 +14,6 @@ defmodule DocGenWeb.TagChannel do
   end
 
   def handle_in("new_tag", payload, socket) do
-    # TODO ?
-    # broadcast(socket, "new_tag", payload)
     case Content.create_tag(payload) do
       {:ok, _} ->
         {:reply, {:ok, payload}, socket}
@@ -25,8 +23,6 @@ defmodule DocGenWeb.TagChannel do
   end
 
   def handle_in("delete_tag", %{"name" => name} = payload, socket) do
-    # TODO
-    # broadcast(socket, "delete_tag", payload)
     name
     |> Content.get_tag_by_name!()
     |> Content.delete_tag()
