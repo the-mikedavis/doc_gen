@@ -43,7 +43,7 @@ defmodule DocGenWeb.WatchController do
 
       conn
       |> assign(:copy, copy)
-      |> assign(:length, Integer.floor_div(length, 60))
+      |> assign(:length, length)
     end
 
     defp load_videos(conn, _opts) do
