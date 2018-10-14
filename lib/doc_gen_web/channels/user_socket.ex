@@ -3,6 +3,7 @@ defmodule DocGenWeb.UserSocket do
 
   ## Channels
   channel("tag:*", DocGenWeb.TagChannel)
+  channel("video:*", DocGenWeb.VideoChannel)
 
   def connect(%{"token" => token}, socket, _connect_info) do
     case Phoenix.Token.verify(socket, socket_token_key(), token, max_age: 1209600) do

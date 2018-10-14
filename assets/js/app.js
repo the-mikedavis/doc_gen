@@ -1,11 +1,16 @@
 import css from '../css/app.sass'
 import 'phoenix_html'
 import {LiveTags} from '../src/LiveTags.elm'
+import {Dashboard} from '../src/Dashboard.elm'
 // import videojs from '../node_modules/video.js'
 
 const live_tags = document.getElementById('live-tags')
 if (live_tags)
   LiveTags.embed(live_tags, window.userToken)
+
+const dashboard = document.getElementById('dashboard')
+if (dashboard)
+  Dashboard.embed(dashboard, window.userToken)
 
     /*
 const video_source = document.getElementById('video-source')

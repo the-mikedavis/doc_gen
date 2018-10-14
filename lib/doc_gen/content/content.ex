@@ -21,9 +21,15 @@ defmodule DocGen.Content do
   end
 
   def list_videos_with_interviewees do
+    Repo.all(from v in Video, select: v, preload: [:interviewee, :tags, :type])
+  end
+
+  def list_videos_with_all do
     Video
     |> Repo.all()
     |> Enum.map(&Repo.preload(&1, :interviewee))
+    |> Enum.map(&Repo.preload(&1, :tags))
+    |> Enum.map(&Repo.preload(&1, :type))
   end
 
   @doc """

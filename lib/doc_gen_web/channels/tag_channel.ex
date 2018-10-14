@@ -4,13 +4,9 @@ defmodule DocGenWeb.TagChannel do
   alias DocGen.Content
 
   def join("tag:lobby", payload, socket) do
-    if authorized?(payload) do
-      tags = Enum.map(Content.list_tags(), fn %{name: name} -> name end)
+    tags = Enum.map(Content.list_tags(), fn %{name: name} -> name end)
 
-      {:ok, %{tags: tags}, socket}
-    else
-      {:error, %{reason: "unauthorized"}}
-    end
+    {:ok, %{tags: tags}, socket}
   end
 
   def handle_in("new_tag", payload, socket) do
@@ -28,10 +24,5 @@ defmodule DocGenWeb.TagChannel do
     |> Content.delete_tag()
 
     {:reply, {:ok, payload}, socket}
-  end
-
-  # TODO
-  defp authorized?(_payload) do
-    true
   end
 end
