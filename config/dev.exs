@@ -1,7 +1,7 @@
 use Mix.Config
 
 config :doc_gen, DocGenWeb.Endpoint,
-  http: [port: 4000],
+  http: [port: 4437],
   url: [host: "galactica.relaytms.com"],
   debug_errors: true,
   code_reloader: true,
