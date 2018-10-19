@@ -9,6 +9,11 @@
     = error_tag f, :title
 
   div
+    = label f, :type_id
+    = select f, :type_id, type_select(@types), required: true
+    = error_tag f, :type_id
+
+  div
     = label f, :interviewee_name
     = text_input f, :interviewee_name, required: true, list: "interviewees"
     // Show the available interviewees

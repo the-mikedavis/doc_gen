@@ -36,12 +36,13 @@ defmodule DocGen.Content.Video do
       :weight,
       :title,
       :duration,
-      :interviewee_name
+      :interviewee_name,
+      :type_id
     ])
     |> put_tags(attrs)
     |> foreign_key_constraint(:type_id)
+    |> put_type()
     |> foreign_key_constraint(:interviewee_id)
-    |> validate_required([:video_file])
     |> validate_number(:weight, greater_than: -1)
     |> unique_constraint(:title)
     |> put_interviewee()
@@ -56,6 +57,11 @@ defmodule DocGen.Content.Video do
       put_assoc(changeset, :tags, tags)
     end
     defp put_tags(changeset, _), do: changeset
+
+    defp put_type(%Ecto.Changeset{valid?: true, changes: %{type_id: id}} = changeset) do
+      put_change(changeset, :type, Content.get_type(id))
+    end
+    defp put_type(changeset), do: changeset
 
     defp put_interviewee(changeset) do
       case changeset do

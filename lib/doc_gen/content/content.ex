@@ -1,7 +1,7 @@
 defmodule DocGen.Content do
   use Private
   import Ecto.Query, warn: false
-  alias DocGen.{Content.Interviewee, Content.Tag, Content.Video, Repo}
+  alias DocGen.{Content.Interviewee, Content.Tag, Content.Type, Content.Video, Repo}
 
   @moduledoc """
   The Content context.
@@ -303,4 +303,10 @@ defmodule DocGen.Content do
         create_interviewee!(%{name: name})
     end
   end
+
+  def list_types do
+    Repo.all(Type)
+  end
+
+  def get_type(id), do: Repo.get(Type, id)
 end
