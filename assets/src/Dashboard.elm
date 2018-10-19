@@ -158,7 +158,7 @@ drawVideo video =
                ]
         , p [] [ span [ attribute "class" "highlight" ]
                       [ text "length: " ]
-               , text (toString video.duration)
+               , text ((toString video.duration) ++ " seconds")
                ]
         , p [] [ span [ attribute "class" "highlight" ]
                       [ text "keywords: " ]
