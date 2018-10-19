@@ -50,13 +50,13 @@ type alias Model =
 
 
 init : String -> ( Model, Cmd Msg )
-init token =
+init socketUri =
     let
         channel =
             Phoenix.Channel.init "video:lobby"
 
         initSocket =
-            Phoenix.Socket.init ("ws://galactica.relaytms.com:4437/socket/websocket?token=" ++ token)
+            Phoenix.Socket.init ("ws://" ++ socketUri)
                 |> Phoenix.Socket.withDebug
                 -- |> Phoenix.Socket.on "new_tag" "tag:lobby" AddTag
 

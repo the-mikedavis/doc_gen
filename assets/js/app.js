@@ -6,11 +6,11 @@ import {Dashboard} from '../src/Dashboard.elm'
 
 const live_tags = document.getElementById('live-tags')
 if (live_tags)
-  LiveTags.embed(live_tags, window.userToken)
+  LiveTags.embed(live_tags, buildSocketUri())
 
 const dashboard = document.getElementById('dashboard')
 if (dashboard)
-  Dashboard.embed(dashboard, window.userToken)
+  Dashboard.embed(dashboard, buildSocketUri())
 
     /*
 const video_source = document.getElementById('video-source')
@@ -22,3 +22,7 @@ if (video_source) {
   })
 }
 */
+
+function buildSocketUri() {
+  return window.location.host + "/socket/websocket?token=" + window.userToken
+}
