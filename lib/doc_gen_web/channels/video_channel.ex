@@ -49,7 +49,7 @@ defmodule DocGenWeb.VideoChannel do
   def simplify_preloads(key, value) when key not in @preloads do
     value
   end
-  def simplify_preloads(key, values) when is_list(values) do
+  def simplify_preloads(_key, values) when is_list(values) do
     Enum.map(values, fn %{name: name} -> name end)
   end
   def simplify_preloads(_key, nil), do: ""

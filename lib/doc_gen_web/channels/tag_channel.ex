@@ -3,7 +3,7 @@ defmodule DocGenWeb.TagChannel do
 
   alias DocGen.Content
 
-  def join("tag:lobby", payload, socket) do
+  def join("tag:lobby", _payload, socket) do
     tags = Enum.map(Content.list_tags(), fn %{name: name} -> name end)
 
     {:ok, %{tags: tags}, socket}
