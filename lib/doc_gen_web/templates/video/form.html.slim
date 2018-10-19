@@ -10,8 +10,13 @@
 
   div
     = label f, :type_id
-    = select f, :type_id, type_select(@types), required: true
+    = select f, :type_id, selection(@types)
     = error_tag f, :type_id
+
+  div
+    = label f, :segment_id
+    = select f, :segment_id, selection(@segments)
+    = error_tag f, :segment_id
 
   div
     = label f, :interviewee_name
@@ -21,11 +26,6 @@
       = for interviewee <- @interviewees do
         option value="#{interviewee.name}"
     = error_tag f, :interviewee_name
-
-  div
-    = label f, :weight
-    = number_input f, :weight, required: true, value: 1, min: 0
-    = error_tag f, :weight
 
   div
     = label f, :video_file

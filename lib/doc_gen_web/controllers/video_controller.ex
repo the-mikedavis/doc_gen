@@ -14,7 +14,8 @@ defmodule DocGenWeb.VideoController do
     changeset = Content.change_video(%Video{})
     ints = Content.list_interviewees()
     types = Content.list_types()
-    render(conn, "new.html", changeset: changeset, interviewees: ints, types: types)
+    segs = Content.list_segments()
+    render(conn, "new.html", changeset: changeset, interviewees: ints, types: types, segments: segs)
   end
 
   def create(conn, %{"video" => video_params}) do

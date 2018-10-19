@@ -1,7 +1,8 @@
 defmodule DocGen.Content do
   use Private
   import Ecto.Query, warn: false
-  alias DocGen.{Content.Interviewee, Content.Tag, Content.Type, Content.Video, Repo}
+  alias DocGen.Repo
+  alias DocGen.Content.{Interviewee, Segment, Tag, Type, Video}
 
   @moduledoc """
   The Content context.
@@ -21,15 +22,11 @@ defmodule DocGen.Content do
   end
 
   def list_videos_with_interviewees do
-    Repo.all(from v in Video, select: v, preload: [:interviewee, :tags, :type])
+    Repo.all(from v in Video, select: v, preload: :interviewee)
   end
 
   def list_videos_with_all do
-    Video
-    |> Repo.all()
-    |> Enum.map(&Repo.preload(&1, :interviewee))
-    |> Enum.map(&Repo.preload(&1, :tags))
-    |> Enum.map(&Repo.preload(&1, :type))
+    Repo.all(from v in Video, select: v, preload: [:interviewee, :segment, :tags, :type])
   end
 
   @doc """
@@ -304,9 +301,15 @@ defmodule DocGen.Content do
     end
   end
 
+  def get_type(id), do: Repo.get(Type, id)
+
   def list_types do
     Repo.all(Type)
   end
 
-  def get_type(id), do: Repo.get(Type, id)
+  def get_segment(id), do: Repo.get(Segment, id)
+
+  def list_segments do
+    Repo.all(Segment)
+  end
 end

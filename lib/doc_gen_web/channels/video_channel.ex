@@ -29,10 +29,12 @@ defmodule DocGenWeb.VideoChannel do
     {:reply, {:ok, payload}, socket}
   end
 
+  @fields [:tags, :type, :interviewee, :path, :title, :id, :duration, :segment]
+
   defp simplify_video(%Video{} = video) do
     video
     |> Map.from_struct()
-    |> Map.take([:tags, :type, :interviewee, :path, :title, :weight, :id, :duration])
+    |> Map.take(@fields)
     |> Enum.reduce(%{}, fn {k, v}, acc ->
       Map.put(acc, k, simplify_preloads(k, v))
     end)
@@ -44,7 +46,7 @@ defmodule DocGenWeb.VideoChannel do
     |> Map.put(:clip_type, type)
   end
 
-  @preloads [:tags, :type, :interviewee]
+  @preloads [:tags, :type, :interviewee, :segment]
 
   def simplify_preloads(key, value) when key not in @preloads do
     value

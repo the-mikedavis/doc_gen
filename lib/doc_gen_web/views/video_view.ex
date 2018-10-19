@@ -10,7 +10,7 @@ defmodule DocGenWeb.VideoView do
     "#{minutes}:#{rem_secs}"
   end
 
-  def type_select(types) do
-    Enum.map(types, fn t -> {String.to_atom(t.name), t.id} end)
+  def selection(db_list) do
+    Enum.map(db_list, &{&1.name, &1.id})
   end
 end

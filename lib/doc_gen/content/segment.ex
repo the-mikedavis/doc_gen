@@ -2,8 +2,11 @@ defmodule DocGen.Content.Segment do
   use Ecto.Schema
   import Ecto.Changeset
 
+  alias DocGen.Content.Video
+
   schema "segments" do
     field(:name, :string)
+    has_many(:videos, Video)
 
     timestamps()
   end

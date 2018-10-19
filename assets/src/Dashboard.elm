@@ -17,7 +17,7 @@ import Phoenix.Push
 
 
 type alias Video =
-    { weight : Int
+    { segment : String
     , duration : Int
     , clip_type : String
     , id : Int
@@ -31,7 +31,7 @@ type alias Video =
 decodeVideo : Decode.Decoder Video
 decodeVideo =
     Json.Decode.Pipeline.decode Video
-        |> Json.Decode.Pipeline.required "weight" (Decode.int)
+        |> Json.Decode.Pipeline.required "segment" (Decode.string)
         |> Json.Decode.Pipeline.required "duration" (Decode.int)
         |> Json.Decode.Pipeline.required "clip_type" (Decode.string)
         |> Json.Decode.Pipeline.required "id" (Decode.int)
@@ -169,6 +169,11 @@ drawVideo video =
             ]
         , p []
             [ span [ attribute "class" "highlight" ]
+                [ text "segment: " ]
+            , text video.segment
+            ]
+        , p []
+            [ span [ attribute "class" "highlight" ]
                 [ text "length: " ]
             , text ((toString video.duration) ++ " seconds")
             ]
@@ -225,7 +230,7 @@ allText video =
         titleText =
             String.words video.title
         otherTexts =
-            [video.interviewee, video.title, toString video.weight, toString video.duration, video.clip_type]
+            [video.interviewee, video.title, toString video.segment, toString video.duration, video.clip_type]
     in
         tagsText ++ titleText ++ otherTexts
             |> List.map String.toLower
