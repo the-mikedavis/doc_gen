@@ -82,7 +82,8 @@ defmodule DocGen.MixProject do
       {"dialyzer", []}
     ]
     |> Enum.each(fn {task, args} ->
-      IO.ANSI.format([:cyan, "Running #{task} with args #{inspect(args)}"])
+      [:cyan, "Running #{task} with args #{inspect(args)}"]
+      |> IO.ANSI.format()
       |> IO.puts()
 
       Mix.Task.run(task, args)
