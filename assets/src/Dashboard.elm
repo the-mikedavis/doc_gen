@@ -50,6 +50,7 @@ type alias Model =
     { videos : List Video
     , visibleVideos : List Video
     , phxSocket : Phoenix.Socket.Socket Msg
+    , searchString : String
     }
 
 
@@ -67,6 +68,7 @@ init socketUri =
             { videos = []
             , visibleVideos = []
             , phxSocket = initSocket
+            , searchString = ""
             }
     in
         ( model, joinChannel )
@@ -81,6 +83,7 @@ type Msg
     | PopulateVideos Encode.Value
     | HandleSendError Encode.Value
     | JoinChannel
+    | StartSearch String
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -123,14 +126,16 @@ update msg model =
             in
                 case msg of
                     Ok message ->
-                        Debug.log (toString message)
-                            ( { model | videos = message, visibleVideos = message }
-                            , Cmd.none
-                            )
+                          ( { model | videos = message, visibleVideos = message }
+                          , Cmd.none
+                          )
 
                     Err error ->
                         Debug.log (error)
                             ( model, Cmd.none )
+
+        StartSearch searchString ->
+            ( { model | searchString = searchString }, Cmd.none )
 
 
 subscriptions : Model -> Sub Msg
@@ -184,9 +189,16 @@ drawVideo video =
         ]
 
 
-drawSearchBar : HTML Msg
-drawSearchBar =
+drawSearchBar : String -> Html Msg
+drawSearchBar searchString =
     div []
+        [ text "Search: "
+        , input [ attribute "type" "text"
+                , onInput StartSearch
+                , value searchString
+                ]
+                [ ]
+        ]
 
 
 view : Model -> Html Msg
@@ -197,13 +209,32 @@ view model =
                 |> List.map drawVideo
     in
         div []
-            [ (drawSearchBar)
-            , div [] (model.visibleVideos |> drawVideos)
+            [ (drawSearchBar model.searchString)
+            , div [] (model |> searchFilter |> drawVideos)
             ]
 
 
 
 ---- PROGRAM ----
+
+allText : Video -> List String
+allText video =
+    let
+        tagsText =
+            video.tags
+        titleText =
+            String.words video.title
+        otherTexts =
+            [video.interviewee, video.title, toString video.weight, toString video.duration, video.clip_type]
+    in
+        tagsText ++ titleText ++ otherTexts
+            |> List.map String.toLower
+
+
+searchFilter : Model -> List Video
+searchFilter model =
+  model.videos
+    |> List.filter (\vText -> List.any (String.contains (String.toLower model.searchString)) (allText vText))
 
 
 main : Program String Model Msg
