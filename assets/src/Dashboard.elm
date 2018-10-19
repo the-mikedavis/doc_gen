@@ -56,7 +56,7 @@ init token =
             Phoenix.Channel.init "video:lobby"
 
         initSocket =
-            Phoenix.Socket.init ("ws://galactica.relaytms.com:4000/socket/websocket?token=" ++ token)
+            Phoenix.Socket.init ("ws://galactica.relaytms.com:4437/socket/websocket?token=" ++ token)
                 |> Phoenix.Socket.withDebug
                 -- |> Phoenix.Socket.on "new_tag" "tag:lobby" AddTag
 
