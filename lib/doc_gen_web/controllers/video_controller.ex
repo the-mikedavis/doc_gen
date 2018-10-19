@@ -87,7 +87,13 @@ defmodule DocGenWeb.VideoController do
         File.copy!(temp_path, video_path)
       end
 
-      video_path
+      {:ok, video_path}
+    end
+
+    defp persist_file(_, _) do
+      Logger.error("Could not persist video file")
+
+      :error
     end
 
     @spec put_tags(%{}) :: %{}
@@ -106,7 +112,7 @@ defmodule DocGenWeb.VideoController do
       Map.put(video_params, "tags", tags)
     end
 
-    defp update_duration(video_path, video) do
+    defp update_duration({:ok, video_path}, video) do
       duration =
         video_path
         |> FFprobe.duration()
@@ -114,5 +120,6 @@ defmodule DocGenWeb.VideoController do
 
       Content.update_video(video, %{duration: duration})
     end
+    defp update_duration(_, _), do: :ok
   end
 end

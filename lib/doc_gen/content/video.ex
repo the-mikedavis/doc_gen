@@ -47,6 +47,7 @@ defmodule DocGen.Content.Video do
     |> unique_constraint(:title)
     |> put_interviewee()
     |> put_video_file()
+    |> validate_required(:path)
   end
 
   private do
