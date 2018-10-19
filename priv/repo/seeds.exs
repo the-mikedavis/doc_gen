@@ -10,7 +10,13 @@
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
 
-alias DocGen.{Accounts.User, Accounts.Setting, Content.Type, Repo}
+alias DocGen.{
+  Accounts.User,
+  Accounts.Setting,
+  Content.Type,
+  Content.Segment,
+  Repo
+}
 
 # seed the administrator
 
@@ -24,6 +30,11 @@ end
 
 for t <- ["Interview", "B-roll"] do
   Repo.get_by(Type, name: t) || Repo.insert!(%Type{name: t})
+end
+
+# seed the segments
+for t <- ["beginning", "middle", "end"] do
+  Repo.get_by(Segment, name: t) || Repo.insert!(%Segment{name: t})
 end
 
 # seed the settings
