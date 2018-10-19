@@ -48,7 +48,6 @@ init socketUri =
 
 type Msg
     = StartTag String
-    | SubmitTag
     | PhoenixMsg (Phoenix.Socket.Msg Msg)
     | AddTag Encode.Value
     | PopulateTags Encode.Value
@@ -56,6 +55,7 @@ type Msg
     | JoinChannel
     | DeleteTag String
     | RemoveTag Encode.Value
+    | KeyDown Int
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -70,29 +70,6 @@ update msg model =
 
         StartTag tag ->
             ( { model | tagInProgress = tag }, Cmd.none )
-
-        SubmitTag ->
-            let
-                a =
-                    Debug.log ("About to submit the tag")
-
-                payload =
-                    Encode.object
-                        [ ( "name", Encode.string model.tagInProgress )
-                        ]
-
-                phxPush =
-                    Phoenix.Push.init "new_tag" "tag:lobby"
-                        |> Phoenix.Push.withPayload payload
-                        |> Phoenix.Push.onOk AddTag
-                        |> Phoenix.Push.onError HandleSendError
-
-                ( phxSocket, phxCmd ) =
-                    Phoenix.Socket.push phxPush model.phxSocket
-            in
-                ( { model | phxSocket = phxSocket, tagInProgress = "" }
-                , Cmd.map PhoenixMsg phxCmd
-                )
 
         AddTag raw ->
             let
@@ -177,6 +154,31 @@ update msg model =
 
                     Err error ->
                         ( model, Cmd.none )
+        KeyDown key ->
+          if key == 13 then
+            let
+                a =
+                    Debug.log ("About to submit the tag")
+
+                payload =
+                    Encode.object
+                        [ ( "name", Encode.string model.tagInProgress )
+                        ]
+
+                phxPush =
+                    Phoenix.Push.init "new_tag" "tag:lobby"
+                        |> Phoenix.Push.withPayload payload
+                        |> Phoenix.Push.onOk AddTag
+                        |> Phoenix.Push.onError HandleSendError
+
+                ( phxSocket, phxCmd ) =
+                    Phoenix.Socket.push phxPush model.phxSocket
+            in
+                ( { model | phxSocket = phxSocket, tagInProgress = "" }
+                , Cmd.map PhoenixMsg phxCmd
+                )
+          else
+            ( model, Cmd.none )
 
 
 subscriptions : Model -> Sub Msg
@@ -189,6 +191,10 @@ joinChannel =
     Task.succeed JoinChannel
         |> Task.perform identity
 
+
+onKeyDown : (Int -> msg) -> Attribute msg
+onKeyDown tagger =
+  on "keydown" (Decode.map tagger keyCode)
 
 
 ---- VIEW ----
@@ -222,19 +228,14 @@ view model =
                 |> List.map drawTag
     in
         div []
-            [ ul [] (model.tagInProgress :: model.tags |> drawTags)
+            [ ul [] (drawTags model.tags)
             , h4 [] [ text "Create New Tags" ]
             , input
                 [ onInput StartTag
+                , onKeyDown KeyDown
                 , value model.tagInProgress
                 ]
                 []
-            , button
-                [ onClick SubmitTag
-                , attribute "type" "button"
-                , attribute "autofocus" "autofocus"
-                ]
-                [ text "Create" ]
             ]
 
 

@@ -26,3 +26,10 @@ if (video_source) {
 function buildSocketUri() {
   return window.location.host + "/socket/websocket?token=" + window.userToken
 }
+
+window.submitIfValid = function() {
+  let [form] = document.getElementsByTagName('form')
+  if (form.reportValidity())
+    form.submit()
+  return false;
+}
