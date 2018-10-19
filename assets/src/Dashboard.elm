@@ -15,32 +15,36 @@ import Phoenix.Push
 
 ---- MODEL ----
 
+
 type alias Video =
-  { weight : Int
-  , duration : Int
-  , clip_type : String
-  , id : Int
-  , interviewee : String
-  , path : String
-  , tags : List String
-  , title : String
-  }
+    { weight : Int
+    , duration : Int
+    , clip_type : String
+    , id : Int
+    , interviewee : String
+    , path : String
+    , tags : List String
+    , title : String
+    }
+
 
 decodeVideo : Decode.Decoder Video
 decodeVideo =
-  Json.Decode.Pipeline.decode Video
-  |> Json.Decode.Pipeline.required "weight" (Decode.int)
-  |> Json.Decode.Pipeline.required "duration" (Decode.int)
-  |> Json.Decode.Pipeline.required "clip_type" (Decode.string)
-  |> Json.Decode.Pipeline.required "id" (Decode.int)
-  |> Json.Decode.Pipeline.required "interviewee" (Decode.string)
-  |> Json.Decode.Pipeline.required "path" (Decode.string)
-  |> Json.Decode.Pipeline.required "tags" (Decode.list Decode.string)
-  |> Json.Decode.Pipeline.required "title" (Decode.string)
+    Json.Decode.Pipeline.decode Video
+        |> Json.Decode.Pipeline.required "weight" (Decode.int)
+        |> Json.Decode.Pipeline.required "duration" (Decode.int)
+        |> Json.Decode.Pipeline.required "clip_type" (Decode.string)
+        |> Json.Decode.Pipeline.required "id" (Decode.int)
+        |> Json.Decode.Pipeline.required "interviewee" (Decode.string)
+        |> Json.Decode.Pipeline.required "path" (Decode.string)
+        |> Json.Decode.Pipeline.required "tags" (Decode.list Decode.string)
+        |> Json.Decode.Pipeline.required "title" (Decode.string)
+
 
 videoListDecoder : Decode.Decoder (List Video)
 videoListDecoder =
-  Decode.list decodeVideo
+    Decode.list decodeVideo
+
 
 type alias Model =
     { videos : List Video
@@ -58,7 +62,6 @@ init socketUri =
         initSocket =
             Phoenix.Socket.init ("ws://" ++ socketUri)
                 |> Phoenix.Socket.withDebug
-                -- |> Phoenix.Socket.on "new_tag" "tag:lobby" AddTag
 
         model =
             { videos = []
@@ -116,17 +119,18 @@ update msg model =
         PopulateVideos raw ->
             let
                 msg =
-                  Decode.decodeValue (Decode.field "videos" videoListDecoder) raw
+                    Decode.decodeValue (Decode.field "videos" videoListDecoder) raw
             in
                 case msg of
                     Ok message ->
-                      Debug.log (toString message)
-                        ( { model | videos = message, visibleVideos = message }
-                        , Cmd.none )
+                        Debug.log (toString message)
+                            ( { model | videos = message, visibleVideos = message }
+                            , Cmd.none
+                            )
 
                     Err error ->
-                      Debug.log(error)
-                        ( model, Cmd.none )
+                        Debug.log (error)
+                            ( model, Cmd.none )
 
 
 subscriptions : Model -> Sub Msg
@@ -148,26 +152,31 @@ drawVideo : Video -> Html Msg
 drawVideo video =
     div [ attribute "class" "video-entry" ]
         [ img [] []
-        , p [] [ span [ attribute "class" "highlight" ]
-                      [ text "title: " ]
-               , text video.title
-               ]
-        , p [] [ span [ attribute "class" "highlight" ]
-                      [ text "interviewee: " ]
-               , text video.interviewee
-               ]
-        , p [] [ span [ attribute "class" "highlight" ]
-                      [ text "length: " ]
-               , text ((toString video.duration) ++ " seconds")
-               ]
-        , p [] [ span [ attribute "class" "highlight" ]
-                      [ text "keywords: " ]
-               , text (String.join ", " video.tags)
-               ]
-        , p [] [ span [ attribute "class" "highlight" ]
-                      [ text "type: " ]
-               , text video.clip_type
-               ]
+        , p []
+            [ span [ attribute "class" "highlight" ]
+                [ text "title: " ]
+            , text video.title
+            ]
+        , p []
+            [ span [ attribute "class" "highlight" ]
+                [ text "interviewee: " ]
+            , text video.interviewee
+            ]
+        , p []
+            [ span [ attribute "class" "highlight" ]
+                [ text "length: " ]
+            , text ((toString video.duration) ++ " seconds")
+            ]
+        , p []
+            [ span [ attribute "class" "highlight" ]
+                [ text "keywords: " ]
+            , text (String.join ", " video.tags)
+            ]
+        , p []
+            [ span [ attribute "class" "highlight" ]
+                [ text "type: " ]
+            , text video.clip_type
+            ]
         , i
             [ attribute "class" "fa fa-pencil-square-o"
             ]
@@ -175,15 +184,21 @@ drawVideo video =
         ]
 
 
+drawSearchBar : HTML Msg
+drawSearchBar =
+    div []
+
+
 view : Model -> Html Msg
 view model =
     let
         drawVideos videos =
-          videos
-            |> List.map drawVideo
+            videos
+                |> List.map drawVideo
     in
         div []
-            [ div [] (model.visibleVideos |> drawVideos)
+            [ (drawSearchBar)
+            , div [] (model.visibleVideos |> drawVideos)
             ]
 
 
