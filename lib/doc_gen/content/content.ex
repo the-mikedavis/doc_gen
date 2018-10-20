@@ -29,6 +29,9 @@ defmodule DocGen.Content do
     Repo.all(from v in Video, select: v, preload: [:interviewee, :segment, :tags, :type])
   end
 
+  @spec count_videos() :: non_neg_integer()
+  def count_videos, do: Repo.aggregate(Video, :count, :id)
+
   @doc """
   Gets a single video.
 

@@ -2,13 +2,19 @@ defmodule DocGenWeb.SettingsController do
   use DocGenWeb, :controller
   use Private
 
-  alias DocGen.Accounts
+  alias DocGen.{Accounts, Content}
 
   def index(conn, _params) do
     settings = Accounts.get_settings()
     changeset = Accounts.change_settings(settings)
+    video_count = Content.count_videos()
 
-    render(conn, "index.html", changeset: changeset, settings: settings)
+    if video_count < settings.length do
+      put_flash(conn, :error, "There aren't enough videos for #{settings.length} clips!")
+    else
+      conn
+    end
+    |> render("index.html", changeset: changeset, settings: settings)
   end
 
   def update(conn, %{"id" => id, "setting" => setting_params}) do
