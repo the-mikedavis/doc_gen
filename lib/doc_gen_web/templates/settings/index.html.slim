@@ -14,12 +14,5 @@ h2 Settings
     = textarea(f, :copy, placeholder: "Lorem ipsum...")
 
   div
-    h3 Tag List
-    div#live-tags
-
-  div
     = link("Reset", to: Routes.settings_path(@conn, :index))
     button type="button" onclick="submitIfValid()" Save
-
-javascript:
-  window.userToken = "#{assigns[:user_token]}";
