@@ -1,0 +1,20 @@
+h1 Listing Tags
+
+table
+  thead
+    tr
+      th Name
+      th Weight
+      th
+  tbody
+    = for tag <- @tags do
+      tr
+        td = tag.name
+        td = tag.weight
+
+        td
+          = link("Show", to: Routes.tag_path(@conn, :show, tag))
+          = link("Edit", to: Routes.tag_path(@conn, :edit, tag))
+          = link("Delete", to: Routes.tag_path(@conn, :delete, tag), method: :delete, data: [confirm: "Are you sure?"])
+
+span = link("New Tag", to: Routes.tag_path(@conn, :new))

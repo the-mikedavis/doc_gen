@@ -33,6 +33,7 @@ defmodule DocGenWeb.Router do
 
     resources("/user", UserController)
     resources("/videos", VideoController)
+    resources("/tags", TagController)
     resources("/settings", SettingsController, only: [:index, :update])
   end
 
