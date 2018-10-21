@@ -2,7 +2,7 @@ defmodule DocGenWeb.WatchController do
   use DocGenWeb, :controller
   use Private
 
-  alias DocGen.{Content, Content.Copy, Content.Random}
+  alias DocGen.{Accounts, Content, Content.Copy, Content.Random}
 
   plug(:copy when action == :index)
   plug(:load_videos when action in [:index, :show])
@@ -17,12 +17,10 @@ defmodule DocGenWeb.WatchController do
 
   def show(conn, params) do
     tags = parse_tags(params)
+    settings = Accounts.get_settings()
+    video_ids = Random.give(tags, settings.length)
 
-    [first | video_ids] =
-      tags
-      |> Random.give(nil)
-
-    render(conn, "show.html", tags: tags, video_ids: video_ids, first: first)
+    render(conn, "show.html", tags: tags, video_ids: video_ids)
   end
 
   def choose(conn, %{"video" => %{"id" => id}}) do

@@ -315,4 +315,8 @@ defmodule DocGen.Content do
   def list_segments do
     Repo.all(Segment)
   end
+
+  def list_segments_with_videos do
+    Repo.all(from s in Segment, select: s, preload: :videos)
+  end
 end
