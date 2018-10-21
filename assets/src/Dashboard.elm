@@ -130,9 +130,9 @@ update msg model =
             in
                 case msg of
                     Ok message ->
-                          ( { model | videos = message, visibleVideos = message }
-                          , Cmd.none
-                          )
+                        ( { model | videos = message, visibleVideos = message }
+                        , Cmd.none
+                        )
 
                     Err error ->
                         Debug.log (error)
@@ -145,6 +145,7 @@ update msg model =
             case model.editId of
                 Nothing ->
                     ( { model | editId = Just video.id }, Cmd.none )
+
                 Just id ->
                     if id == video.id then
                         ( { model | editId = Nothing }, Cmd.none )
@@ -216,26 +217,31 @@ drawSearchBar : String -> Html Msg
 drawSearchBar searchString =
     div []
         [ text "Search: "
-        , input [ attribute "type" "text"
-                , onInput StartSearch
-                , value searchString
-                ]
-                [ ]
+        , input
+            [ attribute "type" "text"
+            , onInput StartSearch
+            , value searchString
+            ]
+            []
         ]
+
 
 drawEditPanel : Maybe Int -> Html Msg
 drawEditPanel editId =
-  case editId of
-      Nothing ->
-        div [ attribute "class" "edit-panel" ]
-            [ ]
-      Just id ->
-        div [ attribute "class" "edit-panel" ]
-            [ iframe [ attribute "src" ("/admin/videos/" ++ (toString id) ++ "/edit") ] [ ]
-            , i [ attribute "class" "fas fa-times"
-                , onClick (CloseEdit id) ]
+    case editId of
+        Nothing ->
+            div [ attribute "class" "edit-panel" ]
                 []
-            ]
+
+        Just id ->
+            div [ attribute "class" "edit-panel" ]
+                [ iframe [ attribute "src" ("/admin/videos/" ++ (toString id) ++ "/edit") ] []
+                , i
+                    [ attribute "class" "fas fa-times"
+                    , onClick (CloseEdit id)
+                    ]
+                    []
+                ]
 
 
 view : Model -> Html Msg
@@ -255,24 +261,29 @@ view model =
 
 ---- PROGRAM ----
 
+
 allText : Video -> List String
 allText video =
     let
         tagsText =
             video.tags
+
         titleText =
             String.words video.title
+
         otherTexts =
-            [video.interviewee, video.title, toString video.segment, toString video.duration, video.clip_type]
+            [ video.interviewee, video.title, toString video.segment, toString video.duration, video.clip_type ]
     in
-        tagsText ++ titleText ++ otherTexts
+        tagsText
+            ++ titleText
+            ++ otherTexts
             |> List.map String.toLower
 
 
 searchFilter : Model -> List Video
 searchFilter model =
-  model.videos
-    |> List.filter (\vText -> List.any (String.contains (String.toLower model.searchString)) (allText vText))
+    model.videos
+        |> List.filter (\vText -> List.any (String.contains (String.toLower model.searchString)) (allText vText))
 
 
 main : Program String Model Msg

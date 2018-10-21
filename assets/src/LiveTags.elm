@@ -16,11 +16,13 @@ import Array
 
 ---- MODEL ----
 
+
 type alias Tag =
     { name : String
     , weight : Int
     , active : Bool
     }
+
 
 decodeTag : Decode.Decoder Tag
 decodeTag =
@@ -40,6 +42,7 @@ type alias Flags =
     , uri : String
     }
 
+
 type alias Model =
     { tags : List Tag
     , tagInProgress : String
@@ -51,7 +54,8 @@ type alias Model =
 init : Flags -> ( Model, Cmd Msg )
 init flags =
     let
-        { uri, id } = flags
+        { uri, id } =
+            flags
 
         channel =
             Phoenix.Channel.init "tag:lobby"
@@ -127,7 +131,7 @@ update msg model =
         JoinChannel ->
             let
                 payload =
-                    (Encode.object [ ( "video_id", Encode.int model.videoId ) ] )
+                    (Encode.object [ ( "video_id", Encode.int model.videoId ) ])
 
                 channel =
                     Phoenix.Channel.init "tag:lobby"
@@ -193,35 +197,42 @@ update msg model =
         ToggleTag tag ->
             let
                 tags =
-                    List.map (\t -> if t.name == tag.name then { t | active = not t.active } else t) model.tags
+                    List.map
+                        (\t ->
+                            if t.name == tag.name then
+                                { t | active = not t.active }
+                            else
+                                t
+                        )
+                        model.tags
             in
                 ( { model | tags = tags }, Cmd.none )
 
         KeyDown key ->
-          if key == 13 then
-            let
-                a =
-                    Debug.log ("About to submit the tag")
+            if key == 13 then
+                let
+                    a =
+                        Debug.log ("About to submit the tag")
 
-                payload =
-                    Encode.object
-                        [ ( "name", Encode.string model.tagInProgress )
-                        ]
+                    payload =
+                        Encode.object
+                            [ ( "name", Encode.string model.tagInProgress )
+                            ]
 
-                phxPush =
-                    Phoenix.Push.init "new_tag" "tag:lobby"
-                        |> Phoenix.Push.withPayload payload
-                        |> Phoenix.Push.onOk AddTag
-                        |> Phoenix.Push.onError HandleSendError
+                    phxPush =
+                        Phoenix.Push.init "new_tag" "tag:lobby"
+                            |> Phoenix.Push.withPayload payload
+                            |> Phoenix.Push.onOk AddTag
+                            |> Phoenix.Push.onError HandleSendError
 
-                ( phxSocket, phxCmd ) =
-                    Phoenix.Socket.push phxPush model.phxSocket
-            in
-                ( { model | phxSocket = phxSocket, tagInProgress = "" }
-                , Cmd.map PhoenixMsg phxCmd
-                )
-          else
-            ( model, Cmd.none )
+                    ( phxSocket, phxCmd ) =
+                        Phoenix.Socket.push phxPush model.phxSocket
+                in
+                    ( { model | phxSocket = phxSocket, tagInProgress = "" }
+                    , Cmd.map PhoenixMsg phxCmd
+                    )
+            else
+                ( model, Cmd.none )
 
 
 subscriptions : Model -> Sub Msg
@@ -237,7 +248,8 @@ joinChannel =
 
 onKeyDown : (Int -> msg) -> Attribute msg
 onKeyDown tagger =
-  on "keydown" (Decode.map tagger keyCode)
+    on "keydown" (Decode.map tagger keyCode)
+
 
 
 ---- VIEW ----
@@ -285,6 +297,7 @@ view model =
 
 
 ---- PROGRAM ----
+
 
 main : Program Flags Model Msg
 main =
