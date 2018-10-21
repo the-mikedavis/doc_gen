@@ -10,7 +10,8 @@ addons:
 env:
   global:
     - PGPORT=5432
-    - MIX_ENV=test VERBOSE_TEST=true
+    - MIX_ENV=test
+    - VERBOSE_TEST=true
 
 before_script:
   - nvm install 8.9.0
@@ -39,7 +40,7 @@ deploy:
   skip_cleanup: true
   provider: releases
   api_key:
-    secure: al3e04i8V7Jmgq3OaUJLti9YQ9JwGABB982baoBMVJDvHT2qOqGSh0UNORyR/YlDpacKDuiyTDwyF5Hzgbii4XMW4mSR3wodJ014H1tWuU7eP0emQ09SZaQN9oHaeRyfhcWzxRArvX/o1NJUl/WZz5PSn+7uW8Ap06SLPFkzu+WGoF3bBtEQqySt4aXUbYuLNAsAbzdSYpfYti+BXW1+wKizsFBslFmfmiylp0Ai6hzPkZP7lO+ZxXWykAFuc5RPMTtY4BiRJAKU3bRfvYP7DX5VhS/NFg91ddPlqPwZ01VccNIye8RB3VzeLSgpw2zNBZJCOy1Sc7O3mW8kBA6ARMCrZIL92rk/OD5DIabAK7mMgz7JrazgoIG5fIIqwlLVWIaMbt+GhT0JLLujXJZgp9dKdD03XfqASPIQhBVUlbzStTW3ELsWv8VTztfq9pxvoDJN3LiFk9GFSe3rp/i1uRnJ42i3DXJbcpuk9LE/aXQFrSC+ijqzSIIakWQHF3nrHfMchJS80kALyz+bY7ASSOSzezp5VrAaA4cH7HWyv1p1w2sYMg7O2LqgNTzvVXXJkLPgF58nZ1+rVeBV6yhJtJ1z8eMTkz5X/QpiTh6EF7Grb/64iWH40zbMcc4YCF/vv7lWR2bel8llNSpnwRXWHnbKJ/oeFZQk1vMRG/FNpaA=
+    secure: P2gVtbShl6zW+4qSoEcQifLWcU85/sL12AmCMzxhoe84NS3PLt/PCmJpjT4Z5cU1zfqLetj9pCNiZOsmzOzHeFlab9lhzp+1WvOybB8C1ZLgwWncpcJQkoW6cwWcruJGjGgstg/MVjlPcPNbNbBqTWaPaJPGKVsR3RNQ9wCbLeNe3RDnuVjW55L/ZipfT1+SHI5NkD0l1A7VOEqmZ7OVpPedmuJZ2sj+hqy0XBNMHa5z7QgwvwI7d53iBJh3BYhFjuKTPmW5Dq6t+2P2/D+DyMiOSK6FDibgNIZ/5cNjMrl+riU/dD/yn859LGt6gd1ADOOUQ1XUM0BEmoHUjPe2rvDxNdeF2tzLzkIlXHJkz9lwfHDJEGRyfohZatvws8fJ97vayahF9ovrmXlN8kw/HWeZma5ShGdmMeEpAYr1WTFwEAdXM5rmRAPGFLQlbM8h9CCNVy/k1ZrtTzOOT+HyNB6GCVSA8t1/y078A9gXFEFSSrozNt8pov8TjmLjM4DsodpCSdb6ZAVUsIRJ8J3CR5qEa8AoieEHN5vZtfUKC6DKF6DWOPIzboUgTij4nBxYy6HTXlvtV3UepwpobGdCVKahr5vHLEmLixiV7OWIm6eYT7U/QiA2gdXoKpsXBe9Zn6fqCqDG0vlzDL5ATnJnwwr8WrIMbrmm1Y+0PBfp1qc=
   file_glob: true
   file: _build/prod/rel/doc_gen/releases/*/*.tar.gz
   on:
