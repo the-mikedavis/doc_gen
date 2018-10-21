@@ -1,4 +1,4 @@
-# DocGen
+# DocGen [![Build Status](https://travis-ci.com/the-mikedavis/doc_gen.svg?branch=master)](https://travis-ci.com/the-mikedavis/doc_gen)
 
 A reduced-bias way to create documentaries.
 
