@@ -14,9 +14,13 @@ import Phoenix.Push
 
 ---- MODEL ----
 
+type alias Tag =
+    { name : String
+    , active : Bool
+    }
 
 type alias Model =
-    { tags : List String
+    { tags : List Tag
     , tagInProgress : String
     , phxSocket : Phoenix.Socket.Socket Msg
     }
@@ -53,9 +57,17 @@ type Msg
     | PopulateTags Encode.Value
     | HandleSendError Encode.Value
     | JoinChannel
-    | DeleteTag String
+    | DeleteTag Tag
     | RemoveTag Encode.Value
+    | ToggleTag Tag
     | KeyDown Int
+
+
+createTag : String -> Tag
+createTag name =
+    { name = name
+    , active = False
+    }
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -78,20 +90,13 @@ update msg model =
             in
                 case msg of
                     Ok new_tag ->
-                        ( { model | tags = new_tag :: model.tags }, Cmd.none )
+                        ( { model | tags = (createTag new_tag) :: model.tags }, Cmd.none )
 
                     Err error ->
                         ( model, Cmd.none )
 
         HandleSendError _ ->
-            let
-                message =
-                    "Failed to Send Message"
-
-                a =
-                    Debug.log ("Failed to send message")
-            in
-                ( { model | tags = message :: model.tags }, Cmd.none )
+            ( model, Cmd.none )
 
         JoinChannel ->
             let
@@ -113,7 +118,11 @@ update msg model =
             in
                 case msg of
                     Ok message ->
-                        ( { model | tags = message }, Cmd.none )
+                        let
+                            tags =
+                                List.map createTag message
+                        in
+                            ( { model | tags = tags }, Cmd.none )
 
                     Err error ->
                         ( model, Cmd.none )
@@ -125,7 +134,7 @@ update msg model =
 
                 payload =
                     Encode.object
-                        [ ( "name", Encode.string tag )
+                        [ ( "name", Encode.string tag.name )
                         ]
 
                 phxPush =
@@ -148,12 +157,20 @@ update msg model =
             in
                 case msg of
                     Ok tag ->
-                        ( { model | tags = List.filter (\t -> t /= tag) model.tags }
+                        ( { model | tags = List.filter (\t -> t.name /= tag) model.tags }
                         , Cmd.none
                         )
 
                     Err error ->
                         ( model, Cmd.none )
+
+        ToggleTag tag ->
+            let
+                tags =
+                    List.map (\t -> if t.name == tag.name then { t | active = not t.active } else t) model.tags
+            in
+                ( { model | tags = tags }, Cmd.none )
+
         KeyDown key ->
           if key == 13 then
             let
@@ -200,16 +217,18 @@ onKeyDown tagger =
 ---- VIEW ----
 
 
-drawTag : String -> Html Msg
+drawTag : Tag -> Html Msg
 drawTag tag =
     li []
         [ input
-            [ attribute "id" tag
-            , attribute "name" ("video[" ++ (toString tag) ++ "]")
-            , attribute "type" "checkbox"
+            [ attribute "id" tag.name
+            , attribute "name" ("video[" ++ (toString tag.name) ++ "]")
+            , type_ "checkbox"
+            , checked tag.active
+            , onClick (ToggleTag tag)
             ]
             []
-        , text tag
+        , text tag.name
         , i
             [ attribute "class" "fas fa-times"
             , onClick (DeleteTag tag)
@@ -223,8 +242,7 @@ view model =
     let
         drawTags tags =
             tags
-                |> List.filter (\t -> String.length t > 0)
-                |> List.sort
+                |> List.sortBy (\t -> t.name)
                 |> List.map drawTag
     in
         div []

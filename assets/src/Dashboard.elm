@@ -151,7 +151,7 @@ update msg model =
                     else
                         ( { model | editId = Just id }, Cmd.none )
 
-        CloseEdit id ->
+        CloseEdit _ ->
             ( { model | editId = Nothing }, Cmd.none )
 
 
