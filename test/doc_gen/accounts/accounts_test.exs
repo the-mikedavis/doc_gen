@@ -25,14 +25,6 @@ defmodule DocGen.AccountsTest do
       user
     end
 
-    test "list_user/0 returns all user" do
-      user = user_fixture()
-
-      for u <- Accounts.list_user() do
-        assert u.id == user.id
-      end
-    end
-
     test "get_user!/1 returns the user with given id" do
       user = user_fixture()
       assert Accounts.get_user!(user.id).id == user.id
