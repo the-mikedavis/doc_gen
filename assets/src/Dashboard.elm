@@ -51,6 +51,7 @@ type alias Model =
     , visibleVideos : List Video
     , phxSocket : Phoenix.Socket.Socket Msg
     , searchString : String
+    , editId : Maybe Int
     }
 
 
@@ -69,6 +70,7 @@ init socketUri =
             , visibleVideos = []
             , phxSocket = initSocket
             , searchString = ""
+            , editId = Nothing
             }
     in
         ( model, joinChannel )
@@ -84,6 +86,7 @@ type Msg
     | HandleSendError Encode.Value
     | JoinChannel
     | StartSearch String
+    | EditVideo Video
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -137,6 +140,15 @@ update msg model =
         StartSearch searchString ->
             ( { model | searchString = searchString }, Cmd.none )
 
+        EditVideo video ->
+            case model.editId of
+                Nothing ->
+                    ( { model | editId = Just video.id }, Cmd.none )
+                Just id ->
+                    if id == video.id then
+                        ( { model | editId = Nothing }, Cmd.none )
+                    else
+                        ( { model | editId = Just id }, Cmd.none )
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
@@ -189,7 +201,7 @@ drawVideo video =
             ]
         , i
             [ attribute "class" "far fa-edit"
-            -- , onClick Edit
+            , onClick (EditVideo video)
             ]
             []
         ]
@@ -206,6 +218,16 @@ drawSearchBar searchString =
                 [ ]
         ]
 
+drawEditPanel : Maybe Int -> Html Msg
+drawEditPanel editId =
+  case editId of
+      Nothing ->
+        div [ attribute "class" "edit-panel" ]
+            [ ]
+      Just id ->
+        div [ attribute "class" "edit-panel" ]
+            [ iframe [ attribute "src" ("/admin/videos/" ++ (toString id) ++ "/edit") ] [ ] ]
+
 
 view : Model -> Html Msg
 view model =
@@ -216,6 +238,7 @@ view model =
     in
         div []
             [ (drawSearchBar model.searchString)
+            , (drawEditPanel model.editId)
             , div [] (model |> searchFilter |> drawVideos)
             ]
 
