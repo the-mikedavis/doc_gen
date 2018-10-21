@@ -6,6 +6,7 @@ import Html.Events exposing (..)
 import Html.Attributes exposing (..)
 import Json.Encode as Encode
 import Json.Decode as Decode
+import Json.Decode.Pipeline
 import Task
 import Phoenix.Socket
 import Phoenix.Channel
@@ -16,8 +17,22 @@ import Phoenix.Push
 
 type alias Tag =
     { name : String
+    , weight : Int
     , active : Bool
     }
+
+decodeTag : Decode.Decoder Tag
+decodeTag =
+    Json.Decode.Pipeline.decode Tag
+        |> Json.Decode.Pipeline.required "name" (Decode.string)
+        |> Json.Decode.Pipeline.required "weight" (Decode.int)
+        |> Json.Decode.Pipeline.required "active" (Decode.bool)
+
+
+tagListDecoder : Decode.Decoder (List Tag)
+tagListDecoder =
+    Decode.list decodeTag
+
 
 type alias Model =
     { tags : List Tag
@@ -67,6 +82,7 @@ createTag : String -> Tag
 createTag name =
     { name = name
     , active = False
+    , weight = 1
     }
 
 
@@ -114,15 +130,11 @@ update msg model =
         PopulateTags raw ->
             let
                 msg =
-                    Decode.decodeValue (Decode.field "tags" (Decode.list Decode.string)) raw
+                    Decode.decodeValue (Decode.field "tags" tagListDecoder) raw
             in
                 case msg of
                     Ok message ->
-                        let
-                            tags =
-                                List.map createTag message
-                        in
-                            ( { model | tags = tags }, Cmd.none )
+                        ( { model | tags = message }, Cmd.none )
 
                     Err error ->
                         ( model, Cmd.none )

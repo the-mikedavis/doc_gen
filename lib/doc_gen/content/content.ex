@@ -47,6 +47,9 @@ defmodule DocGen.Content do
 
   """
   def get_video!(id, opts \\ [])
+  def get_video!(id, [preload: :tags]) do
+    Repo.one(from v in Video, select: v, where: [id: ^id], preload: :tags)
+  end
   def get_video!(id, [preload: true]) do
     Repo.one(from v in Video, select: v, where: [id: ^id], preload: [:interviewee, :segment, :tags, :type])
   end

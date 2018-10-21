@@ -50,12 +50,12 @@ defmodule DocGen.Content.Random do
     defp take_random({videos, number_to_take}, keywords) do
       {videos, _left_behind_videos} =
         Enum.reduce(1..number_to_take, {[], videos}, fn
+          _n, {_taken, []} = acc -> acc
           _n, {taken, videos} ->
             hot_take = take_a_random(videos, keywords)
             IO.inspect(hot_take)
 
             {[hot_take | taken], Enum.reject(videos, & &1.id == hot_take.id)}
-          _n, {taken, []} = acc -> acc
         end)
 
       videos

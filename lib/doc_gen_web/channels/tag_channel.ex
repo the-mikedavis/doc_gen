@@ -1,10 +1,20 @@
 defmodule DocGenWeb.TagChannel do
   use DocGenWeb, :channel
+  use Private
 
   alias DocGen.Content
 
-  def join("tag:lobby", _payload, socket) do
-    tags = Enum.map(Content.list_tags(), fn %{name: name} -> name end)
+  def join("tag:lobby", payload, socket) do
+    video =
+      case payload do
+        %{video_id: id} -> Content.get_video!(id, preload: :tags)
+        _ -> %{tags: []}
+      end
+
+    tags =
+      Content.list_tags()
+      |> Enum.map(&Map.take(&1, [:name, :weight]))
+      |> activate_tags(video)
 
     {:ok, %{tags: tags}, socket}
   end
@@ -24,5 +34,13 @@ defmodule DocGenWeb.TagChannel do
     |> Content.delete_tag()
 
     {:reply, {:ok, payload}, socket}
+  end
+
+  private do
+    defp activate_tags(tags, %{tags: vtags}) do
+      Enum.map(tags, fn t ->
+        Map.put(t, :active, t.name in vtags)
+      end)
+    end
   end
 end
