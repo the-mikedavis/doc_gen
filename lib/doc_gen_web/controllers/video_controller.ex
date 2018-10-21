@@ -43,10 +43,15 @@ defmodule DocGenWeb.VideoController do
   end
 
   def edit(conn, %{"id" => id}) do
-    video = Content.get_video!(id)
+    video = Content.get_video!(id, preload: true)
     changeset = Content.change_video(video)
     ints = Content.list_interviewees()
-    render(conn, "edit.html", video: video, changeset: changeset, interviewees: ints)
+    types = Content.list_types()
+    segs = Content.list_segments()
+
+    conn
+    |> put_layout(:frame)
+    |> render("edit.html", video: video, changeset: changeset, interviewees: ints, types: types, segments: segs)
   end
 
   def update(conn, %{"id" => id, "video" => video_params}) do

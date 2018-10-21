@@ -46,7 +46,11 @@ defmodule DocGen.Content do
       ** (Ecto.NoResultsError)
 
   """
-  def get_video!(id), do: Repo.get!(Video, id)
+  def get_video!(id, opts \\ [])
+  def get_video!(id, [preload: true]) do
+    Repo.one(from v in Video, select: v, where: [id: ^id], preload: [:interviewee, :segment, :tags, :type])
+  end
+  def get_video!(id, _opts), do: Repo.get!(Video, id)
 
   @doc """
   Creates a video.

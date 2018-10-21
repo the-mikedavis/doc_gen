@@ -87,6 +87,7 @@ type Msg
     | JoinChannel
     | StartSearch String
     | EditVideo Video
+    | CloseEdit Int
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -149,6 +150,10 @@ update msg model =
                         ( { model | editId = Nothing }, Cmd.none )
                     else
                         ( { model | editId = Just id }, Cmd.none )
+
+        CloseEdit id ->
+            ( { model | editId = Nothing }, Cmd.none )
+
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
@@ -226,7 +231,11 @@ drawEditPanel editId =
             [ ]
       Just id ->
         div [ attribute "class" "edit-panel" ]
-            [ iframe [ attribute "src" ("/admin/videos/" ++ (toString id) ++ "/edit") ] [ ] ]
+            [ iframe [ attribute "src" ("/admin/videos/" ++ (toString id) ++ "/edit") ] [ ]
+            , i [ attribute "class" "fas fa-times"
+                , onClick (CloseEdit id) ]
+                []
+            ]
 
 
 view : Model -> Html Msg

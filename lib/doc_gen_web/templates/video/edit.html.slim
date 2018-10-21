@@ -1,6 +1,39 @@
 h1 Edit Video
 
-= render("form.html", Map.put(assigns, :action, Routes.video_path(@conn, :update, @video)))
+= form_for @changeset, Routes.video_path(@conn, :update, @video), [multipart: true], fn f ->
+  = if @changeset.action do
+    div.alert.alert-danger
+      Oops, something went wrong! Please check the errors below.
 
-span
-  = link("Back", to: Routes.video_path(@conn, :index))
+  div
+    = label f, :title
+    = text_input f, :title, required: true
+    = error_tag f, :title
+
+  div
+    = label f, :type_id
+    = select f, :type_id, selection(@types)
+    = error_tag f, :type_id
+
+  div
+    = label f, :segment_id
+    = select f, :segment_id, selection(@segments)
+    = error_tag f, :segment_id
+
+  div
+    = label f, :interviewee_name
+    = text_input f, :interviewee_name, required: true, list: "interviewees", value: @video.interviewee.name
+    // Show the available interviewees
+    datalist#interviewees
+      = for interviewee <- @interviewees do
+        option value="#{interviewee.name}"
+    = error_tag f, :interviewee_name
+
+  h3 Tags
+  div#live-tags
+
+  div
+    button type="button" onclick="submitIfValid()" Save
+
+javascript:
+  window.userToken = "#{assigns[:user_token]}";
