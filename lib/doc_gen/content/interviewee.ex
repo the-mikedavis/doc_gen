@@ -2,6 +2,8 @@ defmodule DocGen.Content.Interviewee do
   use Ecto.Schema
   import Ecto.Changeset
 
+  @moduledoc "Interviewee schema: who's getting interviewed in the clip"
+
   schema "interviewees" do
     field(:name, :string)
 

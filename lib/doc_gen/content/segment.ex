@@ -2,6 +2,8 @@ defmodule DocGen.Content.Segment do
   use Ecto.Schema
   import Ecto.Changeset
 
+  @moduledoc "The segment of the video: beginning, middle, or end"
+
   alias DocGen.Content.Video
 
   schema "segments" do

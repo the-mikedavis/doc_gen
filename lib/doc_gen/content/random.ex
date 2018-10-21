@@ -57,7 +57,6 @@ defmodule DocGen.Content.Random do
 
           _n, {taken, videos} ->
             hot_take = take_a_random(videos, keywords)
-            IO.inspect(hot_take)
 
             {[hot_take | taken], Enum.reject(videos, &(&1.id == hot_take.id))}
         end)

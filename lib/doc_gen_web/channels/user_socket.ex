@@ -1,6 +1,8 @@
 defmodule DocGenWeb.UserSocket do
   use Phoenix.Socket
 
+  @moduledoc false
+
   ## Channels
   channel("tag:*", DocGenWeb.TagChannel)
   channel("video:*", DocGenWeb.VideoChannel)

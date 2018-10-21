@@ -1,6 +1,8 @@
 defmodule DocGenWeb.VideoChannel do
   use DocGenWeb, :channel
 
+  @moduledoc "The video channel used by Dashboard.elm"
+
   alias DocGen.{Content, Content.Video}
 
   def join("video:lobby", _payload, socket) do

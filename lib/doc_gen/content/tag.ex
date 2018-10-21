@@ -2,6 +2,8 @@ defmodule DocGen.Content.Tag do
   use Ecto.Schema
   import Ecto.Changeset
 
+  @moduledoc "The tags schema for identifying keywords of videos"
+
   alias DocGen.Content.Video
 
   schema "tags" do

@@ -2,6 +2,8 @@ defmodule DocGen.Accounts.Setting do
   use Ecto.Schema
   import Ecto.Changeset
 
+  @moduledoc "The settings schema which keeps track of long-persisted state"
+
   schema "settings" do
     # title of the movie
     field(:title, :string)

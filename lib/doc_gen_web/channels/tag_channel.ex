@@ -2,6 +2,8 @@ defmodule DocGenWeb.TagChannel do
   use DocGenWeb, :channel
   use Private
 
+  @moduledoc "The tag channel used by LiveTags.elm"
+
   alias DocGen.Content
 
   def join("tag:lobby", %{"video_id" => id}, socket) do

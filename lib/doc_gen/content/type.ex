@@ -2,6 +2,8 @@ defmodule DocGen.Content.Type do
   use Ecto.Schema
   import Ecto.Changeset
 
+  @moduledoc "Types of videos (B-roll and Interview)"
+
   schema "types" do
     field(:name, :string)
 

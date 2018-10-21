@@ -109,7 +109,7 @@ defmodule DocGenWeb.VideoController do
       # get the absolute path to the file
       video_path = Content.build_video_path(video)
 
-      Logger.debug("Persisting video: #{video_path}")
+      Logger.debug(fn -> "Persisting video: #{video_path}" end)
 
       unless File.exists?(video_path) do
         video_path
@@ -126,7 +126,7 @@ defmodule DocGenWeb.VideoController do
     end
 
     defp persist_file(_, _) do
-      Logger.error("Could not persist video file")
+      Logger.error(fn -> "Could not persist video file" end)
 
       :error
     end
