@@ -56,4 +56,10 @@ defmodule DocGenWeb.WatchController do
       |> Enum.map(fn {tag_name, _on?} -> tag_name end)
     end
   end
+
+  def thumb(conn, %{"id" => id}) do
+    video = Content.get_video!(id)
+
+    send_file(conn, 200, Content.build_video_path(video) <> ".jpeg")
+  end
 end

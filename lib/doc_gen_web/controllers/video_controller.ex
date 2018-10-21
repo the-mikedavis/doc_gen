@@ -107,7 +107,6 @@ defmodule DocGenWeb.VideoController do
     defp persist_file(video, %{path: temp_path}) do
       # get the absolute path to the file
       video_path = Content.build_video_path(video)
-      thumb_path = Content.build_thumb_path(video)
 
       Logger.debug("Persisting video: #{video_path}")
 
@@ -118,8 +117,8 @@ defmodule DocGenWeb.VideoController do
 
         File.copy!(temp_path, video_path)
 
-        Thumbnex.animated_gif_thumbnail(video_path, thumb_path <> ".gif")
-        Thumbnex.create_thumbnail(video_path, thumb_path <> ".jpeg")
+        Thumbnex.animated_gif_thumbnail(video_path, video_path <> ".gif")
+        Thumbnex.create_thumbnail(video_path, video_path <> ".jpeg")
       end
 
       {:ok, video_path}

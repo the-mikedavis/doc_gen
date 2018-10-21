@@ -1,4 +1,4 @@
-video.video-js(id='play' preload="none" data-setup="{}" controls)
+video.video-js(id='play' preload="auto" data-setup="{}" poster="#{Routes.watch_path(@conn, :thumb, @video)}" controls)
   source#video-source src="#{Routes.watch_path(@conn, :stream, @video)}" type="#{@video.content_type}"
   p.vjs-no-js
     | To view this video, please enable JavaScript, and consider

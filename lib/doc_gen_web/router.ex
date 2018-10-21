@@ -22,6 +22,7 @@ defmodule DocGenWeb.Router do
     pipe_through(:browser)
 
     get("/", WatchController, :index)
+    get("/thumb/:id", WatchController, :thumb)
     post("/watch", WatchController, :show)
     post("/watch/:video", WatchController, :choose)
     get("/stream/:id", WatchController, :stream)

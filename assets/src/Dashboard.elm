@@ -174,7 +174,7 @@ joinChannel =
 drawVideo : Video -> Html Msg
 drawVideo video =
     div [ attribute "class" "video-entry" ]
-        [ img [] []
+        [ img [ attribute "src" (video.path ++ ".jpeg") ] []
         , p []
             [ span [ attribute "class" "highlight" ]
                 [ text "title: " ]
