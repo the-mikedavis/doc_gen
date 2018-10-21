@@ -39,7 +39,14 @@ defmodule DocGenWeb.VideoController do
 
       {:error, %Ecto.Changeset{} = changeset} ->
         ints = Content.list_interviewees()
-        render(conn, "new.html", changeset: changeset, interviewees: ints)
+        types = Content.list_types()
+        segs = Content.list_segments()
+        render(conn, "new.html",
+          changeset: changeset,
+          interviewees: ints,
+          types: types,
+          segments: segs
+        )
     end
   end
 
@@ -98,7 +105,9 @@ defmodule DocGenWeb.VideoController do
   private do
     # save the file to a path
     defp persist_file(video, %{path: temp_path}) do
+      # get the absolute path to the file
       video_path = Content.build_video_path(video)
+      thumb_path = Content.build_thumb_path(video)
 
       Logger.debug("Persisting video: #{video_path}")
 
@@ -108,6 +117,9 @@ defmodule DocGenWeb.VideoController do
         |> File.mkdir_p!()
 
         File.copy!(temp_path, video_path)
+
+        Thumbnex.animated_gif_thumbnail(video_path, thumb_path <> ".gif")
+        Thumbnex.create_thumbnail(video_path, thumb_path <> ".jpeg")
       end
 
       {:ok, video_path}
