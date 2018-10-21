@@ -174,7 +174,11 @@ joinChannel =
 drawVideo : Video -> Html Msg
 drawVideo video =
     div [ attribute "class" "video-entry" ]
-        [ img [ attribute "src" (video.path ++ ".jpeg") ] []
+        [ img [ attribute "src" ("/thumb/" ++ (toString video.id) ++ "/jpeg")
+              , attribute "class" "dashboard-preview"
+              , attribute "onmouseover" "animateThumb(event)"
+              , attribute "onmouseout" "stillThumb(event)"
+              ] []
         , p []
             [ span [ attribute "class" "highlight" ]
                 [ text "title: " ]

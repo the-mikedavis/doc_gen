@@ -37,3 +37,11 @@ window.submitIfValid = function() {
     form.submit()
   return false;
 }
+
+window.animateThumb = function (event) {
+  event.target.setAttribute('src', event.target.src.replace('jpeg', 'gif'))
+}
+
+window.stillThumb = function (event) {
+  event.target.setAttribute('src', event.target.src.replace('gif', 'jpeg'))
+}

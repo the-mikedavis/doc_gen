@@ -6,8 +6,6 @@ defmodule DocGenWeb.WatchController do
 
   plug(:copy when action == :index)
   plug(:load_videos when action in [:index, :show])
-  # TODO: a plug that loads all the videos so they can be put in the top
-  # right corner
 
   def index(conn, _params) do
     tags = Content.list_tags()
@@ -61,5 +59,11 @@ defmodule DocGenWeb.WatchController do
     video = Content.get_video!(id)
 
     send_file(conn, 200, Content.build_video_path(video) <> ".jpeg")
+  end
+
+  def anithumb(conn, %{"id" => id}) do
+    video = Content.get_video!(id)
+
+    send_file(conn, 200, Content.build_video_path(video) <> ".gif")
   end
 end
