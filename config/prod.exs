@@ -4,7 +4,8 @@ config :doc_gen, DocGenWeb.Endpoint,
   http: [:inet6, port: "${DOC_GEN_PORT}"],
   url: [host: "${DOC_GEN_HOST}"],
   secret_key_base: "${DOC_GEN_SECRET_KEYBASE}",
-  cache_static_manifest: "priv/static/cache_manifest.json"
+  cache_static_manifest: "priv/static/cache_manifest.json",
+  server: true
 
 config :doc_gen,
   socket_token_key: "${DOC_GEN_SOCKET_TOKEN_KEY}"
