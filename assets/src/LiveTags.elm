@@ -11,6 +11,7 @@ import Task
 import Phoenix.Socket
 import Phoenix.Channel
 import Phoenix.Push
+import Array
 
 
 ---- MODEL ----
@@ -34,21 +35,29 @@ tagListDecoder =
     Decode.list decodeTag
 
 
+type alias Flags =
+    { id : Int
+    , uri : String
+    }
+
 type alias Model =
     { tags : List Tag
     , tagInProgress : String
     , phxSocket : Phoenix.Socket.Socket Msg
+    , videoId : Int
     }
 
 
-init : String -> ( Model, Cmd Msg )
-init socketUri =
+init : Flags -> ( Model, Cmd Msg )
+init flags =
     let
+        { uri, id } = flags
+
         channel =
             Phoenix.Channel.init "tag:lobby"
 
         initSocket =
-            Phoenix.Socket.init ("ws://" ++ socketUri)
+            Phoenix.Socket.init ("ws://" ++ uri)
                 |> Phoenix.Socket.withDebug
                 |> Phoenix.Socket.on "new_tag" "tag:lobby" AddTag
 
@@ -56,6 +65,7 @@ init socketUri =
             { tags = []
             , tagInProgress = ""
             , phxSocket = initSocket
+            , videoId = id
             }
     in
         ( model, joinChannel )
@@ -116,8 +126,12 @@ update msg model =
 
         JoinChannel ->
             let
+                payload =
+                    (Encode.object [ ( "video_id", Encode.int model.videoId ) ] )
+
                 channel =
                     Phoenix.Channel.init "tag:lobby"
+                        |> Phoenix.Channel.withPayload payload
                         |> Phoenix.Channel.onJoin PopulateTags
 
                 ( phxSocket, phxCmd ) =
@@ -272,8 +286,7 @@ view model =
 
 ---- PROGRAM ----
 
-
-main : Program String Model Msg
+main : Program Flags Model Msg
 main =
     programWithFlags
         { view = view

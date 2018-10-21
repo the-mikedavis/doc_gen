@@ -32,20 +32,6 @@ defmodule DocGen.Content do
   @spec count_videos() :: non_neg_integer()
   def count_videos, do: Repo.aggregate(Video, :count, :id)
 
-  @doc """
-  Gets a single video.
-
-  Raises `Ecto.NoResultsError` if the Video does not exist.
-
-  ## Examples
-
-      iex> get_video!(123)
-      %Video{}
-
-      iex> get_video!(456)
-      ** (Ecto.NoResultsError)
-
-  """
   def get_video!(id, opts \\ [])
   def get_video!(id, [preload: :tags]) do
     Repo.one(from v in Video, select: v, where: [id: ^id], preload: :tags)
@@ -53,7 +39,16 @@ defmodule DocGen.Content do
   def get_video!(id, [preload: true]) do
     Repo.one(from v in Video, select: v, where: [id: ^id], preload: [:interviewee, :segment, :tags, :type])
   end
-  def get_video!(id, _opts), do: Repo.get!(Video, id)
+  def get_video!(id, _opts), do: Repo.get(Video, id)
+
+  def get_video(id, opts \\ [])
+  def get_video(id, [preload: :tags]) do
+    Repo.one(from v in Video, select: v, where: [id: ^id], preload: :tags)
+  end
+  def get_video(id, [preload: true]) do
+    Repo.one(from v in Video, select: v, where: [id: ^id], preload: [:interviewee, :segment, :tags, :type])
+  end
+  def get_video(id, _opts), do: Repo.get(Video, id)
 
   @doc """
   Creates a video.

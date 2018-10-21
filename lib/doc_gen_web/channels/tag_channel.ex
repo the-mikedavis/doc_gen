@@ -4,11 +4,12 @@ defmodule DocGenWeb.TagChannel do
 
   alias DocGen.Content
 
-  def join("tag:lobby", payload, socket) do
+  def join("tag:lobby", %{"video_id" => id}, socket) do
     video =
-      case payload do
-        %{video_id: id} -> Content.get_video!(id, preload: :tags)
-        _ -> %{tags: []}
+      case Content.get_video(id, preload: :tags) do
+        nil -> %{tags: []}
+
+        video -> video
       end
 
     tags =
@@ -38,8 +39,10 @@ defmodule DocGenWeb.TagChannel do
 
   private do
     defp activate_tags(tags, %{tags: vtags}) do
+      vtagnames = Enum.map(vtags, & &1.name)
+
       Enum.map(tags, fn t ->
-        Map.put(t, :active, t.name in vtags)
+        Map.put(t, :active, t.name in vtagnames)
       end)
     end
   end

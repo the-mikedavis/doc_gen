@@ -5,8 +5,12 @@ import {Dashboard} from '../src/Dashboard.elm'
 // import videojs from '../node_modules/video.js'
 
 const live_tags = document.getElementById('live-tags')
-if (live_tags)
-  LiveTags.embed(live_tags, buildSocketUri())
+if (live_tags) {
+  if (window.videoId)
+    LiveTags.embed(live_tags, {uri: buildSocketUri(), id: window.videoId})
+  else
+    LiveTags.embed(live_tags, {uri: buildSocketUri(), id: -1})
+}
 
 const dashboard = document.getElementById('dashboard')
 if (dashboard)
