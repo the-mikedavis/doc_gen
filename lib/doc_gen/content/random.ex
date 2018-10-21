@@ -32,11 +32,13 @@ defmodule DocGen.Content.Random do
 
       Enum.shuffle([n + 1, n, n])
     end
+
     defp number_per_segment(l) when rem(l, 3) == 2 do
       n = div(l, 3)
 
       Enum.shuffle([n + 1, n + 1, n])
     end
+
     defp number_per_segment(l) do
       n = div(l, 3)
 
@@ -46,16 +48,18 @@ defmodule DocGen.Content.Random do
     # take `n` videos randomly proportional to the keyword matches
 
     @spec take_random({[%Content.Video{}], non_neg_integer()}, [String.t()]) ::
-      [%{}]
+            [%{}]
     defp take_random({videos, number_to_take}, keywords) do
       {videos, _left_behind_videos} =
         Enum.reduce(1..number_to_take, {[], videos}, fn
-          _n, {_taken, []} = acc -> acc
+          _n, {_taken, []} = acc ->
+            acc
+
           _n, {taken, videos} ->
             hot_take = take_a_random(videos, keywords)
             IO.inspect(hot_take)
 
-            {[hot_take | taken], Enum.reject(videos, & &1.id == hot_take.id)}
+            {[hot_take | taken], Enum.reject(videos, &(&1.id == hot_take.id))}
         end)
 
       videos
@@ -84,11 +88,12 @@ defmodule DocGen.Content.Random do
 
     @spec multiply_keywords(%{}, [String.t()]) :: %{score: non_neg_integer()}
     defp multiply_keywords(%{tags: tags} = video, keywords) do
-      score = Enum.reduce(tags, 0,  fn %{name: name, weight: weight}, acc ->
-        multiplier = if name in keywords, do: @keyword_multiplier, else: 1
+      score =
+        Enum.reduce(tags, 0, fn %{name: name, weight: weight}, acc ->
+          multiplier = if name in keywords, do: @keyword_multiplier, else: 1
 
-        weight * multiplier + acc
-      end)
+          weight * multiplier + acc
+        end)
 
       Map.put(video, :score, score)
     end

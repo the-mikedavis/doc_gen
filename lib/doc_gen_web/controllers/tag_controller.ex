@@ -20,6 +20,7 @@ defmodule DocGenWeb.TagController do
         conn
         |> put_flash(:info, "Tag created successfully.")
         |> redirect(to: Routes.tag_path(conn, :show, tag))
+
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "new.html", changeset: changeset)
     end
@@ -44,6 +45,7 @@ defmodule DocGenWeb.TagController do
         conn
         |> put_flash(:info, "Tag updated successfully.")
         |> redirect(to: Routes.tag_path(conn, :show, tag))
+
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "edit.html", tag: tag, changeset: changeset)
     end

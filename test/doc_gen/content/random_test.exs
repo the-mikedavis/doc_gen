@@ -8,8 +8,14 @@ defmodule DocGen.Content.RandomTest do
     setup do
       [
         videos: [
-          %Video{id: 1, tags: [%{name: "apple", weight: 1}, %{name: "cat", weight: 1}]},
-          %Video{id: 2, tags: [%{name: "bat", weight: 1}, %{name: "cat", weight: 1}]},
+          %Video{
+            id: 1,
+            tags: [%{name: "apple", weight: 1}, %{name: "cat", weight: 1}]
+          },
+          %Video{
+            id: 2,
+            tags: [%{name: "bat", weight: 1}, %{name: "cat", weight: 1}]
+          },
           %Video{id: 3, tags: []}
         ],
         keywords: ["apple", "bat"],

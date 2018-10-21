@@ -8,7 +8,6 @@ defmodule DocGenWeb.TagChannel do
     video =
       case Content.get_video(id, preload: :tags) do
         nil -> %{tags: []}
-
         video -> video
       end
 
@@ -24,6 +23,7 @@ defmodule DocGenWeb.TagChannel do
     case Content.create_tag(payload) do
       {:ok, _tag} ->
         {:reply, {:ok, payload}, socket}
+
       {:error, reason} ->
         {:reply, {:error, reason}, socket}
     end

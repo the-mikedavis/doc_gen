@@ -9,6 +9,7 @@ defmodule DocGen.Content.Copy do
 
   @spec get(atom()) :: %{} | String.t() | integer()
   def get(:all), do: Agent.get(__MODULE__, & &1)
+
   def get(key) do
     Agent.get(__MODULE__, &Map.get(&1, key))
   end

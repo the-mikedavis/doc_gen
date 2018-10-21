@@ -17,7 +17,13 @@ defmodule DocGen.Content.Video do
     field(:path, :string)
     field(:title, :string)
     field(:duration, :integer, default: 0)
-    many_to_many(:tags, Tag, join_through: "videos_tags", on_replace: :delete, on_delete: :delete_all)
+
+    many_to_many(:tags, Tag,
+      join_through: "videos_tags",
+      on_replace: :delete,
+      on_delete: :delete_all
+    )
+
     belongs_to(:type, Type)
     belongs_to(:interviewee, Interviewee)
     belongs_to(:segment, Segment)
@@ -51,17 +57,22 @@ defmodule DocGen.Content.Video do
   end
 
   private do
-    defp put_tags(changeset, %{"tags" => [_|_] = tags}) do
+    defp put_tags(changeset, %{"tags" => [_ | _] = tags}) do
       put_assoc(changeset, :tags, tags)
     end
-    defp put_tags(changeset, %{tags: [_|_] = tags}) do
+
+    defp put_tags(changeset, %{tags: [_ | _] = tags}) do
       put_assoc(changeset, :tags, tags)
     end
+
     defp put_tags(changeset, _), do: changeset
 
-    defp put_type(%Ecto.Changeset{valid?: true, changes: %{type_id: id}} = changeset) do
+    defp put_type(
+           %Ecto.Changeset{valid?: true, changes: %{type_id: id}} = changeset
+         ) do
       put_change(changeset, :type, Content.get_type(id))
     end
+
     defp put_type(changeset), do: changeset
 
     defp put_interviewee(changeset) do

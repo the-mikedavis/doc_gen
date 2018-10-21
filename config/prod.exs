@@ -6,7 +6,6 @@ config :doc_gen, DocGenWeb.Endpoint,
   secret_key_base: "${DOC_GEN_SECRET_KEYBASE}",
   cache_static_manifest: "priv/static/cache_manifest.json"
 
-
 config :doc_gen,
   socket_token_key: "${DOC_GEN_SOCKET_TOKEN_KEY}"
 

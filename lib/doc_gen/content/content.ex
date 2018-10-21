@@ -22,32 +22,55 @@ defmodule DocGen.Content do
   end
 
   def list_videos_with_interviewees do
-    Repo.all(from v in Video, select: v, preload: :interviewee)
+    Repo.all(from(v in Video, select: v, preload: :interviewee))
   end
 
   def list_videos_with_all do
-    Repo.all(from v in Video, select: v, preload: [:interviewee, :segment, :tags, :type])
+    Repo.all(
+      from(v in Video,
+        select: v,
+        preload: [:interviewee, :segment, :tags, :type]
+      )
+    )
   end
 
   @spec count_videos() :: non_neg_integer()
   def count_videos, do: Repo.aggregate(Video, :count, :id)
 
   def get_video!(id, opts \\ [])
-  def get_video!(id, [preload: :tags]) do
-    Repo.one(from v in Video, select: v, where: [id: ^id], preload: :tags)
+
+  def get_video!(id, preload: :tags) do
+    Repo.one(from(v in Video, select: v, where: [id: ^id], preload: :tags))
   end
-  def get_video!(id, [preload: true]) do
-    Repo.one(from v in Video, select: v, where: [id: ^id], preload: [:interviewee, :segment, :tags, :type])
+
+  def get_video!(id, preload: true) do
+    Repo.one(
+      from(v in Video,
+        select: v,
+        where: [id: ^id],
+        preload: [:interviewee, :segment, :tags, :type]
+      )
+    )
   end
+
   def get_video!(id, _opts), do: Repo.get(Video, id)
 
   def get_video(id, opts \\ [])
-  def get_video(id, [preload: :tags]) do
-    Repo.one(from v in Video, select: v, where: [id: ^id], preload: :tags)
+
+  def get_video(id, preload: :tags) do
+    Repo.one(from(v in Video, select: v, where: [id: ^id], preload: :tags))
   end
-  def get_video(id, [preload: true]) do
-    Repo.one(from v in Video, select: v, where: [id: ^id], preload: [:interviewee, :segment, :tags, :type])
+
+  def get_video(id, preload: true) do
+    Repo.one(
+      from(v in Video,
+        select: v,
+        where: [id: ^id],
+        preload: [:interviewee, :segment, :tags, :type]
+      )
+    )
   end
+
   def get_video(id, _opts), do: Repo.get(Video, id)
 
   @doc """
@@ -319,6 +342,6 @@ defmodule DocGen.Content do
   end
 
   def list_segments_with_videos do
-    Repo.all(from s in Segment, select: s, preload: :videos)
+    Repo.all(from(s in Segment, select: s, preload: :videos))
   end
 end

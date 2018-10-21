@@ -2,9 +2,8 @@ defmodule DocGen.Content.Interviewee do
   use Ecto.Schema
   import Ecto.Changeset
 
-
   schema "interviewees" do
-    field :name, :string
+    field(:name, :string)
 
     timestamps()
   end

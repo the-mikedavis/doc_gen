@@ -11,7 +11,11 @@ defmodule DocGenWeb.SettingsController do
     tags = Content.list_tags()
 
     if video_count < settings.length do
-      put_flash(conn, :error, "There aren't enough videos for #{settings.length} clips!")
+      put_flash(
+        conn,
+        :error,
+        "There aren't enough videos for #{settings.length} clips!"
+      )
     else
       conn
     end

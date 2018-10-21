@@ -16,6 +16,7 @@ defmodule DocGenWeb.VideoChannel do
     case Content.create_tag(payload) do
       {:ok, _tag} ->
         {:reply, {:ok, payload}, socket}
+
       {:error, reason} ->
         {:reply, {:error, reason}, socket}
     end
@@ -51,9 +52,11 @@ defmodule DocGenWeb.VideoChannel do
   def simplify_preloads(key, value) when key not in @preloads do
     value
   end
+
   def simplify_preloads(_key, values) when is_list(values) do
     Enum.map(values, fn %{name: name} -> name end)
   end
+
   def simplify_preloads(_key, nil), do: ""
   def simplify_preloads(_key, value), do: value.name
 end
