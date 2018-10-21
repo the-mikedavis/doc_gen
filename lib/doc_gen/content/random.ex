@@ -70,8 +70,7 @@ defmodule DocGen.Content.Random do
       |> Enum.map(&score(&1, keywords))
       |> Enum.map(&repeat(&1, &1.score, []))
       |> List.flatten()
-      |> Enum.take_random(1)
-      |> List.first()
+      |> Enum.random()
     end
 
     @spec score(%Content.Video{}, [String.t()]) :: %{}

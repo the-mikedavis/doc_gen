@@ -171,6 +171,25 @@ joinChannel =
 ---- VIEW ----
 
 
+drawControls : Video -> Html Msg
+drawControls video =
+    div [ attribute "class" "dashboard-controls" ]
+        [ i
+            [ attribute "class" "far fa-edit"
+            , onClick (EditVideo video)
+            ]
+            []
+        , a
+            [ attribute "class" "dashboard-edit-link"
+            , attribute "href" ("/admin/videos/" ++ (toString video.id))
+            ]
+            [ i
+                [ attribute "class" "far fa-eye" ]
+                []
+            ]
+        ]
+
+
 drawVideo : Video -> Html Msg
 drawVideo video =
     div [ attribute "class" "video-entry" ]
@@ -209,11 +228,7 @@ drawVideo video =
                 [ text "type: " ]
             , text video.clip_type
             ]
-        , i
-            [ attribute "class" "far fa-edit"
-            , onClick (EditVideo video)
-            ]
-            []
+        , (drawControls video)
         ]
 
 
