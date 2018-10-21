@@ -53,6 +53,7 @@ defmodule DocGen.MixProject do
       {:bcrypt_elixir, "~> 1.0"},
       # Videos
       {:ffmpex, "~> 0.5"},
+      {:thumbnex, "~> 0.3"},
       # testing, cleanliness, etc.
       {:credo, "~> 0.9", only: [:dev, :test], runtime: false},
       {:excoveralls, "~> 0.9", only: :test},
