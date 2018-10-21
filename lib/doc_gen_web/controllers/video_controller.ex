@@ -41,6 +41,7 @@ defmodule DocGenWeb.VideoController do
         ints = Content.list_interviewees()
         types = Content.list_types()
         segs = Content.list_segments()
+
         render(conn, "new.html",
           changeset: changeset,
           interviewees: ints,
