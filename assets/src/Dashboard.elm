@@ -188,7 +188,8 @@ drawVideo video =
             , text video.clip_type
             ]
         , i
-            [ attribute "class" "fa fa-pencil-square-o"
+            [ attribute "class" "far fa-edit"
+            -- , onClick Edit
             ]
             []
         ]
