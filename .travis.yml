@@ -12,6 +12,7 @@ env:
     - PGPORT=5432
     - MIX_ENV=test
     - VERBOSE_TEST=true
+    - secure: m02/LSkAueEy+x2MdSVqgL1/BCV7kgZDOFJZHrQHHCKFGxiA7qrHuB4skEPX8RpW+Zcg4BQ3qTsPb0fW5bve2UBPmro/V8bD6EudwYJQrhv84FS4l/E15WVgOPa5/u1V7DtZ3FY5aNIYw2hnFmeP18KfnEx2+MKuGTxtMzhHtPMi40yjQGm+x3VTzzO5JhpXFnFjjJh+mDz1BR6X38/Fx5Q9RmgnNVZ8IJl6iw213+chpcUgE9NqointGmCHzdwT+nnkK17fIope2wSDu55Iyq3m5CZ9FtgTIGqDvlW60piLjj8MqSzLFWEUPdCBMkuDH1YDCvAbz4zoGJ626gVYjaWPm8N0ZSKeeGHRzE8R8nmSULhhDpJ/1eW/Do0/IOxk2P96y+ZHu2QjmjFjdE88qDxXNyBrEqDZOK/DIezrm6a8azYWBzDwpv2sXCz9lqPTlZS+oU66VW14rakEpXGVraqeC63GTCOQXXOpJbjcJQGasKbc2hBwP3b/QZWJcsp9QBh3CBsz0I3pyVG9rDM9mv32QwlWlCRsqfsocq2dW+iMCwgbq+BS+aS8zZSTMhnwgJbcs685pHVtlxAnonNUSF1AKEO3lC49niIP9o9DkqfyL3Cme9BJv9e2d9S2rF24Kqo+KTQ82v62O4jCBB7qm1MTfOBGYPBY0Wbht9jsaSk=
 
 before_script:
   - nvm install 8.9.0
@@ -30,6 +31,12 @@ before_deploy:
   - cd ..
   - MIX_ENV=prod mix phx.digest
   - MIX_ENV=prod mix release --env=prod
+
+after_deploy:
+  - curl
+    -X POST
+    -H 'Content-type:application/json'
+    -d "{\"text\":\"tar.gz built for $TRAVIS_REPO_SLUG - tag $TRAVIS_TAG\"}" $SLACK_HOOK
 
 branches:
   only:
