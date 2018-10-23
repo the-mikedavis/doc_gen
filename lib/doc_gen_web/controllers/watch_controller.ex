@@ -15,7 +15,10 @@ defmodule DocGenWeb.WatchController do
 
   def show(conn, params) do
     tags = parse_tags(params)
-    %{beginning_clips: b, middle_clips: m, end_clips: e} = Accounts.get_settings()
+
+    %{beginning_clips: b, middle_clips: m, end_clips: e} =
+      Accounts.get_settings()
+
     video_ids = Random.give(tags, [b, m, e])
 
     render(conn, "show.html", tags: tags, video_ids: video_ids)
@@ -35,7 +38,8 @@ defmodule DocGenWeb.WatchController do
 
   private do
     defp copy(conn, _opts) do
-      %{copy: copy, beginning_clips: b, middle_clips: m, end_clips: e} = Copy.get(:all)
+      %{copy: copy, beginning_clips: b, middle_clips: m, end_clips: e} =
+        Copy.get(:all)
 
       conn
       |> assign(:copy, copy)

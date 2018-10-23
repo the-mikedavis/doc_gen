@@ -7,16 +7,16 @@ defmodule DocGenWeb.SettingsController do
   def index(conn, _params) do
     settings = Accounts.get_settings()
     changeset = Accounts.change_settings(settings)
-    video_count = Content.count_videos()
+    # video_count = Content.count_videos()
     tags = Content.list_tags()
 
     # TODO: redo in a private func
     # if video_count < settings.length do
-      # put_flash(
-        # conn,
-        # :error,
-        # "There aren't enough videos for #{settings.length} clips!"
-      # )
+    # put_flash(
+    # conn,
+    # :error,
+    # "There aren't enough videos for #{settings.length} clips!"
+    # )
     # else
     conn
     # end

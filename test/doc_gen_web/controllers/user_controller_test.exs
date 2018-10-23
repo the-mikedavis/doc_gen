@@ -91,7 +91,7 @@ defmodule DocGenWeb.UserControllerTest do
       conn =
         put(conn, Routes.user_path(conn, :update, user), user: @update_attrs)
 
-      assert redirected_to(conn) == Routes.user_path(conn, :show, user)
+      assert redirected_to(conn) == Routes.video_path(conn, :index)
 
       conn = get(conn, Routes.user_path(conn, :show, user))
       assert html_response(conn, 200) =~ "Username: someusername"

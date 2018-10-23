@@ -45,7 +45,7 @@ defmodule DocGenWeb.UserController do
     user = conn.assigns.user
 
     case Accounts.update_user(user, user_params) do
-      {:ok, user} ->
+      {:ok, _user} ->
         conn
         |> put_flash(:info, "User updated successfully.")
         |> redirect(to: Routes.video_path(conn, :index))
