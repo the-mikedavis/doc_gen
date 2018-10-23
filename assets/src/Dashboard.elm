@@ -52,6 +52,7 @@ type alias Model =
     , phxSocket : Phoenix.Socket.Socket Msg
     , searchString : String
     , editId : Maybe Int
+    , shownVideo : Maybe Video
     }
 
 
@@ -71,6 +72,7 @@ init socketUri =
             , phxSocket = initSocket
             , searchString = ""
             , editId = Nothing
+            , shownVideo = Nothing
             }
     in
         ( model, joinChannel )
@@ -87,7 +89,9 @@ type Msg
     | JoinChannel
     | StartSearch String
     | EditVideo Video
+    | ShowVideo Video
     | CloseEdit Int
+    | CloseShow
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -152,8 +156,22 @@ update msg model =
                     else
                         ( { model | editId = Just id }, Cmd.none )
 
+        ShowVideo video ->
+            case model.shownVideo of
+                Nothing ->
+                    ( { model | shownVideo = Just video }, Cmd.none )
+
+                Just anotherVideo ->
+                    if anotherVideo == video then
+                        ( { model | shownVideo = Nothing }, Cmd.none )
+                    else
+                        ( { model | shownVideo = Just video }, Cmd.none )
+             
         CloseEdit _ ->
             ( { model | editId = Nothing }, Cmd.none )
+
+        CloseShow ->
+            ( { model | shownVideo = Nothing }, Cmd.none )
 
 
 subscriptions : Model -> Sub Msg
@@ -179,12 +197,17 @@ drawControls video =
             , onClick (EditVideo video)
             ]
             []
+        , i
+            [ attribute "class" "far fa-eye"
+            , onClick (ShowVideo video)
+            ]
+            []
         , a
             [ attribute "class" "dashboard-edit-link"
             , attribute "href" ("/admin/videos/" ++ (toString video.id))
             ]
             [ i
-                [ attribute "class" "far fa-eye" ]
+                [ attribute "class" "fas fa-info-circle" ]
                 []
             ]
         ]
@@ -193,11 +216,13 @@ drawControls video =
 drawVideo : Video -> Html Msg
 drawVideo video =
     div [ attribute "class" "video-entry" ]
-        [ img [ attribute "src" ("/thumb/" ++ (toString video.id) ++ "/jpeg")
-              , attribute "class" "dashboard-preview"
-              , attribute "onmouseover" "animateThumb(event)"
-              , attribute "onmouseout" "stillThumb(event)"
-              ] []
+        [ img
+            [ attribute "src" ("/thumb/" ++ (toString video.id) ++ "/jpeg")
+            , attribute "class" "dashboard-preview"
+            , attribute "onmouseover" "animateThumb(event)"
+            , attribute "onmouseout" "stillThumb(event)"
+            ]
+            []
         , p []
             [ span [ attribute "class" "highlight" ]
                 [ text "title: " ]
@@ -256,8 +281,31 @@ drawEditPanel editId =
             div [ attribute "class" "edit-panel" ]
                 [ iframe [ attribute "src" ("/admin/videos/" ++ (toString id) ++ "/edit") ] []
                 , i
-                    [ attribute "class" "fas fa-times"
+                    [ attribute "class" "fas fa-times close-btn"
                     , onClick (CloseEdit id)
+                    ]
+                    []
+                ]
+
+
+drawVideoPopup : Maybe Video -> Html Msg
+drawVideoPopup activeVideo =
+    case activeVideo of
+        Nothing ->
+            div [ attribute "class" "video-popout-holster" ]
+                []
+
+        Just vod ->
+            div [ attribute "class" "video-popout-holster" ]
+                [ video
+                    [ attribute "controls" "true" ]
+                    [ source
+                        [ attribute "src" ("/stream/" ++ (toString vod.id)) ]
+                        []
+                    ]
+                , i
+                    [ attribute "class" "fas fa-times close-btn"
+                    , onClick CloseShow
                     ]
                     []
                 ]
@@ -272,6 +320,7 @@ view model =
     in
         div []
             [ (drawSearchBar model.searchString)
+            , (drawVideoPopup model.shownVideo)
             , (drawEditPanel model.editId)
             , div [] (model |> searchFilter |> drawVideos)
             ]
