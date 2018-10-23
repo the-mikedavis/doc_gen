@@ -33,3 +33,5 @@ h2 Settings
   div
     = link("Reset", to: Routes.settings_path(@conn, :index))
     button type="button" onclick="submitIfValid()" Save
+
+=link("Change Admin Password", to: Routes.user_path(@conn, :edit, @current_user))
