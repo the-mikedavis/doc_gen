@@ -166,7 +166,7 @@ update msg model =
                         ( { model | shownVideo = Nothing }, Cmd.none )
                     else
                         ( { model | shownVideo = Just video }, Cmd.none )
-             
+
         CloseEdit _ ->
             ( { model | editId = Nothing }, Cmd.none )
 
