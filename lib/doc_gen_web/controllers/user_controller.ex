@@ -22,7 +22,7 @@ defmodule DocGenWeb.UserController do
         conn
         |> put_session(:user_id, user.id)
         |> assign(:current_user, user)
-        |> put_flash(:info, "User created successfully.")
+        |> put_flash(:info, "Success. You're now logged in as #{user.username}")
         |> redirect(to: Routes.user_path(conn, :show, user))
 
       {:error, %Ecto.Changeset{} = changeset} ->
