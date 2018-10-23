@@ -8,7 +8,9 @@ defmodule DocGen.Accounts.Setting do
     # title of the movie
     field(:title, :string)
     # length of the movie in number of clips
-    field(:length, :integer)
+    field(:beginning_clips, :integer)
+    field(:middle_clips, :integer)
+    field(:end_clips, :integer)
     # intro copy visible from the main page
     field(:copy, :string)
 
@@ -18,9 +20,11 @@ defmodule DocGen.Accounts.Setting do
   @doc false
   def changeset(setting, attrs) do
     setting
-    |> cast(attrs, [:title, :length, :copy])
-    |> validate_required([:title, :length])
+    |> cast(attrs, [:title, :beginning_clips, :middle_clips, :end_clips, :copy])
+    |> validate_required([:title, :beginning_clips, :middle_clips, :end_clips])
     |> validate_length(:title, min: 3, max: 100)
-    |> validate_inclusion(:length, 1..100)
+    |> validate_inclusion(:beginning_clips, 1..100)
+    |> validate_inclusion(:middle_clips, 1..100)
+    |> validate_inclusion(:end_clips, 1..100)
   end
 end
