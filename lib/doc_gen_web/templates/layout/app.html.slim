@@ -21,7 +21,7 @@ html lang="en"
               li = link("Admins", to: Routes.user_path(@conn, :index))
               li = link("Tags", to: Routes.tag_path(@conn, :index))
               li = link("Preview", to: Routes.watch_path(@conn, :index))
-              li = link("Log out", to: Routes.session_path(@conn, :delete, @current_user), method: "delete")
+              li = link("Log out (#{@current_user.username})", to: Routes.session_path(@conn, :delete, @current_user), method: "delete")
             - else
               li = link("Watch", to: Routes.watch_path(@conn, :index))
               li = link("Log in", to: Routes.session_path(@conn, :new))
