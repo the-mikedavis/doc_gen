@@ -95,7 +95,7 @@ type Msg
 createTag : String -> Tag
 createTag name =
     { name = name
-    , active = False
+    , active = True
     , weight = 1
     }
 
