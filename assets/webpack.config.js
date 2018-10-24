@@ -42,7 +42,7 @@ module.exports = (env, options) => ({
         loader: 'elm-webpack-loader',
         options: {
           debug: true,
-          pathToElm: path.resolve(__dirname, 'node_modules', '.bin', 'elm'),
+          // pathToElm: path.resolve(__dirname, 'node_modules', '.bin', 'elm'),
           cwd: __dirname
         }
       }
