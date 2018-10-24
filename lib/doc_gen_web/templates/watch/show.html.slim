@@ -4,9 +4,9 @@ javascript:
 = if @video_ids == [] do
   p Sorry, there aren't any videos!
 - else
-  video.video-js(id='play' preload="none" data-setup="{}" controls)
+  video(id='theater' preload="auto" controls)
     source#video-source src="/stream/#{hd @video_ids}" type="video/mp4"
-    p.vjs-no-js
+    p
       | To view this video, please enable JavaScript, and consider
       | upgrading to a web brawser that
       a href="https://videojs.com/html5-video-support/" target="_blank" supports HTML5 video.
