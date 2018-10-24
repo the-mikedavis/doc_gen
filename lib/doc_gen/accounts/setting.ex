@@ -23,8 +23,8 @@ defmodule DocGen.Accounts.Setting do
     |> cast(attrs, [:title, :beginning_clips, :middle_clips, :end_clips, :copy])
     |> validate_required([:title, :beginning_clips, :middle_clips, :end_clips])
     |> validate_length(:title, min: 3, max: 100)
-    |> validate_inclusion(:beginning_clips, 1..100)
-    |> validate_inclusion(:middle_clips, 1..100)
-    |> validate_inclusion(:end_clips, 1..100)
+    |> validate_inclusion(:beginning_clips, 0..100)
+    |> validate_inclusion(:middle_clips, 0..100)
+    |> validate_inclusion(:end_clips, 0..100)
   end
 end

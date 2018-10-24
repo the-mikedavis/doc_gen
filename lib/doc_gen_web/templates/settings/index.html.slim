@@ -14,15 +14,15 @@ h2 Settings
     h3 Number of Clips
 
     = label(f, :beginning_clips)
-    = number_input(f, :beginning_clips, min: 1, max: 100)
+    = number_input(f, :beginning_clips, min: 0, max: 100)
     = error_tag(f, :beginning_clips)
 
     = label(f, :middle_clips)
-    = number_input(f, :middle_clips, min: 1, max: 100)
+    = number_input(f, :middle_clips, min: 0, max: 100)
     = error_tag(f, :middle_clips)
 
     = label(f, :end_clips)
-    = number_input(f, :end_clips, min: 1, max: 100)
+    = number_input(f, :end_clips, min: 0, max: 100)
     = error_tag(f, :end_clips)
 
   div
