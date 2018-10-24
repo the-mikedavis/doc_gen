@@ -21,4 +21,9 @@ config :phoenix, :template_engines,
   slim: PhoenixSlime.Engine,
   slime: PhoenixSlime.Engine
 
+config Plug.Parsers,
+  # 150 MB
+  length: 150_000_000,
+  read_length: 8_000_000
+
 import_config "#{Mix.env()}.exs"
