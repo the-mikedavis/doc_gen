@@ -318,6 +318,7 @@ view model =
     let
         drawVideos videos =
             videos
+                |> List.sortBy .title
                 |> List.map drawVideo
     in
         div []
