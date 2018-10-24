@@ -35,7 +35,7 @@ defmodule DocGenWeb.VideoController do
 
         conn
         |> put_flash(:info, "Video created successfully.")
-        |> redirect(to: Routes.video_path(conn, :show, video))
+        |> redirect(to: Routes.video_path(conn, :index))
 
       {:error, %Ecto.Changeset{} = changeset} ->
         ints = Content.list_interviewees()
