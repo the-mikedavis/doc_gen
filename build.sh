@@ -14,4 +14,4 @@ cd assets
 cd ..
 MIX_ENV=prod mix phx.digest
 MIX_ENV=prod mix release --env=prod
-~/go/bin/ghr "$1" _build/prod/rel/doc_gen/releases/*/*.tar.gz
+~/go/bin/ghr "$1" _build/prod/rel/doc_gen/releases/$1*/*.tar.gz
