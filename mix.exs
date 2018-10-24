@@ -79,8 +79,9 @@ defmodule DocGen.MixProject do
       {"compile", ["--warnings-as-errors", "--force"]},
       {"coveralls.html", []},
       {"format", ["--check-formatted"]},
-      {"credo", []},
-      {"dialyzer", []}
+      # ,
+      {"credo", []}
+      # {"dialyzer", []}
     ]
     |> Enum.each(fn {task, args} ->
       [:cyan, "Running #{task} with args #{inspect(args)}"]
