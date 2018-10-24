@@ -16,16 +16,24 @@ const dashboard = document.getElementById('dashboard')
 if (dashboard)
   Dashboard.embed(dashboard, buildSocketUri())
 
-    /*
-const video_source = document.getElementById('video-source')
-if (video_source) {
-  var video = videojs('play').ready(function() {
-    this.on('ended', function() {
-      video_source.src = '/stream/' + window.video_ids.shift()
-    })
-  })
+const theater = document.getElementById('theater')
+if (theater) {
+  console.log('adding event listener', theater)
+  theater.addEventListener('ended', startNextVideo);
 }
-*/
+
+let videoCounter = 1;
+function startNextVideo() {
+  if (videoCounter >= window.video_ids.length) {
+    window.location.pathname = '/'
+  } else {
+    theater.pause()
+    const [source] = theater.getElementsByTagName('source')
+    source.setAttribute('src', '/stream/' + window.video_ids[videoCounter++])
+    theater.load()
+    theater.play()
+  }
+}
 
 function buildSocketUri() {
   const protocol = location.protocol == 'https:' ? 'wss://' : 'ws://'
