@@ -18,13 +18,20 @@ before_script:
   - nvm install 8.9.0
   - npm i -g elm@0.18.0
   - mix ecto.setup
+  - cd assets
+  - yarn install
+  - cd ..
 
 script:
   - mix format --check-formatted
   - mix compile --warnings-as-errors
   - mix coveralls
   - mix credo
-  - cd assets; yarn install; ./node_modules/.bin/webpack -p; cd ..
+  - cd assets
+  - yarn install
+  - cd assets
+  - ./node_modules/.bin/webpack -p
+  - cd ..
 
 before_deploy:
   - cd ./assets
