@@ -61,7 +61,7 @@ init flags =
             Phoenix.Channel.init "tag:lobby"
 
         initSocket =
-            Phoenix.Socket.init ("ws://" ++ uri)
+            Phoenix.Socket.init uri
                 |> Phoenix.Socket.withDebug
                 |> Phoenix.Socket.on "new_tag" "tag:lobby" AddTag
 

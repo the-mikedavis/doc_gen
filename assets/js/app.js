@@ -28,7 +28,8 @@ if (video_source) {
 */
 
 function buildSocketUri() {
-  return window.location.host + "/socket/websocket?token=" + window.userToken
+  const protocol = location.protocol == 'https:' ? 'wss://' : 'ws://'
+  return protocol + window.location.host + "/socket/websocket?token=" + window.userToken
 }
 
 window.submitIfValid = function() {

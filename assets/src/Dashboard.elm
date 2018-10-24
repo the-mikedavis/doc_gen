@@ -63,7 +63,7 @@ init socketUri =
             Phoenix.Channel.init "video:lobby"
 
         initSocket =
-            Phoenix.Socket.init ("ws://" ++ socketUri)
+            Phoenix.Socket.init socketUri
                 |> Phoenix.Socket.withDebug
 
         model =
