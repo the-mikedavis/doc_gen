@@ -28,8 +28,6 @@ script:
   - mix coveralls
   - mix credo
   - cd assets
-  - yarn install
-  - cd assets
   - ./node_modules/.bin/webpack -p
   - cd ..
 
