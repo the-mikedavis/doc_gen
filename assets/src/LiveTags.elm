@@ -62,7 +62,6 @@ init flags =
 
         initSocket =
             Phoenix.Socket.init uri
-                |> Phoenix.Socket.withDebug
                 |> Phoenix.Socket.on "new_tag" "tag:lobby" AddTag
 
         model =
@@ -159,9 +158,6 @@ update msg model =
 
         DeleteTag tag ->
             let
-                a =
-                    Debug.log ("About to delete a tag")
-
                 payload =
                     Encode.object
                         [ ( "name", Encode.string tag.name )
@@ -211,9 +207,6 @@ update msg model =
         KeyDown key ->
             if key == 13 then
                 let
-                    a =
-                        Debug.log ("About to submit the tag")
-
                     payload =
                         Encode.object
                             [ ( "name", Encode.string model.tagInProgress )

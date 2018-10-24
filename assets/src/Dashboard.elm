@@ -64,7 +64,6 @@ init socketUri =
 
         initSocket =
             Phoenix.Socket.init socketUri
-                |> Phoenix.Socket.withDebug
 
         model =
             { videos = []
@@ -105,14 +104,7 @@ update msg model =
                 ( { model | phxSocket = phxSocket }, Cmd.map PhoenixMsg phxCmd )
 
         HandleSendError _ ->
-            let
-                message =
-                    "Failed to Send Message"
-
-                a =
-                    Debug.log ("Failed to send message")
-            in
-                ( model, Cmd.none )
+            ( model, Cmd.none )
 
         JoinChannel ->
             let
@@ -139,8 +131,7 @@ update msg model =
                         )
 
                     Err error ->
-                        Debug.log (error)
-                            ( model, Cmd.none )
+                        ( model, Cmd.none )
 
         StartSearch searchString ->
             ( { model | searchString = searchString }, Cmd.none )
@@ -168,7 +159,18 @@ update msg model =
                         ( { model | shownVideo = Just video }, Cmd.none )
 
         CloseEdit _ ->
-            ( { model | editId = Nothing }, Cmd.none )
+          let
+              phxPush =
+                  Phoenix.Push.init "videos" "video:lobby"
+                      |> Phoenix.Push.onOk PopulateVideos
+                      |> Phoenix.Push.onError HandleSendError
+
+              ( phxSocket, phxCmd ) =
+                  Phoenix.Socket.push phxPush model.phxSocket
+          in
+              ( { model | phxSocket = phxSocket, editId = Nothing }
+              , Cmd.map PhoenixMsg phxCmd
+              )
 
         CloseShow ->
             ( { model | shownVideo = Nothing }, Cmd.none )

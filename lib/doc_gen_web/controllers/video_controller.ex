@@ -80,8 +80,8 @@ defmodule DocGenWeb.VideoController do
     case Content.update_video(video, video_params) do
       {:ok, video} ->
         conn
-        |> put_flash(:info, "Video updated successfully.")
-        |> redirect(to: Routes.video_path(conn, :show, video))
+        |> put_flash(:info, "Video saved successfully.")
+        |> redirect(to: Routes.video_path(conn, :edit, video))
 
       {:error, %Ecto.Changeset{} = changeset} ->
         ints = Content.list_interviewees()
