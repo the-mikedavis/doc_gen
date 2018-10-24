@@ -12,69 +12,16 @@ env:
     - PGPORT=5432
     - MIX_ENV=test
     - VERBOSE_TEST=true
-    - secure: m02/LSkAueEy+x2MdSVqgL1/BCV7kgZDOFJZHrQHHCKFGxiA7qrHuB4skEPX8RpW+Zcg4BQ3qTsPb0fW5bve2UBPmro/V8bD6EudwYJQrhv84FS4l/E15WVgOPa5/u1V7DtZ3FY5aNIYw2hnFmeP18KfnEx2+MKuGTxtMzhHtPMi40yjQGm+x3VTzzO5JhpXFnFjjJh+mDz1BR6X38/Fx5Q9RmgnNVZ8IJl6iw213+chpcUgE9NqointGmCHzdwT+nnkK17fIope2wSDu55Iyq3m5CZ9FtgTIGqDvlW60piLjj8MqSzLFWEUPdCBMkuDH1YDCvAbz4zoGJ626gVYjaWPm8N0ZSKeeGHRzE8R8nmSULhhDpJ/1eW/Do0/IOxk2P96y+ZHu2QjmjFjdE88qDxXNyBrEqDZOK/DIezrm6a8azYWBzDwpv2sXCz9lqPTlZS+oU66VW14rakEpXGVraqeC63GTCOQXXOpJbjcJQGasKbc2hBwP3b/QZWJcsp9QBh3CBsz0I3pyVG9rDM9mv32QwlWlCRsqfsocq2dW+iMCwgbq+BS+aS8zZSTMhnwgJbcs685pHVtlxAnonNUSF1AKEO3lC49niIP9o9DkqfyL3Cme9BJv9e2d9S2rF24Kqo+KTQ82v62O4jCBB7qm1MTfOBGYPBY0Wbht9jsaSk=
-cache:
-  directories:
-    - sysconfcpus
 
 before_script:
-  - nvm install 8.9.0
   - mix ecto.setup
-  - cd assets
-  - yarn install
-  - cd ..
-  - |
-    if [ ! -d sysconfcpus/bin ];
-    then
-      git clone https://github.com/obmarg/libsysconfcpus.git;
-      cd libsysconfcpus;
-      ./configure --prefix=$TRAVIS_BUILD_DIR/sysconfcpus;
-      make && make install;
-      cd ..;
-    fi
-  - npm i -g elm@0.18.0
-  - type elm-make
-  - which elm-make
-  - npm config get prefix
-  - mv /home/travis/.nvm/versions/node/v8.9.0/bin/elm-make /home/travis/.nvm/versions/node/v8.9.0/bin/elm-make-old
-  - printf "#\041/bin/bash\n\necho \"Running elm-make with sysconfcpus -n 2\"\n\n$TRAVIS_BUILD_DIR/sysconfcpus/bin/sysconfcpus -n 2 elm-make-old \"\$@\"" > /home/travis/.nvm/versions/node/v8.9.0/bin/elm-make 
-  - cat /home/travis/.nvm/versions/node/v8.9.0/bin/elm-make
-  - chmod +x $(npm config get prefix)/bin/elm-make
 
 script:
   - mix format --check-formatted
   - mix compile --warnings-as-errors
   - mix coveralls
   - mix credo
-  - cd assets
-  - ./node_modules/.bin/webpack -p
-  - cd ..
-
-before_deploy:
-  - cd ./assets
-  - yarn install
-  - ./node_modules/.bin/webpack -p
-  - cd ..
-  - MIX_ENV=prod mix phx.digest
-  - MIX_ENV=prod mix release --env=prod
-
-after_deploy:
-  - curl
-    -X POST
-    -H 'Content-type:application/json'
-    -d "{\"text\":\"tar.gz built for $TRAVIS_REPO_SLUG - tag $TRAVIS_TAG\"}" $SLACK_HOOK
 
 branches:
   only:
     - master
-    - /^v[\d.]+/
-
-deploy:
-  skip_cleanup: true
-  provider: releases
-  api_key:
-    secure: P2gVtbShl6zW+4qSoEcQifLWcU85/sL12AmCMzxhoe84NS3PLt/PCmJpjT4Z5cU1zfqLetj9pCNiZOsmzOzHeFlab9lhzp+1WvOybB8C1ZLgwWncpcJQkoW6cwWcruJGjGgstg/MVjlPcPNbNbBqTWaPaJPGKVsR3RNQ9wCbLeNe3RDnuVjW55L/ZipfT1+SHI5NkD0l1A7VOEqmZ7OVpPedmuJZ2sj+hqy0XBNMHa5z7QgwvwI7d53iBJh3BYhFjuKTPmW5Dq6t+2P2/D+DyMiOSK6FDibgNIZ/5cNjMrl+riU/dD/yn859LGt6gd1ADOOUQ1XUM0BEmoHUjPe2rvDxNdeF2tzLzkIlXHJkz9lwfHDJEGRyfohZatvws8fJ97vayahF9ovrmXlN8kw/HWeZma5ShGdmMeEpAYr1WTFwEAdXM5rmRAPGFLQlbM8h9CCNVy/k1ZrtTzOOT+HyNB6GCVSA8t1/y078A9gXFEFSSrozNt8pov8TjmLjM4DsodpCSdb6ZAVUsIRJ8J3CR5qEa8AoieEHN5vZtfUKC6DKF6DWOPIzboUgTij4nBxYy6HTXlvtV3UepwpobGdCVKahr5vHLEmLixiV7OWIm6eYT7U/QiA2gdXoKpsXBe9Zn6fqCqDG0vlzDL5ATnJnwwr8WrIMbrmm1Y+0PBfp1qc=
-  file_glob: true
-  file: _build/prod/rel/doc_gen/releases/*/*.tar.gz
-  on:
-    tags: true
