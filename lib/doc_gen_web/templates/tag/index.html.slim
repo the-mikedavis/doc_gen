@@ -1,20 +1,18 @@
-h1 Listing Tags
+h1.text-blue-darker.my-8 Tags
 
-table
-  thead
-    tr
-      th Name
-      th Weight
-      th
-  tbody
+div.bg-white.p-10.rounded.shadow-lg
+  div.flex.w-full
+    div class="w-1/2"
+      span.font-bold.text-blue-darker Name
+    div class="w-1/6"
+      span.font-bold.text-blue-darker Weight
+
+  div.my-4.w-full
     = for tag <- @tags do
-      tr
-        td = tag.name
-        td = tag.weight
+      div.flex
+        div class="w-1/2 h-10" = tag.name
+        div class="w-1/6 h-10" = tag.weight
+        div class="w-1/6 h-10" = link("Edit", to: Routes.tag_path(@conn, :edit, tag), class: "inline-block assign-baseline font-bold text-blue hover:text-blue-darker")
+        div class="w-1/6 h-10" = link("Delete", to: Routes.tag_path(@conn, :delete, tag), method: :delete, data: [confirm: "Are you sure?"], class: "inline-block assign-baseline font-bold text-blue hover:text-blue-darker")
 
-        td
-          = link("Show", to: Routes.tag_path(@conn, :show, tag))
-          = link("Edit", to: Routes.tag_path(@conn, :edit, tag))
-          = link("Delete", to: Routes.tag_path(@conn, :delete, tag), method: :delete, data: [confirm: "Are you sure?"])
-
-span = link("New Tag", to: Routes.tag_path(@conn, :new))
+  = link("Make a New Tag", to: Routes.tag_path(@conn, :new), class: "inline-block assign-baseline font-bold text-blue hover:text-blue-darker")
