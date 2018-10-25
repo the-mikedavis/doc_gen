@@ -27,7 +27,7 @@ h2.text-blue-darker.my-4 Settings
       = error_tag(f, :end_clips)
 
   div.flex.flex-wrap.mb-6
-    = label(f, :copy, class: "block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2")
+    = label(f, :copy, "Home Page Copy", class: "block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2")
     = textarea(f, :copy, placeholder: "Welcome to Doc-Gen...", class: "appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white bocus-border-grey")
     = error_tag(f, :copy)
 
