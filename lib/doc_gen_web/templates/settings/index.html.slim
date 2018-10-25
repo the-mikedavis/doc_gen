@@ -1,37 +1,38 @@
-h2 Settings
+h2.text-blue-darker.my-4 Settings
 
-= form_for @changeset, Routes.settings_path(@conn, :update, @settings), fn f ->
+= form_for @changeset, Routes.settings_path(@conn, :update, @settings), [class: "bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"], fn f ->
   = if @changeset.action do
     div.alert.alert-danger
       p Oops, something went wrong! Please check the errors below.
 
-  div
-    = label(f, :title)
-    = text_input(f, :title, placeholder: "My Documentary")
+  div.flex.flex-wrap.mb-6
+    = label(f, :title, class: "block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2")
+    = text_input(f, :title, placeholder: "My Documentary", class: "appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-grey")
     = error_tag(f, :title)
 
-  div
-    h3 Number of Clips
+  div.flex.flex-wrap.-mx-3.mb-6
+    div class="w-1/2 md:w-1/3 px-3 mb-6 md:mb-0"
+      = label(f, :beginning_clips, class: "block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2")
+      = number_input(f, :beginning_clips, min: 0, max: 100, class: "appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-grey")
+      = error_tag(f, :beginning_clips)
 
-    = label(f, :beginning_clips)
-    = number_input(f, :beginning_clips, min: 0, max: 100)
-    = error_tag(f, :beginning_clips)
+    div class="w-1/2 md:w-1/3 px-3 mb-6 md:mb-0"
+      = label(f, :middle_clips, class: "block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2")
+      = number_input(f, :middle_clips, min: 0, max: 100, class: "appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-grey")
+      = error_tag(f, :middle_clips)
 
-    = label(f, :middle_clips)
-    = number_input(f, :middle_clips, min: 0, max: 100)
-    = error_tag(f, :middle_clips)
+    div class="w-1/2 md:w-1/3 px-3 mb-6 md:mb-0"
+      = label(f, :end_clips, class: "block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2")
+      = number_input(f, :end_clips, min: 0, max: 100, class: "appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-grey")
+      = error_tag(f, :end_clips)
 
-    = label(f, :end_clips)
-    = number_input(f, :end_clips, min: 0, max: 100)
-    = error_tag(f, :end_clips)
-
-  div
-    = label(f, :copy)
-    = textarea(f, :copy, placeholder: "Welcome to Doc-Gen...")
+  div.flex.flex-wrap.mb-6
+    = label(f, :copy, class: "block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2")
+    = textarea(f, :copy, placeholder: "Welcome to Doc-Gen...", class: "appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white bocus-border-grey")
     = error_tag(f, :copy)
 
-  div
-    = link("Reset", to: Routes.settings_path(@conn, :index))
-    button type="button" onclick="submitIfValid()" Save
+  div.mt-6.flex.justify-between
+    = link("Reset", to: Routes.settings_path(@conn, :index), class: "inline-block asign-baseline font-bold text-sm text-blue hover:text-blue-darker")
+    button class="bg-blue-darker text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button" onclick="submitIfValid()" Save
 
-=link("Change Admin Password", to: Routes.user_path(@conn, :edit, @current_user))
+= link("Change Admin Password", to: Routes.user_path(@conn, :edit, @current_user), class: "inline-block asign-baseline font-bold text-sm text-blue hover:text-blue-darker")

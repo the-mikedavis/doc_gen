@@ -6,12 +6,12 @@ div.w-full.my-4.bg-white.rounded.px-8.pt-6.pb-8.mb-4
           p Oops, something went wrong! Please check the errors below.
 
       div class="w-full md:w-1/2 px-3 mb-6 md:mb-0"
-        = label(f, :title, class: "block text-grey-darker text-sm font-bold mb-2")
+        = label(f, :title, class: "block uppercase text-grey-darker text-sm font-bold mb-2")
         = text_input(f, :title, required: true, class: "appearance-none block w-full bg-grey-lighter text-grey-darker border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white")
         = error_tag(f, :title)
 
       div class="w-full md:w-1/2 px-3 mb-6 md:mb-0"
-        = label(f, :interviewee_name, class: "block text-grey-darker text-sm font-bold mb-2")
+        = label(f, :interviewee_name, class: "block uppercase text-grey-darker text-sm font-bold mb-2")
         = text_input(f, :interviewee_name, required: true, list: "interviewees", class: "appearance-none block w-full bg-grey-lighter text-grey-darker border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white")
         // Show the available interviewees
         datalist#interviewees
@@ -21,7 +21,7 @@ div.w-full.my-4.bg-white.rounded.px-8.pt-6.pb-8.mb-4
 
     div.flex.flex-wrap.-mx-3.mb-6
       div class="w-full md:w-1/2 px-3 mb-2 md:mb-0"
-        = label(f, :type_id, class: "block text-grey-darker text-sm font-bold mb-2")
+        = label(f, :type_id, class: "block uppercase text-grey-darker text-sm font-bold mb-2")
         div.relative
           = select(f, :type_id, selection(@types), class: "block appearance-none w-full bg-grey-lighter border border-grey-lighter text-grey-darker py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-grey")
           div.pointer-events-none.absolute.pin-y.pin-r.flex.items-center.px-2.text-grey-darker
@@ -30,7 +30,7 @@ div.w-full.my-4.bg-white.rounded.px-8.pt-6.pb-8.mb-4
         = error_tag(f, :type_id)
 
       div class="w-full md:w-1/2 px-3 mb-4 md:mb-0"
-        = label(f, :segment_id, class: "block text-grey-darker text-sm font-bold mb-2")
+        = label(f, :segment_id, class: "block uppercase text-grey-darker text-sm font-bold mb-2")
         div.relative
           = select(f, :segment_id, selection(@segments), class: "block appearance-none w-full bg-grey-lighter border border-grey-lighter text-grey-darker py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-grey")
           div.pointer-events-none.absolute.pin-y.pin-r.flex.items-center.px-2.text-grey-darker
