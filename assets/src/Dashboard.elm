@@ -309,22 +309,28 @@ drawVideoPopup : Maybe Video -> Html Msg
 drawVideoPopup activeVideo =
     case activeVideo of
         Nothing ->
-            div [ attribute "class" "video-popout-holster" ]
+            div [ attribute "id" "video-popout-holster" ]
                 []
 
         Just vod ->
-            div [ attribute "class" "video-popout-holster" ]
-                [ video
-                    [ attribute "controls" "true" ]
-                    [ source
-                        [ attribute "src" ("/stream/" ++ (toString vod.id)) ]
+            div [ attribute "id" "video-popout-holster" ]
+                [ div
+                    [ attribute "class" "curtain"
+                    ]
+                    [
+                      video
+                        [ attribute "controls" "true"
+                        ]
+                        [ source
+                            [ attribute "src" ("/stream/" ++ (toString vod.id)) ]
+                            []
+                        ]
+                    , i
+                        [ attribute "class" "fas fa-times close-btn bg-grey-light hover:bg-grey text-grey-darkest rounded-full p-3 shadow-md"
+                        , onClick CloseShow
+                        ]
                         []
                     ]
-                , i
-                    [ attribute "class" "fas fa-times close-btn"
-                    , onClick CloseShow
-                    ]
-                    []
                 ]
 
 
