@@ -193,19 +193,19 @@ joinChannel =
 
 drawControls : Video -> Html Msg
 drawControls video =
-    div [ attribute "class" "dashboard-controls" ]
+    div [ attribute "class" "dashboard-controls flex justify-center pb-4" ]
         [ i
-            [ attribute "class" "far fa-edit"
+            [ attribute "class" "fas fa-pencil-alt bg-grey-light hover:bg-grey text-grey-darkest font-bold rounded-full p-3 mx-4 shadow-md"
             , onClick (EditVideo video)
             ]
             []
         , i
-            [ attribute "class" "far fa-eye"
+            [ attribute "class" "far fa-eye bg-grey-light hover:bg-grey text-grey-darkest font-bold rounded-full p-3 mx-4 shadow-md"
             , onClick (ShowVideo video)
             ]
             []
         , a
-            [ attribute "class" "dashboard-edit-link"
+            [ attribute "class" "dashboard-edit-link bg-grey-light hover:bg-grey text-grey-darkest font-bold rounded-full p-3 mx-4 shadow-md"
             , attribute "href" ("/admin/videos/" ++ (toString video.id))
             ]
             [ i
@@ -215,61 +215,75 @@ drawControls video =
         ]
 
 
-drawVideo : Video -> Html Msg
-drawVideo video =
-    div [ attribute "class" "bg-white shadow-md rounded-lg m-1 p-3 video-panel" ]
-        [ img
-            [ attribute "src" ("/thumb/" ++ (toString video.id) ++ "/jpeg")
-            , attribute "class" "dashboard-preview"
-            , attribute "onmouseover" "animateThumb(event)"
-            , attribute "onmouseout" "stillThumb(event)"
-            ]
-            []
-        , p []
-            [ span [ attribute "class" "text-blue-dark" ]
-                [ text "title: " ]
+drawContent : Video -> Html Msg
+drawContent video =
+    div [ attribute "class" "py-3 px-3" ]
+        [ p []
+            [ span [ attribute "class" "inline-block text-blue-dark text-sm font-bold mb-1 mr-2" ]
+                [ text "Title" ]
             , text video.title
             ]
         , p []
-            [ span [ attribute "class" "text-blue-dark" ]
-                [ text "interviewee: " ]
+            [ span [ attribute "class" "inline-block text-blue-dark text-sm font-bold mb-1 mr-2" ]
+                [ text "Interviewee" ]
             , text video.interviewee
             ]
         , p []
-            [ span [ attribute "class" "text-blue-dark" ]
-                [ text "segment: " ]
-            , text video.segment
-            ]
-        , p []
-            [ span [ attribute "class" "text-blue-dark" ]
-                [ text "length: " ]
+            [ span [ attribute "class" "inline-block text-blue-dark text-sm font-bold mb-1 mr-2" ]
+                [ text "Length" ]
             , text ((toString video.duration) ++ " seconds")
             ]
         , p []
-            [ span [ attribute "class" "text-blue-dark" ]
-                [ text "keywords: " ]
+            [ span [ attribute "class" "inline-block text-blue-dark text-sm font-bold mb-1 mr-2" ]
+                [ text "Tags" ]
             , text (String.join ", " video.tags)
             ]
         , p []
-            [ span [ attribute "class" "text-blue-dark" ]
-                [ text "type: " ]
+            [ span [ attribute "class" "inline-block text-blue-dark text-sm font-bold mb-1 mr-2" ]
+                [ text "Segment" ]
+            , text video.segment
+            ]
+        , p []
+            [ span [ attribute "class" "inline-block text-blue-dark text-sm font-bold mb-1 mr-2" ]
+                [ text "Type" ]
             , text video.clip_type
             ]
-        , (drawControls video)
         ]
 
+drawVideo : Video -> Html Msg
+drawVideo video =
+    div
+        [ attribute "class" "w-1/2 lg:w-1/3 py-2 px-2"
+        ]
+        [ div
+            [ attribute "class" "bg-white shadow-md rounded video-panel overflow-hidden" ]
+            [ img
+                [ attribute "src" ("/thumb/" ++ (toString video.id) ++ "/jpeg")
+                , attribute "class" "dashboard-preview"
+                , attribute "onmouseover" "animateThumb(event)"
+                , attribute "onmouseout" "stillThumb(event)"
+                ]
+                []
+            , (drawContent video)
+            , (drawControls video)
+            ]
+          ]
 
 drawSearchBar : String -> Html Msg
 drawSearchBar searchString =
-    div [ attribute "class" "bg-white shadow-md rounded-lg m-1 p-3 w-full" ]
-        [ input
-            [ attribute "type" "text"
-            , attribute "class" "border"
-            , attribute "placeholder" "Search"
-            , onInput StartSearch
-            , value searchString
+    div [ attribute "class" "bg-white shadow-md rounded-lg w-full p-1" ]
+        [ div
+            [ attribute "class" "border-b border-b-2 border-blue-dark m-2 py-2"
             ]
-            []
+            [ input
+                [ attribute "type" "text"
+                , attribute "class" "appearance-none bg-transparent border-none w-full text-grey-darker mr-3 py-1 pl-2 pr-4 leading-tight focus:outline-none"
+                , attribute "placeholder" "Search"
+                , onInput StartSearch
+                , value searchString
+                ]
+                []
+            ]
         ]
 
 
@@ -322,12 +336,12 @@ view model =
                 |> List.sortBy .title
                 |> List.map drawVideo
     in
-        div [ attribute "class" "px-2" ]
+        div [ attribute "class" "" ]
             [ (drawSearchBar model.searchString)
             , (drawVideoPopup model.shownVideo)
             , (drawEditPanel model.editId)
             , div
-                [ attribute "class" "flex flex-wrap -mx-4"
+                [ attribute "class" "flex flex-wrap -mx-2 my-2"
                 ]
                 (model |> searchFilter |> drawVideos)
             ]
