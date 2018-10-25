@@ -291,17 +291,21 @@ drawEditPanel : Maybe Int -> Html Msg
 drawEditPanel editId =
     case editId of
         Nothing ->
-            div [ attribute "class" "edit-panel" ]
+            div [ attribute "id" "edit-panel" ]
                 []
 
         Just id ->
-            div [ attribute "class" "edit-panel" ]
-                [ iframe [ attribute "src" ("/admin/videos/" ++ (toString id) ++ "/edit") ] []
-                , i
-                    [ attribute "class" "fas fa-times close-btn"
-                    , onClick (CloseEdit id)
+            div [ attribute "id" "edit-panel" ]
+                [ div
+                    [ attribute "class" "curtain"
                     ]
-                    []
+                    [ iframe [ attribute "src" ("/admin/videos/" ++ (toString id) ++ "/edit") ] []
+                    , i
+                        [ attribute "class" "fas fa-times close-btn bg-grey-light hover:bg-grey text-grey-darkest rounded-full p-3 shadow-md"
+                        , onClick (CloseEdit id)
+                        ]
+                        []
+                    ]
                 ]
 
 
