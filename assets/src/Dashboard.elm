@@ -315,6 +315,7 @@ drawEditPanel editId =
             div [ attribute "id" "edit-panel" ]
                 [ div
                     [ attribute "class" "curtain"
+                    , onClick (CloseEdit id)
                     ]
                     [ iframe [ attribute "src" ("/admin/videos/" ++ (toString id) ++ "/edit") ] []
                     , i
@@ -337,6 +338,7 @@ drawVideoPopup activeVideo =
             div [ attribute "id" "video-popout-holster" ]
                 [ div
                     [ attribute "class" "curtain"
+                    , onClick CloseShow
                     ]
                     [ video
                         [ attribute "controls" "true"
