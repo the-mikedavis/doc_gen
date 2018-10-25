@@ -1,6 +1,3 @@
-h1 New User
-
 = render("form.html", Map.put(assigns, :action, Routes.user_path(@conn, :create)))
 
-span
-  = link("Back", to: Routes.user_path(@conn, :index))
+= link("Back", to: Routes.user_path(@conn, :index), class: "inline-block asign-baseline font-bold text-sm text-blue hover:text-blue-darker")

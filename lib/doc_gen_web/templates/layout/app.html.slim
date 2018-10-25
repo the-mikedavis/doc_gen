@@ -4,27 +4,33 @@ html lang="en"
     meta http-equiv="X-UA-Compatible" content="IE=edge"
     meta name="viewport" content="width=device-width, initial-scale=1.0"
     title = @view_module.title(@view_template, @conn.assigns)
-    link rel="stylesheet" href="https://vjs.zencdn.net/5.8.7/video-js.css"
     link rel="stylesheet" href="#{Routes.static_path(@conn, "/css/app.css")}"
     link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous"
 
-  body
+  body.bg-grey-lighter
     header
-      section.container
-        nav role="navigation"
-          h1 = @view_module.title(@view_template, @conn.assigns)
-          ul
+      section
+        //.container
+        nav.flex.items-center.justify-between.flex-wrap.bg-blue-darker.p-6 role="navigation"
+          div.flex.items-center.flex-no-shrink.text-white.mr-6
+            span.font-semibold.text-xl.tracking-light = @view_module.title(@view_template, @conn.assigns)
+          div class="block lg:hidden"
+            button class="flex items-center px-3 py-2 border rounded text-teal-lighter border-teal-light hover:text-white hover:border-white"
+              svg class="fill-current h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"
+                title Menu
+                path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"
+          div class="w-full block flex-grow lg:flex lg:items-center lg:w-auto text-sm lg:flex-grow"
             = if assigns[:current_user] do
-              li = link("Dashboard", to: Routes.video_path(@conn, :index))
-              li = link("Upload", to: Routes.video_path(@conn, :new))
-              li = link("Settings", to: Routes.settings_path(@conn, :index))
-              li = link("Admins", to: Routes.user_path(@conn, :index))
-              li = link("Tags", to: Routes.tag_path(@conn, :index))
-              li = link("Preview", to: Routes.watch_path(@conn, :index))
-              li = link("Log out (#{@current_user.username})", to: Routes.session_path(@conn, :delete, @current_user), method: "delete")
+              = link("Dashboard", to: Routes.video_path(@conn, :index), class: "block mt-4 lg:inline-block lg:mt-0 text-blue-lighter hover:text-white mr-4")
+              = link("Upload", to: Routes.video_path(@conn, :new), class: "block mt-4 lg:inline-block lg:mt-0 text-blue-lighter hover:text-white mr-4")
+              = link("Settings", to: Routes.settings_path(@conn, :index), class: "block mt-4 lg:inline-block lg:mt-0 text-blue-lighter hover:text-white mr-4")
+              = link("Admins", to: Routes.user_path(@conn, :index), class: "block mt-4 lg:inline-block lg:mt-0 text-blue-lighter hover:text-white mr-4")
+              = link("Tags", to: Routes.tag_path(@conn, :index), class: "block mt-4 lg:inline-block lg:mt-0 text-blue-lighter hover:text-white mr-4")
+              = link("Preview", to: Routes.watch_path(@conn, :index), class: "block mt-4 lg:inline-block lg:mt-0 text-blue-lighter hover:text-white mr-4")
+              = link("Log out (#{@current_user.username})", to: Routes.session_path(@conn, :delete, @current_user), method: "delete", class: "block mt-4 lg:inline-block lg:mt-0 text-blue-lighter hover:text-white mr-4")
             - else
-              li = link("Watch", to: Routes.watch_path(@conn, :index))
-              li = link("Log in", to: Routes.session_path(@conn, :new))
+              = link("Watch", to: Routes.watch_path(@conn, :index), class: "block mt-4 lg:inline-block lg:mt-0 text-blue-lighter hover:text-white mr-4")
+              = link("Log in", to: Routes.session_path(@conn, :new), class: "block mt-4 lg:inline-block lg:mt-0 text-blue-lighter hover:text-white mr-4")
 
     main.container role="main"
       p.alert.alert-info role="alert"

@@ -23,16 +23,11 @@ defmodule DocGenWeb.UserController do
         |> put_session(:user_id, user.id)
         |> assign(:current_user, user)
         |> put_flash(:info, "Success. You're now logged in as #{user.username}")
-        |> redirect(to: Routes.user_path(conn, :show, user))
+        |> redirect(to: Routes.video_path(conn, :index))
 
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "new.html", changeset: changeset)
     end
-  end
-
-  def show(conn, %{"id" => id}) do
-    user = Accounts.get_user!(id)
-    render(conn, "show.html", user: user)
   end
 
   def edit(conn, _params) do

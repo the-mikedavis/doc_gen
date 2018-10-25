@@ -1,39 +1,53 @@
-= form_for @changeset, @action, [multipart: true], fn f ->
-  = if @changeset.action do
-    div.alert.alert-danger
-      p Oops, something went wrong! Please check the errors below.
+div.w-full.my-4.bg-white.rounded.px-8.pt-6.pb-8.mb-4
+  = form_for @changeset, @action, [multipart: true, class: ""], fn f ->
+    div.flex.flex-wrap.-mx-3.mb-6
+      = if @changeset.action do
+        div.alert.alert-danger
+          p Oops, something went wrong! Please check the errors below.
 
-  div
-    = label f, :title
-    = text_input f, :title, required: true
-    = error_tag f, :title
+      div class="w-full md:w-1/2 px-3 mb-6 md:mb-0"
+        = label(f, :title, class: "block text-grey-darker text-sm font-bold mb-2")
+        = text_input(f, :title, required: true, class: "appearance-none block w-full bg-grey-lighter text-grey-darker border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white")
+        = error_tag(f, :title)
 
-  div
-    = label f, :type_id
-    = select f, :type_id, selection(@types)
-    = error_tag f, :type_id
+      div class="w-full md:w-1/2 px-3 mb-6 md:mb-0"
+        = label(f, :interviewee_name, class: "block text-grey-darker text-sm font-bold mb-2")
+        = text_input(f, :interviewee_name, required: true, list: "interviewees", class: "appearance-none block w-full bg-grey-lighter text-grey-darker border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white")
+        // Show the available interviewees
+        datalist#interviewees
+          = for interviewee <- @interviewees do
+            option value="#{interviewee.name}"
+        = error_tag(f, :interviewee_name)
 
-  div
-    = label f, :segment_id
-    = select f, :segment_id, selection(@segments)
-    = error_tag f, :segment_id
+    div.flex.flex-wrap.-mx-3.mb-6
+      div class="w-full md:w-1/2 px-3 mb-2 md:mb-0"
+        = label(f, :type_id, class: "block text-grey-darker text-sm font-bold mb-2")
+        div.relative
+          = select(f, :type_id, selection(@types), class: "block appearance-none w-full bg-grey-lighter border border-grey-lighter text-grey-darker py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-grey")
+          div.pointer-events-none.absolute.pin-y.pin-r.flex.items-center.px-2.text-grey-darker
+            svg.fill-current.h-4.w-4 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+              path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"
+        = error_tag(f, :type_id)
 
-  div
-    = label f, :interviewee_name
-    = text_input f, :interviewee_name, required: true, list: "interviewees"
-    // Show the available interviewees
-    datalist#interviewees
-      = for interviewee <- @interviewees do
-        option value="#{interviewee.name}"
-    = error_tag f, :interviewee_name
+      div class="w-full md:w-1/2 px-3 mb-4 md:mb-0"
+        = label(f, :segment_id, class: "block text-grey-darker text-sm font-bold mb-2")
+        div.relative
+          = select(f, :segment_id, selection(@segments), class: "block appearance-none w-full bg-grey-lighter border border-grey-lighter text-grey-darker py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-grey")
+          div.pointer-events-none.absolute.pin-y.pin-r.flex.items-center.px-2.text-grey-darker
+            svg.fill-current.h-4.w-4 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+              path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"
+        = error_tag(f, :segment_id)
 
-  div
-    = label f, :video_file
-    = file_input f, :video_file, required: true, accept: ".mp4,.mov,.webm"
-    = error_tag f, :video_file
+    div.w-full.mb-4
+      div
+        label class="bg-blue-darker text-white font-bold py-3 px-5 rounded focus:outline-none focus:shadow-outline file-label" for="video_video_file"
+          i.far.fa-file-video.mr-3
+          span#upload-text Upload
+        = file_input(f, :video_file, required: true, accept: ".mp4,.mov,.webm")
+        = error_tag(f, :video_file)
 
-  h3 Tags
-  div#live-tags
+      h3.mt-6 Tags
+      div#live-tags
 
-  div
-    button type="button" onclick="submitIfValid()" Save
+      div
+        button class="bg-blue-darker text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button" onclick="submitIfValid()" Save

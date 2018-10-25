@@ -217,7 +217,7 @@ drawControls video =
 
 drawVideo : Video -> Html Msg
 drawVideo video =
-    div [ attribute "class" "video-entry" ]
+    div [ attribute "class" "bg-white shadow-md rounded-lg m-1 p-3 video-panel" ]
         [ img
             [ attribute "src" ("/thumb/" ++ (toString video.id) ++ "/jpeg")
             , attribute "class" "dashboard-preview"
@@ -226,32 +226,32 @@ drawVideo video =
             ]
             []
         , p []
-            [ span [ attribute "class" "highlight" ]
+            [ span [ attribute "class" "text-blue-dark" ]
                 [ text "title: " ]
             , text video.title
             ]
         , p []
-            [ span [ attribute "class" "highlight" ]
+            [ span [ attribute "class" "text-blue-dark" ]
                 [ text "interviewee: " ]
             , text video.interviewee
             ]
         , p []
-            [ span [ attribute "class" "highlight" ]
+            [ span [ attribute "class" "text-blue-dark" ]
                 [ text "segment: " ]
             , text video.segment
             ]
         , p []
-            [ span [ attribute "class" "highlight" ]
+            [ span [ attribute "class" "text-blue-dark" ]
                 [ text "length: " ]
             , text ((toString video.duration) ++ " seconds")
             ]
         , p []
-            [ span [ attribute "class" "highlight" ]
+            [ span [ attribute "class" "text-blue-dark" ]
                 [ text "keywords: " ]
             , text (String.join ", " video.tags)
             ]
         , p []
-            [ span [ attribute "class" "highlight" ]
+            [ span [ attribute "class" "text-blue-dark" ]
                 [ text "type: " ]
             , text video.clip_type
             ]
@@ -261,10 +261,11 @@ drawVideo video =
 
 drawSearchBar : String -> Html Msg
 drawSearchBar searchString =
-    div []
-        [ text "Search: "
-        , input
+    div [ attribute "class" "bg-white shadow-md rounded-lg m-1 p-3 w-full" ]
+        [ input
             [ attribute "type" "text"
+            , attribute "class" "border"
+            , attribute "placeholder" "Search"
             , onInput StartSearch
             , value searchString
             ]
@@ -321,11 +322,14 @@ view model =
                 |> List.sortBy .title
                 |> List.map drawVideo
     in
-        div []
+        div [ attribute "class" "px-2" ]
             [ (drawSearchBar model.searchString)
             , (drawVideoPopup model.shownVideo)
             , (drawEditPanel model.editId)
-            , div [] (model |> searchFilter |> drawVideos)
+            , div
+                [ attribute "class" "flex flex-wrap -mx-4"
+                ]
+                (model |> searchFilter |> drawVideos)
             ]
 
 

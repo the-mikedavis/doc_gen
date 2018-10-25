@@ -3,7 +3,7 @@ import css from '../css/app.sass'
 import 'phoenix_html'
 import {LiveTags} from '../src/LiveTags.elm'
 import {Dashboard} from '../src/Dashboard.elm'
-// import videojs from '../node_modules/video.js'
+import drop_listen from './drop_zone'
 
 const live_tags = document.getElementById('live-tags')
 if (live_tags) {
@@ -19,9 +19,13 @@ if (dashboard)
 
 const theater = document.getElementById('theater')
 if (theater) {
-  console.log('adding event listener', theater)
   theater.addEventListener('ended', startNextVideo);
 }
+
+const drop_zone = document.getElementById('video_video_file')
+const file_input_label = document.getElementById('upload-text')
+if (drop_zone)
+  drop_listen(drop_zone, file_input_label)
 
 let videoCounter = 1;
 function startNextVideo() {

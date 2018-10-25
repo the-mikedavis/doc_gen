@@ -1,7 +1,6 @@
-div#dashboard
+div.mt-8#dashboard
 
-span
-  = link("New Video", to: Routes.video_path(@conn, :new))
+= link("New Video", to: Routes.video_path(@conn, :new), class: "inline-block asign-baseline font-bold text-sm text-blue hover:text-blue-darker my-4")
 
 javascript:
   window.userToken = "#{assigns[:user_token]}";
