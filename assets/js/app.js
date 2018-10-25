@@ -15,7 +15,7 @@ if (live_tags) {
 
 const dashboard = document.getElementById('dashboard')
 if (dashboard)
-  Dashboard.embed(dashboard, buildSocketUri())
+  Dashboard.embed(dashboard, {uri: buildSocketUri(), token: window.phxCsrfToken})
 
 const theater = document.getElementById('theater')
 if (theater) {

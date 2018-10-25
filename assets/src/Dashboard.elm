@@ -46,6 +46,11 @@ videoListDecoder =
     Decode.list decodeVideo
 
 
+type alias Flags =
+    { uri : String
+    , token : String
+    }
+
 type alias Model =
     { videos : List Video
     , visibleVideos : List Video
@@ -53,17 +58,18 @@ type alias Model =
     , searchString : String
     , editId : Maybe Int
     , shownVideo : Maybe Video
+    , csrfToken : String
     }
 
 
-init : String -> ( Model, Cmd Msg )
-init socketUri =
+init : Flags -> ( Model, Cmd Msg )
+init flags =
     let
         channel =
             Phoenix.Channel.init "video:lobby"
 
         initSocket =
-            Phoenix.Socket.init socketUri
+            Phoenix.Socket.init flags.uri
 
         model =
             { videos = []
@@ -72,6 +78,7 @@ init socketUri =
             , searchString = ""
             , editId = Nothing
             , shownVideo = Nothing
+            , csrfToken = flags.token
             }
     in
         ( model, joinChannel )
@@ -191,28 +198,36 @@ joinChannel =
 ---- VIEW ----
 
 
-drawControls : Video -> Html Msg
-drawControls video =
-    div [ attribute "class" "dashboard-controls flex justify-center pb-4" ]
-        [ i
-            [ attribute "class" "fas fa-pencil-alt bg-grey-light hover:bg-grey text-grey-darkest font-bold rounded-full p-3 mx-4 shadow-md"
-            , onClick (EditVideo video)
-            ]
-            []
-        , i
-            [ attribute "class" "far fa-eye bg-grey-light hover:bg-grey text-grey-darkest font-bold rounded-full p-3 mx-4 shadow-md"
-            , onClick (ShowVideo video)
-            ]
-            []
-        , a
-            [ attribute "class" "dashboard-edit-link bg-grey-light hover:bg-grey text-grey-darkest font-bold rounded-full p-3 mx-4 shadow-md"
-            , attribute "href" ("/admin/videos/" ++ (toString video.id))
-            ]
+drawControls : Video -> String -> Html Msg
+drawControls video token =
+    let
+        deleteUri =
+          "/admin/videos/" ++ (toString video.id)
+    in
+        div [ attribute "class" "dashboard-controls flex justify-center pb-4" ]
             [ i
-                [ attribute "class" "fas fa-info-circle" ]
+                [ attribute "class" "fas fa-pencil-alt bg-grey-light hover:bg-grey text-grey-darkest font-bold rounded-full p-3 mx-4 shadow-md"
+                , onClick (EditVideo video)
+                ]
                 []
+            , i
+                [ attribute "class" "far fa-eye bg-grey-light hover:bg-grey text-grey-darkest font-bold rounded-full p-3 mx-4 shadow-md"
+                , onClick (ShowVideo video)
+                ]
+                []
+            , a
+                [ attribute "class" "dashboard-edit-link bg-grey-light hover:bg-grey text-grey-darkest font-bold rounded-full p-3 mx-4 shadow-md"
+                , attribute "href" deleteUri
+                , attribute "data-to" deleteUri
+                , attribute "data-method" "delete"
+                , attribute "data-confirm" "Are you sure?"
+                , attribute "data-csrf" token
+                ]
+                [ i
+                    [ attribute "class" "fas fa-trash-alt" ]
+                    []
+                ]
             ]
-        ]
 
 
 drawContent : Video -> Html Msg
@@ -251,8 +266,8 @@ drawContent video =
         ]
 
 
-drawVideo : Video -> Html Msg
-drawVideo video =
+drawVideo : Video -> String -> Html Msg
+drawVideo video token =
     div
         [ attribute "class" "w-1/2 lg:w-1/3 py-2 px-2"
         ]
@@ -266,7 +281,7 @@ drawVideo video =
                 ]
                 []
             , (drawContent video)
-            , (drawControls video)
+            , (drawControls video token)
             ]
         ]
 
@@ -345,7 +360,7 @@ view model =
         drawVideos videos =
             videos
                 |> List.sortBy .title
-                |> List.map drawVideo
+                |> List.map (\v -> drawVideo v model.csrfToken)
     in
         div [ attribute "class" "" ]
             [ (drawSearchBar model.searchString)
@@ -386,7 +401,7 @@ searchFilter model =
         |> List.filter (\vText -> List.any (String.contains (String.toLower model.searchString)) (allText vText))
 
 
-main : Program String Model Msg
+main : Program Flags Model Msg
 main =
     programWithFlags
         { view = view

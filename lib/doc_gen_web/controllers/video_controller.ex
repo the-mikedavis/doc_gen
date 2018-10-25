@@ -7,7 +7,7 @@ defmodule DocGenWeb.VideoController do
 
   def index(conn, _params) do
     videos = Content.list_videos_with_interviewees()
-    render(conn, "index.html", videos: videos)
+    render(conn, "index.html", videos: videos, csrf_token: get_csrf_token())
   end
 
   def new(conn, _params) do

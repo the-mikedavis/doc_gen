@@ -122,7 +122,16 @@ defmodule DocGen.Content do
 
   """
   def delete_video(%Video{} = video) do
+    delete_video_files(video)
+
     Repo.delete(video)
+  end
+
+  @spec delete_video_files(%Video{}) :: [:ok | {:error, any()}]
+  defp delete_video_files(%Video{} = video) do
+    (build_video_path(video) <> "*")
+    |> Path.wildcard()
+    |> Enum.each(&File.rm!/1)
   end
 
   @doc """
