@@ -1,4 +1,4 @@
-div.w-full.mt-6
+div class="w-full mt-6 lg:flex lg:justify-center"
   = form_for @changeset, @action, [class: "bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"], fn f ->
     = if @changeset.action do
       div.alert.alert-danger
@@ -15,4 +15,5 @@ div.w-full.mt-6
       = error_tag(f, :password)
 
     div.flex.justify-between.items-center
+      = link("Back", to: Routes.user_path(@conn, :index), class: "inline-block asign-baseline font-bold text-sm text-blue hover:text-blue-darker")
       = submit("Sign up", class: "bg-blue-darker text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline")
