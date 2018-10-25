@@ -1,3 +1,4 @@
+import tailcss from '../css/tail.css'
 import css from '../css/app.sass'
 import 'phoenix_html'
 import {LiveTags} from '../src/LiveTags.elm'
