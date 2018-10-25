@@ -159,18 +159,18 @@ update msg model =
                         ( { model | shownVideo = Just video }, Cmd.none )
 
         CloseEdit _ ->
-          let
-              phxPush =
-                  Phoenix.Push.init "videos" "video:lobby"
-                      |> Phoenix.Push.onOk PopulateVideos
-                      |> Phoenix.Push.onError HandleSendError
+            let
+                phxPush =
+                    Phoenix.Push.init "videos" "video:lobby"
+                        |> Phoenix.Push.onOk PopulateVideos
+                        |> Phoenix.Push.onError HandleSendError
 
-              ( phxSocket, phxCmd ) =
-                  Phoenix.Socket.push phxPush model.phxSocket
-          in
-              ( { model | phxSocket = phxSocket, editId = Nothing }
-              , Cmd.map PhoenixMsg phxCmd
-              )
+                ( phxSocket, phxCmd ) =
+                    Phoenix.Socket.push phxPush model.phxSocket
+            in
+                ( { model | phxSocket = phxSocket, editId = Nothing }
+                , Cmd.map PhoenixMsg phxCmd
+                )
 
         CloseShow ->
             ( { model | shownVideo = Nothing }, Cmd.none )
@@ -250,6 +250,7 @@ drawContent video =
             ]
         ]
 
+
 drawVideo : Video -> Html Msg
 drawVideo video =
     div
@@ -267,7 +268,8 @@ drawVideo video =
             , (drawContent video)
             , (drawControls video)
             ]
-          ]
+        ]
+
 
 drawSearchBar : String -> Html Msg
 drawSearchBar searchString =
@@ -321,8 +323,7 @@ drawVideoPopup activeVideo =
                 [ div
                     [ attribute "class" "curtain"
                     ]
-                    [
-                      video
+                    [ video
                         [ attribute "controls" "true"
                         ]
                         [ source

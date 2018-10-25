@@ -250,22 +250,23 @@ onKeyDown tagger =
 
 drawTag : Tag -> Html Msg
 drawTag tag =
-    div [ attribute "class" "w-1/2 md:w-1/4 lg:w-1/5 px-1"
+    div
+        [ attribute "class" "w-1/2 md:w-1/4 lg:w-1/5 px-1"
         , onClick (ToggleTag tag)
         ]
         [ div
-            [ classList [
-                ("bg-blue-darker", not tag.active),
-                ("bg-blue", tag.active),
-                ("py-4", True),
-                ("px-3", True),
-                ("my-1", True),
-                ("shadow-md", True),
-                ("text-white", True),
-                ("text-sm", True),
-                ("font-bold", True),
-                ("tag-body", True)
-              ]
+            [ classList
+                [ ( "bg-blue-darker", not tag.active )
+                , ( "bg-blue", tag.active )
+                , ( "py-4", True )
+                , ( "px-3", True )
+                , ( "my-1", True )
+                , ( "shadow-md", True )
+                , ( "text-white", True )
+                , ( "text-sm", True )
+                , ( "font-bold", True )
+                , ( "tag-body", True )
+                ]
             ]
             [ input
                 [ attribute "id" tag.name
