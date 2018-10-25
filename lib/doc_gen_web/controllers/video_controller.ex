@@ -75,7 +75,8 @@ defmodule DocGenWeb.VideoController do
   end
 
   def update(conn, %{"id" => id, "video" => video_params}) do
-    video = Content.get_video!(id)
+    video = Content.get_video!(id, preload: true)
+    video_params = put_tags(video_params)
 
     case Content.update_video(video, video_params) do
       {:ok, video} ->
