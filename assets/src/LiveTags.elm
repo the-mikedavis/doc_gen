@@ -250,21 +250,39 @@ onKeyDown tagger =
 
 drawTag : Tag -> Html Msg
 drawTag tag =
-    li []
-        [ input
-            [ attribute "id" tag.name
-            , attribute "name" ("video[" ++ (toString tag.name) ++ "]")
-            , type_ "checkbox"
-            , checked tag.active
-            , onClick (ToggleTag tag)
+    div [ attribute "class" "w-1/2 md:w-1/4 lg:w-1/5 px-1"
+        , onClick (ToggleTag tag)
+        ]
+        [ div
+            [ classList [
+                ("bg-blue-darker", not tag.active),
+                ("bg-blue", tag.active),
+                ("py-4", True),
+                ("px-3", True),
+                ("my-1", True),
+                ("shadow-md", True),
+                ("text-white", True),
+                ("text-sm", True),
+                ("font-bold", True),
+                ("tag-body", True)
+              ]
             ]
-            []
-        , text tag.name
-        , i
-            [ attribute "class" "fas fa-times"
-            , onClick (DeleteTag tag)
+            [ input
+                [ attribute "id" tag.name
+                , attribute "name" ("video[" ++ (toString tag.name) ++ "]")
+                , attribute "class" "tag-checkbox"
+                , type_ "checkbox"
+                , checked tag.active
+                ]
+                []
+            , span [ attribute "class" "px-1" ]
+                [ text tag.name ]
+            , i
+                [ attribute "class" "fas fa-times close-button text-teal px-1"
+                , onClick (DeleteTag tag)
+                ]
+                []
             ]
-            []
         ]
 
 
@@ -276,15 +294,23 @@ view model =
                 |> List.sortBy (\t -> t.name)
                 |> List.map drawTag
     in
-        div []
-            [ ul [] (drawTags model.tags)
-            , h4 [] [ text "Create New Tags" ]
-            , input
-                [ onInput StartTag
-                , onKeyDown KeyDown
-                , value model.tagInProgress
+        div [ attribute "class" "w-full" ]
+            [ div
+                [ attribute "class" "flex flex-wrap -mx-2 pr-2"
                 ]
-                []
+                (drawTags model.tags)
+            , div
+                [ attribute "class" "border-b border-b-2 border-blue-dark my-4 py-2 w-1/2"
+                ]
+                [ input
+                    [ attribute "placeholder" "Create a New Tag"
+                    , attribute "class" "appearance-none bg-transparent border-none w-full text-grey-darker mr-3 py-1 px-2 leading-tight focus:outline-none"
+                    , onInput StartTag
+                    , onKeyDown KeyDown
+                    , value model.tagInProgress
+                    ]
+                    []
+                ]
             ]
 
 
