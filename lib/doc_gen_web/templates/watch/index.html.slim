@@ -7,18 +7,17 @@
       li = link(video.filename, to: Routes.watch_path(@conn, :choose, video))
 //
 
-p = @copy
+div.bg-white.p-10.mt-6.rounded.shadow-lg.text-center
+  p = @copy
 
-hr
-
-p Select the topics that interest you to generate a #{@length} clip documentary
-  on those subjects.
-
-= form_tag("/watch", method: :post)
-  ul
-  = for tag <- @tags do
-    li
-      = tag(:input, type: "checkbox", name: tag.name)
-        = tag.name
-  hr
-  = submit("Generate Movie")
+div.bg-white.p-10.mt-6.rounded.shadow-lg
+  p.mb-6 Select the topics that interest you to generate a #{@length} clip documentary
+    on those subjects.
+  = form_tag("/watch", method: :post)
+    div.flex
+      = for tag <- @tags do
+        div.bg-blue-darker.py-4.px-3.my-1.shadow-md.text-white.text-sm.font-bold.tag-body.tag-choose
+          text = tag.name
+          = tag(:input, type: "checkbox", name: tag.name, class: "tag-checkbox", checked: false)
+    div.flex.justify-center
+      = submit("Generate Movie", class: "bg-blue-darker text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mt-6")

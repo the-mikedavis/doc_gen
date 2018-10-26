@@ -13,6 +13,19 @@ if (live_tags) {
     LiveTags.embed(live_tags, {uri: buildSocketUri(), id: -1})
 }
 
+const chooseTags = document.getElementsByClassName('tag-choose')
+if (chooseTags) {
+  for (let i = 0; i < chooseTags.length; i++)
+    chooseTags[i].addEventListener('click', function () {
+      let [input] = chooseTags[i].getElementsByTagName('input')
+      const oldClassName = input.checked ? 'bg-blue' : 'bg-blue-darker'
+      const newClassName = input.checked ? 'bg-blue-darker' : 'bg-blue'
+      chooseTags[i].classList.remove(oldClassName)
+      chooseTags[i].classList.add(newClassName)
+      input.checked = !input.checked
+    })
+}
+
 const dashboard = document.getElementById('dashboard')
 if (dashboard)
   Dashboard.embed(dashboard, {uri: buildSocketUri(), token: window.phxCsrfToken})
