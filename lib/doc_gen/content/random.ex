@@ -12,7 +12,8 @@ defmodule DocGen.Content.Random do
   @doc """
   Gives a random set of videos given a number of clips and a list of keywords.
   """
-  @spec give([String.t()], [non_neg_integer()]) :: {[non_neg_integer()], non_neg_integer()}
+  @spec give([String.t()], [non_neg_integer()]) ::
+          {[non_neg_integer()], non_neg_integer()}
   def give(keywords, number_per_segment) do
     Content.list_segments_with_videos()
     |> Enum.map(& &1.videos)
@@ -26,7 +27,6 @@ defmodule DocGen.Content.Random do
   end
 
   private do
-
     # take `n` videos randomly proportional to the keyword matches
 
     @spec take_random({[%Content.Video{}], non_neg_integer()}, [String.t()]) ::
