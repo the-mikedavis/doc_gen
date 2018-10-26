@@ -51,6 +51,7 @@ type alias Flags =
     , token : String
     }
 
+
 type alias Model =
     { videos : List Video
     , visibleVideos : List Video
@@ -202,7 +203,7 @@ drawControls : Video -> String -> Html Msg
 drawControls video token =
     let
         deleteUri =
-          "/admin/videos/" ++ (toString video.id)
+            "/admin/videos/" ++ (toString video.id)
     in
         div [ attribute "class" "dashboard-controls flex justify-center pb-4" ]
             [ i
