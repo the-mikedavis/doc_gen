@@ -1,12 +1,3 @@
-// TODO
-//= if length(@videos) > 0 do
-  p Watch full interviews
-
-  //ul
-    = for video <- @videos do
-      li = link(video.filename, to: Routes.watch_path(@conn, :choose, video))
-//
-
 div.bg-white.p-10.mt-6.rounded.shadow-lg.text-center
   p = @copy
 
@@ -14,10 +5,12 @@ div.bg-white.p-10.mt-6.rounded.shadow-lg
   p.mb-6 Select the topics that interest you to generate a #{@length} clip documentary
     on those subjects.
   = form_tag("/watch", method: :post)
-    div.flex
+    div.flex.-mx-2
       = for tag <- @tags do
-        div.bg-blue-darker.py-4.px-3.my-1.shadow-md.text-white.text-sm.font-bold.tag-body.tag-choose
-          text = tag.name
-          = tag(:input, type: "checkbox", name: tag.name, class: "tag-checkbox", checked: false)
+        div.p-1
+          div.bg-blue-darker.py-4.px-3.my-1.shadow-md.text-white.text-sm.font-bold.tag-body.tag-choose
+            = tag(:input, type: "checkbox", name: tag.name, class: "tag-checkbox", checked: false)
+            span.pl-5 = tag.name
+            i.fas.fa-check.text-teal.ml-2.checkmark
     div.flex.justify-center
       = submit("Generate Movie", class: "bg-blue-darker text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mt-6")

@@ -18,10 +18,15 @@ if (chooseTags) {
   for (let i = 0; i < chooseTags.length; i++)
     chooseTags[i].addEventListener('click', function () {
       let [input] = chooseTags[i].getElementsByTagName('input')
+      let [checkmark] = chooseTags[i].getElementsByTagName('i')
       const oldClassName = input.checked ? 'bg-blue' : 'bg-blue-darker'
       const newClassName = input.checked ? 'bg-blue-darker' : 'bg-blue'
       chooseTags[i].classList.remove(oldClassName)
       chooseTags[i].classList.add(newClassName)
+      if (checkmark.classList.contains('active'))
+        checkmark.classList.remove('active')
+      else
+        checkmark.classList.add('active')
       input.checked = !input.checked
     })
 }
