@@ -44,17 +44,5 @@ defmodule DocGen.Content.RandomTest do
     test "repeat/3" do
       assert repeat(%{}, 3, []) == [%{}, %{}, %{}]
     end
-
-    test "number_per_segment/1" do
-      assert MapSet.new(number_per_segment(1)) == MapSet.new([0, 0, 1])
-      assert MapSet.new(number_per_segment(2)) == MapSet.new([0, 1, 1])
-      assert number_per_segment(3) == [1, 1, 1]
-      assert MapSet.new(number_per_segment(4)) == MapSet.new([1, 1, 2])
-      assert MapSet.new(number_per_segment(5)) == MapSet.new([1, 2, 2])
-      assert number_per_segment(6) == [2, 2, 2]
-      assert MapSet.new(number_per_segment(7)) == MapSet.new([2, 2, 3])
-      assert MapSet.new(number_per_segment(8)) == MapSet.new([2, 3, 3])
-      assert number_per_segment(9) == [3, 3, 3]
-    end
   end
 end
