@@ -32,7 +32,14 @@ if (dashboard)
 
 const theater = document.getElementById('theater')
 if (theater) {
-  theater.addEventListener('ended', startNextVideo);
+  theater.addEventListener('ended', () => startNextVideo(thumbs));
+  const thumbs = document.getElementsByClassName('theater-thumb-holster')
+  for (let i = 0; i < thumbs.length; i++)
+    thumbs[i].addEventListener('click', function () {
+      const [img] = thumbs[i].children
+      const index = img.id.slice(-1)
+      forceVideo(index, thumbs)
+    })
 }
 
 const drop_zone = document.getElementById('video_video_file')
@@ -41,16 +48,39 @@ if (drop_zone)
   drop_listen(drop_zone, file_input_label)
 
 let videoCounter = 1;
-function startNextVideo() {
-  if (videoCounter >= window.video_ids.length) {
-    window.location.pathname = '/'
-  } else {
-    theater.pause()
-    const [source] = theater.getElementsByTagName('source')
-    source.setAttribute('src', '/stream/' + window.video_ids[videoCounter++])
-    theater.load()
-    theater.play()
+function startNextVideo(thumbs) {
+  if (videoCounter < window.video_ids.length) {
+    makeVideoAlive(thumbs)
+    videoCounter++;
   }
+}
+
+function forceVideo(index, thumbs) {
+  videoCounter = index
+  makeVideoAlive(thumbs)
+}
+
+function makeVideoAlive(thumbs) {
+  theater.pause()
+  const [source] = theater.getElementsByTagName('source')
+  source.setAttribute('src', '/stream/' + window.video_ids[videoCounter])
+  theater.load()
+  turnOffVideoBorders(thumbs)
+  addVideoBorder(thumbs[videoCounter])
+  theater.play()
+}
+
+const activeThumbClasses = ['border-blue-dark', 'border-b', 'border-b-2']
+
+function turnOffVideoBorders(thumbs) {
+  for (let i = 0; i < thumbs.length; i++)
+    for (let j = 0; j < activeThumbClasses.length; j++)
+      thumbs[i].classList.remove(activeThumbClasses[j]);
+}
+
+function addVideoBorder(element) {
+  for (let i = 0; i < activeThumbClasses.length; i++)
+    element.classList.add(activeThumbClasses[i])
 }
 
 function buildSocketUri() {

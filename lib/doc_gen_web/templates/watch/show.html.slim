@@ -1,14 +1,20 @@
 javascript:
   window.video_ids = [#{Enum.join(@video_ids, ",")}];
 
-= if @video_ids == [] do
-  p Sorry, there aren't any videos!
-- else
-  video(id='theater' preload="auto" controls)
-    source#video-source src="/stream/#{hd @video_ids}" type="video/mp4"
-    p
-      | To view this video, please enable JavaScript, and consider
-      | upgrading to a web brawser that
-      a href="https://videojs.com/html5-video-support/" target="_blank" supports HTML5 video.
+div.bg-white.mt-6.rounded.shadow-lg.p-10
+  = if @video_ids == [] do
+    p Sorry, there aren't any videos!
+  - else
+    video(id='theater' preload="auto" controls class="mb-4 rounded")
+      source#video-source src="/stream/#{List.first(@video_ids)}" type="video/mp4"
+  div.flex.w-full.-mx-2.px-2.overflow-x-scroll
+    div class="w-1/5 px-2 theater-thumb-holster border-blue-dark border-b border-b-2"
+      img src="/thumb/#{hd @video_ids}/jpeg" class="theater-thumbs pb-2" id="thumb-0"
+    = for {video_id, index} <- Enum.with_index(tl(@video_ids), 1) do
+      div class="w-1/5 px-2 theater-thumb-holster"
+        img src="/thumb/#{video_id}/jpeg" class="theater-thumbs pb-2" id="thumb-#{index}"
 
-p = tag_text(@tags)
+  p.mt-6 = tag_text(@tags) <> " " <> length_text(@length)
+
+  div.flex.justify-center.mt-6
+    = link("Generate a New Movie", to: Routes.watch_path(@conn, :index), class: "bg-blue-darker text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mt-6")

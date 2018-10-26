@@ -19,9 +19,9 @@ defmodule DocGenWeb.WatchController do
     %{beginning_clips: b, middle_clips: m, end_clips: e} =
       Accounts.get_settings()
 
-    video_ids = Random.give(tags, [b, m, e])
+    {video_ids, length} = Random.give(tags, [b, m, e])
 
-    render(conn, "show.html", tags: tags, video_ids: video_ids)
+    render(conn, "show.html", tags: tags, video_ids: video_ids, length: length)
   end
 
   def choose(conn, %{"video" => %{"id" => id}}) do

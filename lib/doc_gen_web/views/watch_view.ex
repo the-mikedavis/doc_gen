@@ -3,6 +3,13 @@ defmodule DocGenWeb.WatchView do
 
   def title(_, %{title: title}), do: title
 
+  def length_text(seconds) do
+    minutes = Integer.floor_div(seconds, 60)
+    rem_secs = rem(seconds, 60)
+
+    "Total length: #{minutes}:#{rem_secs}."
+  end
+
   def tag_text([tag]) do
     "Topic selected: " <> tag <> "."
   end

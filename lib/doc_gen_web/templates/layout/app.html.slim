@@ -13,7 +13,7 @@ html lang="en"
         //.container
         nav.flex.items-center.justify-between.flex-wrap.bg-blue-darker.p-6 role="navigation"
           div.flex.items-center.flex-no-shrink.text-white.mr-6
-            span.font-semibold.text-xl.tracking-light = @view_module.title(@view_template, @conn.assigns)
+            = link(@view_module.title(@view_template, @conn.assigns), to: Routes.watch_path(@conn, :index), class: "font-semibold text-xl tracking-light text-white hover:text-blue-lighter")
           div class="block lg:hidden"
             button class="flex items-center px-3 py-2 border rounded text-teal-lighter border-teal-light hover:text-white hover:border-white"
               svg class="fill-current h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"

@@ -12,7 +12,7 @@ defmodule DocGen.Content.Random do
   @doc """
   Gives a random set of videos given a number of clips and a list of keywords.
   """
-  @spec give([String.t()], [non_neg_integer()]) :: [non_neg_integer()]
+  @spec give([String.t()], [non_neg_integer()]) :: {[non_neg_integer()], non_neg_integer()}
   def give(keywords, number_per_segment) do
     Content.list_segments_with_videos()
     |> Enum.map(& &1.videos)
@@ -20,30 +20,12 @@ defmodule DocGen.Content.Random do
     |> Enum.map(&take_random(&1, keywords))
     |> List.flatten()
     |> Enum.reject(&is_nil/1)
-    |> Enum.map(& &1.id)
+    |> Enum.reduce({[], 0}, fn v, {video_ids, length} ->
+      {[v.id | video_ids], length + v.duration}
+    end)
   end
 
   private do
-    # gives the number of videos to be played from each segment
-    # [no_from_beginning, no_from_middle, no_from_end]
-    @spec number_per_segment(non_neg_integer()) :: [non_neg_integer()]
-    defp number_per_segment(l) when rem(l, 3) == 1 do
-      n = div(l, 3)
-
-      Enum.shuffle([n + 1, n, n])
-    end
-
-    defp number_per_segment(l) when rem(l, 3) == 2 do
-      n = div(l, 3)
-
-      Enum.shuffle([n + 1, n + 1, n])
-    end
-
-    defp number_per_segment(l) do
-      n = div(l, 3)
-
-      [n, n, n]
-    end
 
     # take `n` videos randomly proportional to the keyword matches
 
