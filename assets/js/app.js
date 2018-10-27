@@ -107,3 +107,23 @@ window.animateThumb = function (event) {
 window.stillThumb = function (event) {
   event.target.setAttribute('src', event.target.src.replace('gif', 'jpeg'))
 }
+
+window.fireProgressBar = function (event) {
+  const progressBarHolder = document.getElementById('progress-bar-holder')
+  const progressBar = document.getElementById('progress-bar')
+  progressBarHolder.classList.add('active')
+
+  let width = 0
+  let interval = setInterval(frame, 10)
+
+  function frame() {
+    if (width >= 100)
+      clearInterval(interval)
+    else
+      progressBar.style.width = (++width) + '%'
+  }
+}
+
+const progressBarTriggers = document.getElementsByClassName('progress-trigger')
+for (let i = 0; i < progressBarTriggers.length; i++)
+  progressBarTriggers[i].addEventListener('click', window.fireProgressBar)

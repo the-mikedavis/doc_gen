@@ -37,5 +37,7 @@ html lang="en"
         = get_flash(@conn, :info)
       p.alert.alert-danger role="alert"
         = get_flash(@conn, :error)
+      div#progress-bar-holder.w-full.rounded.shadow
+        div#progress-bar.bg-blue-light
       = render(@view_module, @view_template, assigns)
       script type="text/javascript" src="#{Routes.static_path(@conn, "/js/app.js")}"
