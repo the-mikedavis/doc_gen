@@ -46,13 +46,15 @@ But replace these values as described above.
 
 Now extract the application. Use `tar xzf doc_gen.tar.gz` to extract it. You can
 now run the app with `bin/doc_gen start` (use `bin/doc_gen stop` to stop it).
+If you have your environment sourced, you should first run `bin/mole seed` to
+setup the database. (Running it twice won't do anything bad.)
 
 Once you have these in your `/etc/environment`, you can set up a service to run
 the application. If your server's power goes out, you won't have to start up
 the app manually. (If you don't want to do this, simply `source
-/etc/environment` and `bin/doc_gen start`.) Here's a service definition. Write
-this as `/etc/systemd/system/doc_gen.service`. Now you'll be able to run
-`service doc_gen start` and never worry about it again.
+/etc/environment`, `bin/doc_gen seed`, and `bin/doc_gen start`.) Here's a
+service definition. Write this as `/etc/systemd/system/doc_gen.service`. Now
+you'll be able to run `service doc_gen start` and never worry about it again.
 
 ```
 [Unit]
