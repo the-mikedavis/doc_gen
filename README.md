@@ -2,6 +2,79 @@
 
 A reduced-bias way to create documentaries.
 
+## What is it
+
+DocGen is a tool for documentary creators to present their interview clips and
+present them in a way that doesn't impress their bias on the audience. DocGen
+allows the administrator to upload and organize videos. Users then select
+topics that interest them. DocGen then randomly selects videos proportional
+to the users' interests and generates a documentary.
+
+## How to Install It
+
+In the future, DocGen will be available as a docker container. For now, though,
+you'll have to do things the old-fashioned way.
+
+You'll need an Ubuntu-based server with PostgreSQL. The releases are designed
+for Ubuntu 16.04 but other versions may work equally well. Go into the releases
+tab of this repo on GitHub and download `doc_gen.tag.gz` onto your server.
+First, create the database under a name of your choice (you may do so using
+`createdb <database-name>` on the command line). Then add these lines into
+your `/etc/environment`:
+
+- [ ] `DOC_GEN_PORT` - the port you wish to run on
+  - if you want to use SSL, I recommend setting up a reverse proxy through [nginx](https://docs.nginx.com/nginx/admin-guide/web-server/reverse-proxy/) or [apache](https://httpd.apache.org/docs/2.4/howto/reverse_proxy.html)
+- [ ] `DOC_GEN_HOST` - the hostname of your server
+- [ ] `DOC_GEN_SECRET_KEYBASE` - a random secret string of (about 65) characters
+  - any sort of password manager should be able to generate a good random string for this
+- [ ] `DOC_GEN_DB_DATABASE` - the database you created for the application with `createdb`
+- [ ] `DOC_GEN_DB_USERNAME` - the username of the PostgreSQL user who owns that database
+- [ ] `DOC_GEN_DB_PASSWORD` - the password of the user who owns that database
+
+#### Example
+
+```
+DOC_GEN_PORT=4000
+DOC_GEN_HOST=example.org
+DOC_GEN_SECRET_KEYBASE=SKtholekarcoekhoe
+DOC_GEN_DB_DATABASE=doc_gen_prod
+DOC_GEN_DB_USERNAME=postgres
+DOC_GEN_DB_PASSWORD=postgres
+```
+
+But replace these values as described above.
+
+Now extract the application. Use `tar xzf doc_gen.tar.gz` to extract it. You can
+now run the app with `bin/doc_gen start` (use `bin/doc_gen stop` to stop it).
+
+Once you have these in your `/etc/environment`, you can set up a service to run
+the application. If your server's power goes out, you won't have to start up
+the app manually. (If you don't want to do this, simply `source
+/etc/environment` and `bin/doc_gen start`.) Here's a service definition. Write
+this as `/etc/systemd/system/doc_gen.service`. Now you'll be able to run
+`service doc_gen start` and never worry about it again.
+
+```
+[Unit]
+Description=doc_gen service
+
+[Service]
+WorkingDirectory=/root/bin/
+ExecStart=/root/bin/doc_gen start
+ExecStop=/root/bin/doc_gen stop
+Restart=always
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=doc_gen
+User=root
+RemainAfterExit=yes
+
+EnvironmentFile=/etc/environment
+
+[Install]
+WantedBy=multi-user.target
+```
+
 ## Technologies
 
 This project uses some cool new tech:
@@ -13,30 +86,4 @@ This project uses some cool new tech:
 * [Elm](https://elm-lang.org/): a statically typed functional language that transpiles to JavaScript. I use Elm on the front-end the same way you might use React or Angular: for dynamically modifying the DOM and doing socket operations.
 * [Sass](http://sass-lang.com/documentation/file.INDENTED_SYNTAX.html) (indented style): a suped-up CSS with minimal syntax. Sass handles all stylization.
 * [Webpack](https://webpack.js.org/): A build tool for front-end assets. Webpack automatically organizes and transpiles all front-end assets.
-* [Tailwind](https://tailwindcss.com/docs/what-is-tailwind/): A css framework for quickly building common interfaces.
-
-## Installation for the dev environment
-
-To get this up and running for development on your computer, you'll need
-
-- [ ] Install postgresql
-    - `brew install postgresql`
-    - If you have custom passwords and rules, you'll have to change the password in `config/dev.exs`.
-- [ ] Install Elixir
-    - `brew install elixir`
-- [ ] Clone this repo
-    - `git clone https://github.com/the-mikedavis/doc_gen.git && cd doc_gen/`
-- [ ] Install dependencies and compile
-    - `mix deps.get`
-    - `mix compile`
-- [ ] Create the database and do migrations
-    - `mix ecto.setup`
-- [ ] Setup front-end assets
-    - `npm install --global yarn`
-    - `npm install --global elm@0.18.0` or `yarn global add elm@0.18.0`
-    - `cd assets`
-    - `yarn install`
-    - `cd ..`
-- [ ] Run the dev server
-    - `mix phx.server`
-    - If you change any files, you won't have to restart the server or refresh your page. This will be done automatically for you.
+* [Tailwind](https://tailwindcss.com/docs/what-is-tailwind/): A css framework for quickly building common interfaces. Tailwind allows me to very quickly construct an easy to use UI without the hassel of writing all the css myself.
