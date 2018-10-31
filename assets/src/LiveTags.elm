@@ -279,8 +279,14 @@ drawTag tag =
             , span [ attribute "class" "px-1" ]
                 [ text tag.name ]
             , i
-                [ attribute "class" "fas fa-times close-button text-teal px-1"
-                , onClick (DeleteTag tag)
+                [ classList
+                    [ ( "active", tag.active )
+                    , ( "checkmark", True )
+                    , ( "fas", True )
+                    , ( "fa-check", True )
+                    , ( "text-teal", True )
+                    , ( "px-1", True )
+                    ]
                 ]
                 []
             ]
