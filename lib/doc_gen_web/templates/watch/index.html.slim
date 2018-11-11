@@ -13,4 +13,4 @@ div.bg-white.p-10.mt-6.rounded.shadow-lg
             span.pl-5 = tag.name
             i.fas.fa-check.text-teal.ml-2.checkmark
     div.flex.justify-center
-      = submit("Generate Movie", class: "bg-blue-darker text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mt-6 progress-trigger")
+      = submit("Generate Movie", class: "bg-blue-darker text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mt-6 progress-trigger disabled", disabled: true, id: "generate-movie")

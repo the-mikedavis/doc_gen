@@ -31,6 +31,28 @@ if (chooseTags) {
     })
 }
 
+const checkTags = document.getElementsByClassName('tag-choose')
+const generateButton = document.getElementById('generate-movie')
+console.log(checkTags)
+if (checkTags) {
+  for (let i = 0; i < checkTags.length; i++) {
+    console.log(checkTags[i])
+    checkTags[i].addEventListener('click', handleCheckTag)
+  }
+}
+
+function handleCheckTag () {
+  console.log('flipping')
+  const checked = document.querySelectorAll('input[type=checkbox]:checked')
+  if (checked.length == 0) {
+    generateButton.disabled = true
+    generateButton.classList.add('disabled')
+  } else {
+    generateButton.disabled = false
+    generateButton.classList.remove('disabled')
+  }
+}
+
 const dashboard = document.getElementById('dashboard')
 if (dashboard)
   Dashboard.embed(dashboard, {uri: buildSocketUri(), token: window.phxCsrfToken})
