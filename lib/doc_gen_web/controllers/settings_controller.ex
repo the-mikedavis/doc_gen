@@ -9,7 +9,11 @@ defmodule DocGenWeb.SettingsController do
     changeset = Accounts.change_settings(settings)
     tags = Content.list_tags()
 
-    render(conn, "index.html", changeset: changeset, settings: settings, tags: tags)
+    render(conn, "index.html",
+      changeset: changeset,
+      settings: settings,
+      tags: tags
+    )
   end
 
   def update(conn, %{"id" => id, "setting" => setting_params}) do
