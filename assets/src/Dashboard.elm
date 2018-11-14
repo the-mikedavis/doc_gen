@@ -60,6 +60,7 @@ type alias Model =
     , editId : Maybe Int
     , shownVideo : Maybe Video
     , csrfToken : String
+    , noTagsFilter : Bool
     }
 
 
@@ -80,6 +81,7 @@ init flags =
             , editId = Nothing
             , shownVideo = Nothing
             , csrfToken = flags.token
+            , noTagsFilter = False
             }
     in
         ( model, joinChannel )
@@ -99,6 +101,7 @@ type Msg
     | ShowVideo Video
     | CloseEdit Int
     | CloseShow
+    | ToggleNoTagsFilter
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -182,6 +185,9 @@ update msg model =
 
         CloseShow ->
             ( { model | shownVideo = Nothing }, Cmd.none )
+
+        ToggleNoTagsFilter ->
+            ( { model | noTagsFilter = not model.noTagsFilter }, Cmd.none )
 
 
 subscriptions : Model -> Sub Msg
@@ -287,20 +293,43 @@ drawVideo video token =
         ]
 
 
-drawSearchBar : String -> Html Msg
-drawSearchBar searchString =
+drawSearchBar : Model -> Html Msg
+drawSearchBar model =
     div [ attribute "class" "bg-white shadow-md rounded-lg w-full p-1" ]
-        [ div
-            [ attribute "class" "border-b border-b-2 border-blue-dark m-2 py-2"
-            ]
-            [ input
-                [ attribute "type" "text"
-                , attribute "class" "appearance-none bg-transparent border-none w-full text-grey-darker mr-3 py-1 pl-2 pr-4 leading-tight focus:outline-none"
-                , attribute "placeholder" "Search"
-                , onInput StartSearch
-                , value searchString
+        [ div []
+            [ div
+                [ attribute "class" "border-b border-b-2 border-blue-dark m-2 py-2"
                 ]
-                []
+                [ input
+                    [ attribute "type" "text"
+                    , attribute "class" "appearance-none bg-transparent border-none w-full text-grey-darker mr-3 py-1 pl-2 pr-4 leading-tight focus:outline-none"
+                    , attribute "placeholder" "Search"
+                    , onInput StartSearch
+                    , value model.searchString
+                    ]
+                    []
+                ]
+            , div
+                [ attribute "class" "w-full p-2 text-xs"
+                ]
+                [ span
+                    [ attribute "class" "mr-5"
+                    ]
+                    [ text "Filters:"
+                    ]
+                , input
+                    [ attribute "type" "checkbox"
+                    , attribute "id" "tagless"
+                    , checked model.noTagsFilter
+                    , onClick ToggleNoTagsFilter
+                    ]
+                    []
+                , label
+                    [ attribute "for" "tagless"
+                    ]
+                    [ text "No Tags"
+                    ]
+                ]
             ]
         ]
 
@@ -366,7 +395,7 @@ view model =
                 |> List.map (\v -> drawVideo v model.csrfToken)
     in
         div [ attribute "class" "" ]
-            [ (drawSearchBar model.searchString)
+            [ (drawSearchBar model)
             , (drawVideoPopup model.shownVideo)
             , (drawEditPanel model.editId)
             , div
@@ -400,8 +429,15 @@ allText video =
 
 searchFilter : Model -> List Video
 searchFilter model =
-    model.videos
-        |> List.filter (\vText -> List.any (String.contains (String.toLower model.searchString)) (allText vText))
+    let
+        videos =
+            if model.noTagsFilter then
+                model.videos |> List.filter (\v -> v.tags == [])
+            else
+                model.videos
+    in
+        videos
+            |> List.filter (\vText -> List.any (String.contains (String.toLower model.searchString)) (allText vText))
 
 
 main : Program Flags Model Msg
