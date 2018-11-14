@@ -317,12 +317,23 @@ defmodule DocGen.Content do
     Repo.all(Interviewee)
   end
 
+  def change_interviewee(%Interviewee{} = int),
+    do: Interviewee.changeset(int, %{})
+
+  def create_interviewee(attrs \\ %{}) do
+    %Interviewee{}
+    |> Interviewee.changeset(attrs)
+    |> Repo.insert()
+  end
+
   @doc "Creates a interviewee."
   def create_interviewee!(attrs \\ %{}) do
     %Interviewee{}
     |> Interviewee.changeset(attrs)
     |> Repo.insert!()
   end
+
+  def get_interviewee!(id), do: Repo.get!(Interviewee, id)
 
   @doc """
   Tries to get an interviewee by name. If not available, creates that
@@ -337,6 +348,14 @@ defmodule DocGen.Content do
         create_interviewee!(%{name: name})
     end
   end
+
+  def update_interviewee(%Interviewee{} = int, attrs) do
+    int
+    |> Interviewee.changeset(attrs)
+    |> Repo.update()
+  end
+
+  def delete_interviewee(%Interviewee{} = int), do: Repo.delete(int)
 
   def get_type(id), do: Repo.get(Type, id)
 

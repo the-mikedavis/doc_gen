@@ -1,0 +1,15 @@
+h1.text-blue-darker.my-8 Interviewees
+
+div.bg-white.p-10.rounded.shadow-lg
+  div.flex.w-full
+    div class="w-1/2"
+      span.font-bold.text-blue-darker Name
+
+  div.my-4.w-full
+    = for interviewee <- @interviewees do
+      div.flex
+        div class="w-1/2 h-10" = interviewee.name
+        div class="w-1/4 h-10" = link("Edit", to: Routes.interviewee_path(@conn, :edit, interviewee), class: "inline-block assign-baseline font-bold text-blue hover:text-blue-darker")
+        div class="w-1/4 h-10" = link("Delete", to: Routes.interviewee_path(@conn, :delete, interviewee), method: :delete, data: [confirm: "Are you sure?"], class: "inline-block assign-baseline font-bold text-blue hover:text-blue-darker")
+
+  = link("Create a New Interviewee", to: Routes.interviewee_path(@conn, :new), class: "inline-block assign-baseline font-bold text-blue hover:text-blue-darker")
