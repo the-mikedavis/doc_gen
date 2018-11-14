@@ -41,10 +41,10 @@ defmodule DocGenWeb.TagController do
     tag = Content.get_tag!(id)
 
     case Content.update_tag(tag, tag_params) do
-      {:ok, tag} ->
+      {:ok, _tag} ->
         conn
         |> put_flash(:info, "Tag updated successfully.")
-        |> redirect(to: Routes.tag_path(conn, :show, tag))
+        |> redirect(to: Routes.tag_path(conn, :index))
 
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "edit.html", tag: tag, changeset: changeset)
