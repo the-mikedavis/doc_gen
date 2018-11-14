@@ -89,6 +89,7 @@ type Msg
     | RemoveTag Encode.Value
     | ToggleTag Tag
     | KeyDown Int
+    | CreateTag
 
 
 createTag : String -> Tag
@@ -227,6 +228,26 @@ update msg model =
             else
                 ( model, Cmd.none )
 
+        CreateTag ->
+            let
+                payload =
+                    Encode.object
+                        [ ( "name", Encode.string model.tagInProgress )
+                        ]
+
+                phxPush =
+                    Phoenix.Push.init "new_tag" "tag:lobby"
+                        |> Phoenix.Push.withPayload payload
+                        |> Phoenix.Push.onOk AddTag
+                        |> Phoenix.Push.onError HandleSendError
+
+                ( phxSocket, phxCmd ) =
+                    Phoenix.Socket.push phxPush model.phxSocket
+            in
+                ( { model | phxSocket = phxSocket, tagInProgress = "" }
+                , Cmd.map PhoenixMsg phxCmd
+                )
+
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
@@ -307,16 +328,23 @@ view model =
                 ]
                 (drawTags model.tags)
             , div
-                [ attribute "class" "border-b border-b-2 border-blue-dark my-4 py-2 w-1/2"
+                [ attribute "class" "border-b border-b-2 border-blue-dark my-4 py-2 w-1/2 flex justify-between"
                 ]
                 [ input
                     [ attribute "placeholder" "Create a New Tag"
-                    , attribute "class" "appearance-none bg-transparent border-none w-full text-grey-darker mr-3 py-1 px-2 leading-tight focus:outline-none"
+                    , attribute "class" "appearance-none bg-transparent border-none text-grey-darker mr-3 py-1 w-full px-2 leading-tight focus:outline-none"
                     , onInput StartTag
                     , onKeyDown KeyDown
                     , value model.tagInProgress
                     ]
                     []
+                , button
+                    [ attribute "class" "bg-blue-darker hover:bg-blue text-white font-bold py-2 px-4 rounded"
+                    , onClick CreateTag
+                    , attribute "type" "button"
+                    ]
+                    [ text "Create"
+                    ]
                 ]
             ]
 
