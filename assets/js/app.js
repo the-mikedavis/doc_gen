@@ -3,6 +3,7 @@ import css from '../css/app.sass'
 import 'phoenix_html'
 import {LiveTags} from '../src/LiveTags.elm'
 import {Dashboard} from '../src/Dashboard.elm'
+import {Player} from '../src/Player.elm'
 import drop_listen from './drop_zone'
 
 const live_tags = document.getElementById('live-tags')
@@ -33,16 +34,13 @@ if (chooseTags) {
 
 const checkTags = document.getElementsByClassName('tag-choose')
 const generateButton = document.getElementById('generate-movie')
-console.log(checkTags)
 if (checkTags) {
   for (let i = 0; i < checkTags.length; i++) {
-    console.log(checkTags[i])
     checkTags[i].addEventListener('click', handleCheckTag)
   }
 }
 
 function handleCheckTag () {
-  console.log('flipping')
   const checked = document.querySelectorAll('input[type=checkbox]:checked')
   if (checked.length == 0) {
     generateButton.disabled = true
@@ -56,6 +54,10 @@ function handleCheckTag () {
 const dashboard = document.getElementById('dashboard')
 if (dashboard)
   Dashboard.embed(dashboard, {uri: buildSocketUri(), token: window.phxCsrfToken})
+
+const player = document.getElementById('player')
+if (player)
+  Player.embed(player, {videos: window.video_ids})
 
 const theater = document.getElementById('theater')
 if (theater) {
@@ -73,42 +75,6 @@ const drop_zone = document.getElementById('video_video_file')
 const file_input_label = document.getElementById('upload-text')
 if (drop_zone)
   drop_listen(drop_zone, file_input_label)
-
-let videoCounter = 1;
-function startNextVideo(thumbs) {
-  if (videoCounter < window.video_ids.length) {
-    makeVideoAlive(thumbs)
-    videoCounter++;
-  }
-}
-
-function forceVideo(index, thumbs) {
-  videoCounter = index
-  makeVideoAlive(thumbs)
-}
-
-function makeVideoAlive(thumbs) {
-  theater.pause()
-  const [source] = theater.getElementsByTagName('source')
-  source.setAttribute('src', '/stream/' + window.video_ids[videoCounter])
-  theater.load()
-  turnOffVideoBorders(thumbs)
-  addVideoBorder(thumbs[videoCounter])
-  theater.play()
-}
-
-const activeThumbClasses = ['border-blue-dark', 'border-b', 'border-b-2']
-
-function turnOffVideoBorders(thumbs) {
-  for (let i = 0; i < thumbs.length; i++)
-    for (let j = 0; j < activeThumbClasses.length; j++)
-      thumbs[i].classList.remove(activeThumbClasses[j]);
-}
-
-function addVideoBorder(element) {
-  for (let i = 0; i < activeThumbClasses.length; i++)
-    element.classList.add(activeThumbClasses[i])
-}
 
 function buildSocketUri() {
   const protocol = location.protocol == 'https:' ? 'wss://' : 'ws://'
