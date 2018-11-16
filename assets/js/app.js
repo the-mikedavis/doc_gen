@@ -59,8 +59,14 @@ const player = document.getElementById('player')
 if (player) {
   const app = Player.embed(player, {videos: window.video_ids})
   window.addEventListener('load', function () {
-    document.getElementById('theater').addEventListener('ended', function () {
-      console.log('sending to', app.ports.videoEnded)
+    const videoElem = document.getElementById('theater')
+
+    app.ports.playVideo.subscribe(function () {
+      videoElem.load()
+      videoElem.play()
+    })
+
+    videoElem.addEventListener('ended', function () {
       app.ports.videoEnded.send(true)
     })
   })

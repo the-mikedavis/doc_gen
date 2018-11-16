@@ -46,12 +46,26 @@ update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         Seek index ->
-            ( { model | currentVideo = index }, Cmd.none )
+            ( { model | currentVideo = index }, playVideo True )
         VideoEnded ->
-            ( { model | currentVideo = model.currentVideo + 1}, Cmd.none )
+            let
+                newIndex =
+                    model.currentVideo + 1
+                done =
+                    newIndex == Array.length model.videos
+            in
+                case done of
+                    True ->
+                        ( model, Cmd.none )
+                    False ->
+                        ( { model | currentVideo = newIndex }, playVideo True )
 
 
+-- incoming port
 port videoEnded : (Bool -> msg) -> Sub msg
+
+-- outgoing, start the video (assuming it's in paused)
+port playVideo : Bool -> Cmd msg
 
 
 subscriptions : Model -> Sub Msg
@@ -70,7 +84,7 @@ currentVideoUri model =
                 Just index ->
                   index
                 Nothing ->
-                  0
+                  -1
     in
         "/stream/" ++ (toString index)
 
