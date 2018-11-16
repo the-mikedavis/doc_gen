@@ -56,8 +56,15 @@ if (dashboard)
   Dashboard.embed(dashboard, {uri: buildSocketUri(), token: window.phxCsrfToken})
 
 const player = document.getElementById('player')
-if (player)
-  Player.embed(player, {videos: window.video_ids})
+if (player) {
+  const app = Player.embed(player, {videos: window.video_ids})
+  window.addEventListener('load', function () {
+    document.getElementById('theater').addEventListener('ended', function () {
+      console.log('sending to', app.ports.videoEnded)
+      app.ports.videoEnded.send(true)
+    })
+  })
+}
 
 const theater = document.getElementById('theater')
 if (theater) {

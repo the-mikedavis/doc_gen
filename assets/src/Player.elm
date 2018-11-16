@@ -1,4 +1,4 @@
-module Player exposing (..)
+port module Player exposing (..)
 
 import Platform.Cmd exposing (..)
 import Html exposing (..)
@@ -39,6 +39,7 @@ init { videos } =
 
 type Msg
     = Seek Int
+    | VideoEnded
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -46,11 +47,16 @@ update msg model =
     case msg of
         Seek index ->
             ( { model | currentVideo = index }, Cmd.none )
+        VideoEnded ->
+            ( { model | currentVideo = model.currentVideo + 1}, Cmd.none )
+
+
+port videoEnded : (Bool -> msg) -> Sub msg
 
 
 subscriptions : Model -> Sub Msg
-subscriptions model =
-  Sub.none
+subscriptions _ =
+    videoEnded (\_ -> VideoEnded)
 
 
 ---- VIEW ----
