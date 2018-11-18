@@ -4,6 +4,7 @@ import Platform.Cmd exposing (..)
 import Html exposing (..)
 import Html.Events exposing (..)
 import Html.Attributes exposing (..)
+import Navigation
 import Task
 import Array exposing (Array)
 
@@ -56,7 +57,7 @@ update msg model =
             in
                 case done of
                     True ->
-                        ( model, Cmd.none )
+                        ( model, Navigation.load "/" )
                     False ->
                         ( { model | currentVideo = newIndex }, playVideo True )
 
@@ -137,7 +138,7 @@ drawThumbs id index currentIndex =
 
 main : Program Flags Model Msg
 main =
-    programWithFlags
+    Html.programWithFlags
         { view = view
         , init = init
         , update = update
