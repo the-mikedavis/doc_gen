@@ -21,7 +21,9 @@ defmodule DocGenWeb.WatchController do
 
     {video_ids, length} = Random.give(tags, [b, m, e])
 
-    render(conn, "show.html", tags: tags, video_ids: video_ids, length: length)
+    conn
+    |> put_preloads(video_ids)
+    |> render("show.html", tags: tags, video_ids: video_ids, length: length)
   end
 
   def choose(conn, %{"video" => %{"id" => id}}) do
@@ -34,6 +36,19 @@ defmodule DocGenWeb.WatchController do
     video = Content.get_video!(id)
 
     Content.send_video(conn, headers, video)
+  end
+
+  def thumb(conn, %{"id" => id}) do
+    video = Content.get_video!(id)
+
+    send_file(conn, 200, Content.build_video_path(video) <> ".jpeg")
+  end
+
+  # animated thumb
+  def anithumb(conn, %{"id" => id}) do
+    video = Content.get_video!(id)
+
+    send_file(conn, 200, Content.build_video_path(video) <> ".gif")
   end
 
   private do
@@ -57,17 +72,18 @@ defmodule DocGenWeb.WatchController do
       |> Enum.filter(fn {_tag_name, on?} -> on? == "on" end)
       |> Enum.map(fn {tag_name, _on?} -> tag_name end)
     end
-  end
 
-  def thumb(conn, %{"id" => id}) do
-    video = Content.get_video!(id)
+    defp put_preloads(%{resp_headers: headers} = conn, ids) do
+      preloads =
+        ids
+        |> Enum.map(&preload_link(conn, &1))
+        |> Enum.map(fn header -> {"link", header} end)
 
-    send_file(conn, 200, Content.build_video_path(video) <> ".jpeg")
-  end
+      %{conn | resp_headers: headers ++ preloads}
+    end
 
-  def anithumb(conn, %{"id" => id}) do
-    video = Content.get_video!(id)
-
-    send_file(conn, 200, Content.build_video_path(video) <> ".gif")
+    defp preload_link(conn, video_id) do
+      Routes.watch_path(conn, :stream, video_id) <> "; rel=preload; as=video"
+    end
   end
 end
