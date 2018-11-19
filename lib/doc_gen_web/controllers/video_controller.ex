@@ -140,7 +140,6 @@ defmodule DocGenWeb.VideoController do
         |> Enum.filter(fn {_tag_name, on?} -> on? == "on" end)
         |> Enum.map(fn {tag_name, _on?} ->
           tag_name
-          # TODO figure out why this is necessary
           |> String.replace("%22", "")
           |> Content.get_tag_by_name!()
         end)
