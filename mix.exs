@@ -17,7 +17,9 @@ defmodule DocGen.MixProject do
         coveralls: :test,
         "coveralls.html": :test,
         credo: :test,
-        dialyzer: :test
+        dialyzer: :test,
+        build: :prod,
+        goose: :prod
       ],
       dialyzer: [ignore_warnings: ".dialyzer.ignore_warnings"]
     ]
@@ -61,7 +63,8 @@ defmodule DocGen.MixProject do
       {:private, "~> 0.1.1"},
       {:dialyxir, "~> 0.5", only: [:dev, :test], runtime: false},
       # deploying
-      {:distillery, "~> 2.0"}
+      {:distillery, "~> 2.0"},
+      {:duckduck, git: "https://github.com/the-mikedavis/duckduck.git"}
     ]
   end
 
@@ -70,7 +73,8 @@ defmodule DocGen.MixProject do
       "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
       test: ["ecto.create --quiet", "ecto.migrate", "test"],
-      bless: [&bless/1]
+      bless: [&bless/1],
+      build: [&build/1]
     ]
   end
 
@@ -79,9 +83,24 @@ defmodule DocGen.MixProject do
       {"compile", ["--warnings-as-errors", "--force"]},
       {"coveralls.html", []},
       {"format", ["--check-formatted"]},
-      # ,
       {"credo", []}
-      # {"dialyzer", []}
+    ]
+    |> Enum.each(fn {task, args} ->
+      [:cyan, "Running #{task} with args #{inspect(args)}"]
+      |> IO.ANSI.format()
+      |> IO.puts()
+
+      Mix.Task.run(task, args)
+    end)
+  end
+
+  defp build([tag]) do
+    System.cmd("./node_modules/.bin/webpack", ["--production"], cd: "./assets")
+
+    [
+      {"phx.digest", []},
+      {"release", ["--env=prod"]},
+      {"goose", [tag]}
     ]
     |> Enum.each(fn {task, args} ->
       [:cyan, "Running #{task} with args #{inspect(args)}"]

@@ -21,4 +21,8 @@ config :phoenix, :template_engines,
   slim: PhoenixSlime.Engine,
   slime: PhoenixSlime.Engine
 
+config :goose,
+  owner: "the-mikedavis",
+  repo: "doc_gen"
+
 import_config "#{Mix.env()}.exs"
