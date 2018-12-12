@@ -62,8 +62,10 @@ if (player) {
     const videoElem = document.getElementById('theater')
 
     app.ports.playVideo.subscribe(function () {
-      videoElem.load()
-      videoElem.play()
+      setTimeout(() => {
+        videoElem.load()
+        videoElem.play()
+      }, 100)
     })
 
     videoElem.addEventListener('ended', function () {
