@@ -26,5 +26,20 @@ defmodule DocGen.Accounts.Setting do
     |> validate_inclusion(:beginning_clips, 0..100)
     |> validate_inclusion(:middle_clips, 0..100)
     |> validate_inclusion(:end_clips, 0..100)
+    |> validate_markdown(:copy)
+  end
+
+  defp validate_markdown(changeset, key) do
+    validate_change(changeset, key, fn ^key, text ->
+      case Earmark.as_html(text) do
+        # success
+        {:ok, _html_doc, []} ->
+          []
+
+        # failures
+        {:error, _html_doc, reasons} ->
+          for {_type, _line, error} <- reasons, do: {key, error}
+      end
+    end)
   end
 end

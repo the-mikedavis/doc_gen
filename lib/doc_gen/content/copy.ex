@@ -15,7 +15,11 @@ defmodule DocGen.Content.Copy do
   end
 
   def update do
-    Agent.update(__MODULE__, fn _t -> Accounts.get_settings() end)
+    Agent.update(__MODULE__, fn _t ->
+      settings = Accounts.get_settings()
+
+      %{settings | copy: Earmark.as_html!(settings.copy)}
+    end)
   end
 
   ## Server API
