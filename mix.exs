@@ -61,10 +61,10 @@ defmodule DocGen.MixProject do
       {:excoveralls, "~> 0.9", only: :test},
       {:mox, "~> 0.3"},
       {:private, "~> 0.1.1"},
-      {:dialyxir, "~> 0.5", only: [:dev, :test], runtime: false},
+      {:dialyxir, "~> 1.0.0-rc.4", only: [:dev, :test], runtime: false},
       # deploying
       {:distillery, "~> 2.0"},
-      {:duckduck, git: "https://github.com/the-mikedavis/duckduck.git"}
+      {:duckduck, "~> 0.1"}
     ]
   end
 
@@ -94,13 +94,17 @@ defmodule DocGen.MixProject do
     end)
   end
 
-  defp build([tag]) do
-    System.cmd("./node_modules/.bin/webpack", ["--production"], cd: "./assets")
+  defp build(_) do
+    assets = Path.join(File.cwd!(), "assets")
+
+    [assets, "node_modules", ".bin", "webpack"]
+    |> Path.join()
+    |> System.cmd(["--production"], cd: assets)
 
     [
       {"phx.digest", []},
       {"release", ["--env=prod"]},
-      {"goose", [tag]}
+      {"goose", []}
     ]
     |> Enum.each(fn {task, args} ->
       [:cyan, "Running #{task} with args #{inspect(args)}"]

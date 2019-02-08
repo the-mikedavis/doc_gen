@@ -21,8 +21,9 @@ config :phoenix, :template_engines,
   slim: PhoenixSlime.Engine,
   slime: PhoenixSlime.Engine
 
-config :goose,
+config :duckduck,
   owner: "the-mikedavis",
-  repo: "doc_gen"
+  repo: "doc_gen",
+  token_file: "/vagrant/code/doc_gen/.goose_api_token"
 
 import_config "#{Mix.env()}.exs"

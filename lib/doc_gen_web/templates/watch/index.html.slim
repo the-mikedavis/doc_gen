@@ -5,7 +5,7 @@ div.bg-white.p-10.mt-6.rounded.shadow-lg
   p.mb-6 Select the topics that interest you to generate a #{@length} clip documentary
     on those subjects.
   = form_tag("/watch", method: :post)
-    div.flex.-mx-2
+    div.flex.-mx-2.flex-wrap
       = for tag <- @tags do
         div.p-1
           div.bg-blue-darker.py-4.px-3.my-1.shadow-md.text-white.text-sm.font-bold.tag-body.tag-choose
