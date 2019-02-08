@@ -13,6 +13,8 @@ defmodule DocGen.Accounts.Setting do
     field(:end_clips, :integer)
     # intro copy visible from the main page
     field(:copy, :string)
+    # markdown copy in the about page
+    field(:about, :string)
 
     timestamps()
   end
@@ -27,6 +29,7 @@ defmodule DocGen.Accounts.Setting do
     |> validate_inclusion(:middle_clips, 0..100)
     |> validate_inclusion(:end_clips, 0..100)
     |> validate_markdown(:copy)
+    |> validate_markdown(:about)
   end
 
   defp validate_markdown(changeset, key) do

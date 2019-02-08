@@ -42,7 +42,17 @@ end
 starting_copy =
   "Welcome to Doc-Gen. Please edit your copy and other settings by logging in."
 
+starting_about =
+  "This instance of Doc-Gen is about ... (please edit this text in Settings)."
+
 unless Repo.one(Setting) do
-  %Setting{title: "My Documentary", beginning_clips: 1, middle_clips: 3, end_clips: 1, copy: starting_copy}
+  %Setting{
+    title: "My Documentary",
+    beginning_clips: 1,
+    middle_clips: 3,
+    end_clips: 1,
+    copy: starting_copy,
+    about: starting_about
+  }
   |> Repo.insert!()
 end

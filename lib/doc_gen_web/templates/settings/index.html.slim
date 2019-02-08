@@ -31,6 +31,11 @@ h2.text-blue-darker.my-4 Settings
     = textarea(f, :copy, placeholder: "Welcome to Doc-Gen...", class: "appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white bocus-border-grey")
     = error_tag(f, :copy)
 
+  div.flex.flex-wrap.mb-6
+    = label(f, :about, "About Page Copy", class: "block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2")
+    = textarea(f, :about, placeholder: "This instance of Doc-Gen is about...", class: "appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white bocus-border-grey")
+    = error_tag(f, :about)
+
   div.mt-6.flex.justify-between
     = link("Reset", to: Routes.settings_path(@conn, :index), class: "inline-block asign-baseline font-bold text-sm text-blue hover:text-blue-darker")
     button class="bg-blue-darker text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button" onclick="submitIfValid()" Save
