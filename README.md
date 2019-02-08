@@ -10,6 +10,9 @@ allows the administrator to upload and organize videos. Users then select
 topics that interest them. DocGen then randomly selects videos proportional
 to the users' interests and generates a documentary.
 
+_This project was funded by the University of Miami School of Communication. It
+is a collaboration between Kim Grinfeder and Mike Davis._
+
 ## How to Install It
 
 In the future, DocGen will be available as a docker container. For now, though,
@@ -89,3 +92,7 @@ This project uses some cool new tech:
 * [Sass](http://sass-lang.com/documentation/file.INDENTED_SYNTAX.html) (indented style): a suped-up CSS with minimal syntax. Sass handles all stylization.
 * [Webpack](https://webpack.js.org/): A build tool for front-end assets. Webpack automatically organizes and transpiles all front-end assets.
 * [Tailwind](https://tailwindcss.com/docs/what-is-tailwind/): A css framework for quickly building common interfaces. Tailwind allows me to very quickly construct an easy to use UI without the hassel of writing all the css myself.
+
+## Credits
+
+Design, production, and ideation by Kim Grinfeder. Implementation by Mike Davis.
