@@ -2,7 +2,7 @@ defmodule DocGen.Content do
   use Private
   import Ecto.Query, warn: false
   alias DocGen.Repo
-  alias DocGen.Content.{Interviewee, Segment, Tag, Type, Video}
+  alias DocGen.Content.{Embed, Interviewee, Segment, Tag, Type, Video}
 
   @moduledoc """
   The Content context.
@@ -372,4 +372,18 @@ defmodule DocGen.Content do
   def list_segments_with_videos do
     Repo.all(from(s in Segment, select: s, preload: :videos))
   end
+
+  def list_embeds, do: Repo.all(Embed)
+
+  def get_embed!(id), do: Repo.get!(Embed, id)
+
+  def create_embed(attrs \\ %{}) do
+    %Embed{}
+    |> Embed.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  def delete_embed(%Embed{} = embed), do: Repo.delete(embed)
+
+  def change_embed(%Embed{} = embed), do: Embed.changeset(embed, %{})
 end
