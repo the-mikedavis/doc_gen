@@ -99,6 +99,10 @@ defmodule DocGen.MixProject do
   defp build(_) do
     assets = Path.join(File.cwd!(), "assets")
 
+    [:cyan, "Building assets with webpack"]
+    |> IO.ANSI.format()
+    |> IO.puts()
+
     [assets, "node_modules", ".bin", "webpack"]
     |> Path.join()
     |> System.cmd(["--production"], cd: assets)
