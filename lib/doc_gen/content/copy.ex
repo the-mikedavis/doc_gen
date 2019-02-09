@@ -18,7 +18,7 @@ defmodule DocGen.Content.Copy do
     Agent.update(__MODULE__, fn _t ->
       settings = Accounts.get_settings()
 
-      %{settings | copy: Earmark.as_html!(settings.copy)}
+      %{settings | copy: Earmark.as_html!(settings.copy), about: Earmark.as_html!(settings.about)}
     end)
   end
 
