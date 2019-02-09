@@ -23,6 +23,7 @@ defmodule DocGenWeb.Router do
 
     get("/", WatchController, :index)
     get("/about", AboutController, :index)
+    get("/interviews", EmbedController, :all)
     get("/thumb/:id/jpeg", WatchController, :thumb)
     get("/thumb/:id/gif", WatchController, :anithumb)
     post("/watch", WatchController, :show)
@@ -38,6 +39,7 @@ defmodule DocGenWeb.Router do
     resources("/videos", VideoController)
     resources("/tags", TagController)
     resources("/interviewees", IntervieweeController)
+    resources("/interviews", EmbedController, except: [:update, :edit])
     resources("/settings", SettingsController, only: [:index, :update])
   end
 

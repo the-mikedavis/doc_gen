@@ -1,0 +1,18 @@
+h1.text-blue-darker.my-8 Full Interviews
+
+div.bg-white.p-10.rounded.shadow-lg
+  div.flex.w-full
+    div class="w-1/6"
+      span.font-bold.text-blue-darker Name
+    div class="w-1/2"
+      span.font-bold.text-blue-darker Link
+
+  div.my-4.w-full
+    = for embed <- @embeds do
+      div.flex
+        div class="w-1/6 h-10" = embed.name
+        div class="w-1/2 h-10" = embed.link
+        div class="w-1/6 h-10" = link("Show", to: Routes.embed_path(@conn, :show, embed), class: "inline-block assign-baseline font-bold text-blue hover:text-blue-darker")
+        div class="w-1/6 h-10" = link("Delete", to: Routes.embed_path(@conn, :delete, embed), method: :delete, data: [confirm: "Are you sure?"], class: "inline-block assign-baseline font-bold text-blue hover:text-blue-darker")
+
+  = link("Make a New Link", to: Routes.embed_path(@conn, :new), class: "inline-block assign-baseline font-bold text-blue hover:text-blue-darker")
