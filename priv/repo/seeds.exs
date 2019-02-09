@@ -20,10 +20,14 @@ alias DocGen.{
 
 # seed the administrator
 
-unless Repo.get_by(User, username: "adminimum") do
-  %User{}
-  |> User.changeset(%{username: "adminimum", password: "pleasechangethis"})
-  |> Repo.insert!()
+case Repo.all(User) do
+  [] ->
+    %User{}
+    |> User.changeset(%{username: "adminimum", password: "pleasechangethis"})
+    |> Repo.insert!()
+
+  [%User{} | _] ->
+    :ok
 end
 
 # seed the video types
