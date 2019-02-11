@@ -22,7 +22,14 @@ defmodule DocGen.Accounts.Setting do
   @doc false
   def changeset(setting, attrs) do
     setting
-    |> cast(attrs, [:title, :beginning_clips, :middle_clips, :end_clips, :copy])
+    |> cast(attrs, [
+      :title,
+      :beginning_clips,
+      :middle_clips,
+      :end_clips,
+      :copy,
+      :about
+    ])
     |> validate_required([:title, :beginning_clips, :middle_clips, :end_clips])
     |> validate_length(:title, min: 3, max: 100)
     |> validate_inclusion(:beginning_clips, 0..100)
