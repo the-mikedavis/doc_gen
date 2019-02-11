@@ -20,8 +20,8 @@ defmodule DocGen.Content.Copy do
 
       %{
         settings
-        | copy: Earmark.as_html!(settings.copy),
-          about: Earmark.as_html!(settings.about)
+        | copy: parse_markdown(settings.copy),
+          about: parse_markdown(settings.about)
       }
     end)
   end
@@ -31,4 +31,9 @@ defmodule DocGen.Content.Copy do
   def start_link(_opts) do
     Agent.start_link(&Accounts.get_settings/0, name: __MODULE__)
   end
+
+  defp parse_markdown(nil), do: ""
+
+  defp parse_markdown(markdown) when is_binary(markdown),
+    do: Earmark.as_html!(markdown)
 end
