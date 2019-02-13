@@ -10,26 +10,24 @@ defmodule DocGen.Content.Copy do
   @spec get(atom()) :: %{} | String.t() | integer()
   def get(:all), do: Agent.get(__MODULE__, & &1)
 
-  def get(key) do
-    Agent.get(__MODULE__, &Map.get(&1, key))
-  end
+  def get(key), do: Agent.get(__MODULE__, &Map.get(&1, key))
 
-  def update do
-    Agent.update(__MODULE__, fn _t ->
-      settings = Accounts.get_settings()
-
-      %{
-        settings
-        | copy: parse_markdown(settings.copy),
-          about: parse_markdown(settings.about)
-      }
-    end)
-  end
+  def update, do: Agent.update(__MODULE__, fn _t -> load() end)
 
   ## Server API
 
   def start_link(_opts) do
-    Agent.start_link(&Accounts.get_settings/0, name: __MODULE__)
+    Agent.start_link(&load/0, name: __MODULE__)
+  end
+
+  defp load do
+    settings = Accounts.get_settings()
+
+    %{
+      settings
+      | copy: parse_markdown(settings.copy),
+        about: parse_markdown(settings.about)
+    }
   end
 
   defp parse_markdown(nil), do: ""
