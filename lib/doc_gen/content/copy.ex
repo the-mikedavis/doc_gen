@@ -3,7 +3,7 @@ defmodule DocGen.Content.Copy do
 
   @moduledoc "Holds the latest settings in memory"
 
-  alias DocGen.Accounts
+  alias DocGen.{Accounts, Accounts.Setting}
 
   ## Client API
 
@@ -21,13 +21,13 @@ defmodule DocGen.Content.Copy do
   end
 
   defp load do
-    settings = Accounts.get_settings()
+    case Accounts.get_settings() do
+      %Setting{copy: copy, about: about} = settings ->
+        %{settings | copy: parse_markdown(copy), about: parse_markdown(about)}
 
-    %{
-      settings
-      | copy: parse_markdown(settings.copy),
-        about: parse_markdown(settings.about)
-    }
+      nil ->
+        %Setting{}
+    end
   end
 
   defp parse_markdown(nil), do: ""
