@@ -18,6 +18,5 @@ defmodule DocGen.Content.Embed do
   def changeset(video, attrs) do
     video
     |> cast(attrs, [:link, :name])
-    |> validate_format(:link, ~r{^http[s]?://})
   end
 end
