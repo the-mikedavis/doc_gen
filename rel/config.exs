@@ -38,6 +38,7 @@ end
 environment :prod do
   set(include_erts: true)
   set(include_src: false)
+  set(included_configs: ["prefix.config"])
 
   set(
     cookie: :"$F<l|D[wEk3j1qOnANqoqfiWAvJ0<w/2R$HU^UUz4N`B:.8s@:c3pUicmwS.t{K{"
