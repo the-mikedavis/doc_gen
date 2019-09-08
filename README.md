@@ -15,9 +15,6 @@ is a collaboration between Kim Grinfeder and Mike Davis._
 
 ## How to Install It
 
-In the future, DocGen will be available as a docker container. For now, though,
-you'll have to do things the old-fashioned way.
-
 You'll need an Ubuntu-based server with PostgreSQL. The releases are designed
 for Ubuntu 16.04 but other versions may work equally well. Go into the releases
 tab of this repo on GitHub and download `doc_gen.tag.gz` onto your server.
